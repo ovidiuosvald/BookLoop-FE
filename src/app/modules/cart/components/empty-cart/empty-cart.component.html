@@ -1,0 +1,17 @@
+<div class="empty-cart-container">
+  <img src="assets/empty-cart.jpeg" alt="Coș gol" class="empty-cart-image" />
+
+  <div class="empty-cart-text">
+    <p class="main-text">Coșul tău de cumpărături nu are momentan produse.</p>
+    <p class="sub-text">
+      Plimbă-te printre rafturile noastre şi adaugă-ţi preferatele în coş.
+    </p>
+  </div>
+
+  <app-nav-button
+    [iconPosition]="'left'"
+    icon="arrow_backward"
+    text="Întoarce-te la Homepage"
+    (clicked)="onGoHome()"
+  ></app-nav-button>
+</div>

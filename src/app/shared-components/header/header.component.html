@@ -1,0 +1,66 @@
+<mat-toolbar color="primary">
+  <div class="logo">
+    <img
+      src="assets/bookloop-logo.svg"
+      alt="bookloop-logo"
+      (click)="goToHomePage()"
+    />
+  </div>
+
+  <div class="bookloop-content">
+    <div class="books">
+      <button mat-button [matMenuTriggerFor]="books" class="books-button">
+        Cărți
+        <mat-icon>keyboard_arrow_down</mat-icon>
+      </button>
+      <mat-menu #books="matMenu">
+        <button
+          mat-menu-item
+          *ngFor="let category of categories"
+          (click)="goToBooks(category)"
+        >
+          <span>{{ category.categoryName }}</span>
+          <span class="mat-button-focus-overlay"></span>
+        </button>
+      </mat-menu>
+
+      <button mat-button class="books-button" (click)="goToBestsellers()">
+        Bestsellere
+      </button>
+      <button mat-button class="books-button">Oferte</button>
+    </div>
+
+    <div class="custom-search-bar">
+      <input type="text" placeholder="Caută..." [(ngModel)]="searchTerm" />
+      <button *ngIf="searchTerm" (click)="searchTerm = ''">&#10006;</button>
+    </div>
+  </div>
+
+  <div class="right-menu">
+    <button mat-button [matMenuTriggerFor]="menu">
+      <mat-icon>perm_identity</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="openChangePasswordDialog()">
+        <mat-icon>create</mat-icon>
+      </button>
+      <button mat-button (click)="openUpdateUsernameDialog()">
+        <mat-icon>create</mat-icon>
+        <span>Update username</span>
+        <span class="mat-button-focus-overlay"></span>
+      </button>
+      <button mat-menu-item (click)="openLogoutDialog()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Log out</span>
+        <span class="mat-button-focus-overlay"></span>
+      </button>
+    </mat-menu>
+
+    <button mat-button>
+      <mat-icon>favorite</mat-icon>
+    </button>
+    <button mat-button (click)="goToCart()">
+      <mat-icon>shopping_cart</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>

@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>Stock Details</h1>
+
+<div mat-dialog-content class="dialog-content">
+  <p *ngIf="objectToBeShown?.quantity !== 0">
+    Price:
+    {{ (objectToBeShown ? objectToBeShown.price : "") | number: ".2-2" }}
+  </p>
+  <p *ngIf="objectToBeShown?.quantity !== 0">
+    Quantity: {{ objectToBeShown ? objectToBeShown.quantity : "" }}
+  </p>
+  <small *ngIf="objectToBeShown?.quantity === 0"
+    >Product is out of stock!</small
+  >
+  <button mat-stroked-button color="primary" mat-dialog-close>Close</button>
+</div>

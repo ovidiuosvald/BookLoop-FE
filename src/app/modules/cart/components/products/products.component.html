@@ -1,0 +1,27 @@
+<div class="products-container">
+  <ng-container *ngIf="cartItems.length > 0; else emptyCart">
+    <div class="cart-container">
+      <h1>Coșul de cumpărături</h1>
+      <div class="cart-content">
+        <div class="flex-column">
+          <app-cart-item-list [cartItems]="cartItems"></app-cart-item-list>
+          <app-free-shipping-chip
+            [total]="totalProductsPrice"
+          ></app-free-shipping-chip>
+        </div>
+        <div class="flex-column">
+          <app-cart-summary [cartItems]="cartItems"></app-cart-summary>
+          <app-nav-button
+            [iconPosition]="'right'"
+            icon="arrow_forward"
+            text="Pasul următor"
+            (clicked)="nextStep()"
+          ></app-nav-button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #emptyCart>
+    <app-empty-cart></app-empty-cart>
+  </ng-template>
+</div>

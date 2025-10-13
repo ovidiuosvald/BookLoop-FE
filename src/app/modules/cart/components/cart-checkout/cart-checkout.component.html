@@ -1,0 +1,239 @@
+<div class="checkout-wrapper">
+  <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+    <!-- 1. Date livrare -->
+    <mat-card class="checkout-section" formGroupName="delivery">
+      <h2>1. Date livrare</h2>
+
+      <div class="row">
+        <mat-form-field appearance="outline" class="full">
+          <mat-label>Nume</mat-label>
+          <input matInput formControlName="name" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full">
+          <mat-label>Telefon</mat-label>
+          <input matInput formControlName="phone" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" />
+        </mat-form-field>
+      </div>
+
+      <h3>Modalitate livrare</h3>
+      <mat-radio-group formControlName="method" class="radio-group">
+        <mat-radio-button color="primary" value="courier"
+          >Livrare prin curier</mat-radio-button
+        >
+        <mat-radio-button color="primary" value="pickup"
+          >Ridicare personală din librărie
+          <button
+            mat-icon-button
+            class="custom-info-icon"
+            matTooltip="BookLoop, str. Matei Corvin nr. 46, loc. Oradea, jud. Bihor"
+            matTooltipPosition="right"
+            [matTooltipShowDelay]="300"
+          >
+            <mat-icon>info</mat-icon>
+          </button>
+        </mat-radio-button>
+      </mat-radio-group>
+
+      <div
+        class="row"
+        *ngIf="checkoutForm.get('delivery.method')?.value === 'courier'"
+      >
+        <mat-form-field appearance="outline">
+          <mat-label>Țară</mat-label>
+          <mat-select formControlName="country">
+            <mat-option value="romania">România</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Județ</mat-label>
+          <mat-select formControlName="county">
+            <mat-option value="bucuresti">București</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Oraș</mat-label>
+          <input matInput formControlName="city" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full">
+          <mat-label>Adresă</mat-label>
+          <input matInput formControlName="address" />
+        </mat-form-field>
+
+        <mat-checkbox
+          color="primary"
+          formControlName="saveAddress"
+          class="mt-4"
+        >
+          Salvează această adresă în contul meu
+        </mat-checkbox>
+      </div>
+    </mat-card>
+
+    <!-- 2. Date facturare -->
+    <mat-card class="checkout-section" formGroupName="billing">
+      <h2>2. Date facturare</h2>
+      <mat-radio-group formControlName="type" class="radio-group">
+        <mat-radio-button color="primary" value="fizica"
+          >Persoană fizică</mat-radio-button
+        >
+
+        <mat-radio-button color="primary" value="juridica"
+          >Persoană juridică</mat-radio-button
+        >
+      </mat-radio-group>
+
+      <!-- Afișare doar dacă tipul este "fizica" -->
+      <div
+        class="info-box"
+        *ngIf="checkoutForm.get('billing.type')?.value === 'fizica'"
+      >
+        Folosesc aceleași date cu cele de la adresa de livrare
+      </div>
+
+      <!-- Afișare doar dacă tipul este "juridica" -->
+      <div
+        *ngIf="checkoutForm.get('billing.type')?.value === 'juridica'"
+        [formGroup]="companyDetailsGroup"
+      >
+        <h4>Detalii companie</h4>
+
+        <!-- Rând 1 -->
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              placeholder="Nume Companie"
+              formControlName="name"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <input matInput placeholder="CUI" formControlName="cui" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              placeholder="Nr.Reg.Com"
+              formControlName="regNumber"
+            />
+          </mat-form-field>
+        </div>
+
+        <!-- Rând 2 -->
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <input matInput placeholder="Banca" formControlName="bank" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <input matInput placeholder="Cont" formControlName="account" />
+          </mat-form-field>
+        </div>
+
+        <!-- Rând 3: Selecturi -->
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Țara</mat-label>
+            <mat-select formControlName="country">
+              <mat-option value="romania">România</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Județ</mat-label>
+            <mat-select formControlName="county">
+              <mat-option *ngFor="let j of counties" [value]="j">{{
+                j
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Oraș</mat-label>
+            <mat-select formControlName="city">
+              <mat-option *ngFor="let o of cities" [value]="o">{{
+                o
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Adresa -->
+        <mat-form-field appearance="outline" class="full-width">
+          <input
+            matInput
+            placeholder="Adresă completă"
+            formControlName="address"
+          />
+        </mat-form-field>
+        <mat-checkbox
+          color="primary"
+          formControlName="saveCompanyDetails"
+          class="mt-4"
+        >
+          Salvează detaliile despre Companie în contul meu
+        </mat-checkbox>
+      </div>
+    </mat-card>
+
+    <!-- 3. Modalitate de plată -->
+    <mat-card class="checkout-section" formGroupName="payment">
+      <h2>3. Modalitate de plată</h2>
+      <mat-radio-group formControlName="method" class="radio-group">
+        <mat-radio-button color="primary" value="ramburs"
+          >Ramburs</mat-radio-button
+        >
+        <mat-radio-button color="primary" value="card"
+          >Card (PayU)</mat-radio-button
+        >
+        <mat-radio-button color="primary" value="transfer"
+          >Transfer bancar</mat-radio-button
+        >
+      </mat-radio-group>
+    </mat-card>
+
+    <!-- Sumar -->
+    <mat-card class="checkout-summary">
+      <div class="check-terms" formGroupName="termsChecked">
+        <mat-checkbox color="primary" formControlName="checkTerms" class="mt-4">
+          Am citit, am minimum 18 ani și sunt de acord cu Termenii de utilizare
+          și Condițiile prezentate pe acest site.
+        </mat-checkbox>
+        <mat-checkbox color="primary" formControlName="newsletter" class="mt-4">
+          Doresc să primesc prin e-mail noutățile și promoțiile BookLoop cu
+          privire la produse și servicii similare celor achiziționate.
+        </mat-checkbox>
+      </div>
+      <div class="summary-line">
+        <span>Cost produse</span>
+        <strong>49.00 Lei</strong>
+      </div>
+      <div class="summary-line">
+        <span>Cost livrare</span>
+        <strong>12.90 Lei</strong>
+      </div>
+      <div class="summary-line total">
+        <span>Total</span>
+        <strong>61.90 Lei</strong>
+      </div>
+
+      <app-nav-button
+        [iconPosition]="'right'"
+        icon="arrow_forward"
+        text="Pasul următor"
+        [disabled]="checkoutForm.invalid"
+        (clicked)="nextStep()"
+      ></app-nav-button>
+    </mat-card>
+  </form>
+</div>

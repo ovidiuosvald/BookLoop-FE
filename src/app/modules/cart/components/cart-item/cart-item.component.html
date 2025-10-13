@@ -1,0 +1,23 @@
+<div class="cart-item">
+  <img [src]="item.coverUrl" alt="{{ item.bookName }}" class="book-cover" />
+
+  <div class="book-info">
+    <div class="title">{{ item.bookName }}</div>
+    <button class="remove-btn" (click)="onRemove()">
+      <mat-icon>delete</mat-icon> <span class="remove-label"></span>Șterge
+    </button>
+  </div>
+
+  <div class="quantity">
+    <input
+      type="number"
+      [value]="item.quantity"
+      min="1"
+      (input)="onQuantityChange($event)"
+    />
+  </div>
+
+  <div class="price">
+    {{ getTotalPrice() | currency : "RON" : "symbol" : "1.2-2" : "ro" }}
+  </div>
+</div>

@@ -1,0 +1,35 @@
+<h1 mat-dialog-title>Update username</h1>
+<div mat-dialog-content>
+  <form [formGroup]="updateUserForm">
+    <mat-form-field appearance="standard">
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="username" type="text" required />
+      <mat-error *ngIf="updateUserForm.controls.username.hasError('required')"
+        >Username is required!</mat-error
+      >
+      <mat-error *ngIf="updateUserForm.controls.username.hasError('minlength')"
+        >Username must have minimum 5 characters!</mat-error
+      >
+      <mat-error *ngIf="updateUserForm.controls.username.hasError('maxlength')"
+        >Username must have maximum 50 characters!</mat-error
+      >
+      <mat-error *ngIf="updateUserForm.controls.username.hasError('noSpaces')"
+        >Username cannot contain spaces.</mat-error
+      >
+    </mat-form-field>
+
+    <div class="action-buttons">
+      <button mat-raised-button color="primary" mat-dialog-close>Cancel</button>
+      <button
+        [mat-dialog-close]="true"
+        mat-raised-button
+        color="primary"
+        type="submit"
+        (click)="submitUpdateUserForm()"
+        [disabled]="!updateUserForm.valid"
+      >
+        Update
+      </button>
+    </div>
+  </form>
+</div>

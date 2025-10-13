@@ -1,0 +1,101 @@
+<div class="search-header">
+  <button mat-mini-fab color="primary" (click)="goToCreateProduct()">
+    <mat-icon>add</mat-icon>
+  </button>
+  <mat-form-field appearance="standard">
+    <mat-label>Search Product</mat-label>
+    <input matInput (keyup)="applyFilter($event)" #input />
+  </mat-form-field>
+</div>
+
+<table mat-table [dataSource]="dataSource" matSort class="product-table">
+  <!-- Position Column -->
+  <ng-container matColumnDef="position">
+    <th mat-header-cell *matHeaderCellDef>No.</th>
+    <td mat-cell *matCellDef="let product; let i = index">{{ i + 1 }}</td>
+  </ng-container>
+
+  <!-- Pzn Column -->
+  <ng-container matColumnDef="pzn">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Pzn</th>
+    <td mat-cell *matCellDef="let product">{{ product.pzn }}</td>
+  </ng-container>
+
+  <!-- Pzn Column -->
+  <ng-container matColumnDef="supplier">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Supplier</th>
+    <td mat-cell *matCellDef="let product">
+      {{ product.supplier | uppercase }}
+    </td>
+  </ng-container>
+
+  <!-- Product Name Column -->
+  <ng-container matColumnDef="productName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Product Name</th>
+    <td mat-cell *matCellDef="let product">
+      {{ product.productName | titlecase }}
+    </td>
+  </ng-container>
+
+  <!-- Strength Column -->
+  <ng-container matColumnDef="strength">
+    <th mat-header-cell *matHeaderCellDef>Strength</th>
+    <td mat-cell *matCellDef="let product">{{ product.strength }}</td>
+  </ng-container>
+
+  <!-- Package Size Column -->
+  <ng-container matColumnDef="packageSize">
+    <th mat-header-cell *matHeaderCellDef>Package Size</th>
+    <td mat-cell *matCellDef="let product">
+      {{ product.packageSize }}
+    </td>
+  </ng-container>
+
+  <!-- Unit Of Measure Column -->
+  <ng-container matColumnDef="unit">
+    <th mat-header-cell *matHeaderCellDef>Unit Of Measure</th>
+    <td mat-cell *matCellDef="let product">{{ product.unit | titlecase }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let product">
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="menu"
+        aria-label="Example icon-button with a menu"
+      >
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="deleteProductAndStock(product.pzn)">
+          <mat-icon>delete_outline</mat-icon>
+          <span>Delete product and stock details</span>
+        </button>
+        <button mat-menu-item (click)="editProductandStock(product.pzn)">
+          <mat-icon>edit</mat-icon>
+          <span>Edit product and stock details</span>
+        </button>
+        <button mat-menu-item (click)="openDialog(product)">
+          <mat-icon>pages</mat-icon>
+          View stock details
+        </button>
+      </mat-menu>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr
+    mat-row
+    *matRowDef="let row; columns: displayedColumns; let i = index"
+  ></tr>
+  <tr class="mat-row" *matNoDataRow>
+    <td class="mat-cell" colspan="4">"{{ input.value }} was not found!"</td>
+  </tr>
+</table>
+<mat-paginator
+  showFirstLastButtons
+  [pageSizeOptions]="[5, 10, 25, 50, 100]"
+  aria-label="Select page"
+>
+</mat-paginator>

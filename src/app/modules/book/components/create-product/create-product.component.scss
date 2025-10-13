@@ -1,0 +1,19 @@
+form {
+  display: flex;
+  flex-direction: column;
+}
+.mat-stepper-horizontal {
+  margin-top: 8px;
+}
+
+.mat-form-field {
+  margin-top: 16px;
+  width: 300px;
+}
+.action-buttons {
+  width: 300px;
+  margin-top: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

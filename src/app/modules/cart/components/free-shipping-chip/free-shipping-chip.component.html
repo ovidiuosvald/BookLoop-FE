@@ -1,0 +1,12 @@
+<div class="chip" [class.free-shipping]="isFreeShipping">
+  <ng-container *ngIf="!isFreeShipping; else eligible">
+    Mai adaugă în coş produse de
+    <span class="highlight">{{ difference | number : "1.2-2" }} lei</span>
+    şi beneficiezi de TRANSPORT GRATUIT prin curier rapid!
+  </ng-container>
+
+  <ng-template #eligible>
+    Ești eligibil pentru livrare gratuită, întrucât ai în coș produse de peste
+    <span class="highlight">{{ freeShippingLimit }} lei</span>.
+  </ng-template>
+</div>

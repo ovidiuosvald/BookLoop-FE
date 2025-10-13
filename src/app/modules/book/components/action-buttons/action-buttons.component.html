@@ -1,0 +1,7 @@
+<button class="action-button" (click)="onAddToCart()">
+  <mat-icon>shopping_cart</mat-icon> Adaugă în coș
+</button>
+<button class="action-button" (click)="onToggleFavorite()">
+  <mat-icon>{{ isFavorite ? "favorite" : "favorite_border" }}</mat-icon>
+  Favorite
+</button>

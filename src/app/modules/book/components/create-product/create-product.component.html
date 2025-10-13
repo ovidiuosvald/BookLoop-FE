@@ -1,0 +1,152 @@
+<mat-stepper [linear]="true" #stepper>
+  <mat-step [stepControl]="productForm" [editable]="isEditable">
+    <form [formGroup]="productForm">
+      <ng-template matStepLabel>Product Details</ng-template>
+      <mat-form-field appearance="fill">
+        <mat-label>Pzn</mat-label>
+        <input
+          [attr.disabled]="!!productToBeUpdated"
+          matInput
+          formControlName="pzn"
+          required
+        />
+        <mat-error *ngIf="productForm.controls.pzn?.hasError('required')"
+          >Pzn is required!</mat-error
+        >
+        <mat-error *ngIf="productForm.controls.pzn?.hasError('maxlength')"
+          >Maximum number of characters is 8</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Product Name</mat-label>
+        <input matInput formControlName="productName" required />
+        <mat-error
+          *ngIf="productForm.controls.productName?.hasError('required')"
+          >Product Name is required!</mat-error
+        >
+        <mat-error
+          *ngIf="productForm.controls.productName?.hasError('maxlength')"
+          >Maximum number of characters is 100</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Supplier</mat-label>
+        <input matInput formControlName="supplier" />
+        <mat-error *ngIf="productForm.controls.supplier?.hasError('maxlength')"
+          >Maximum number of characters is 100</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Strength</mat-label>
+        <input matInput formControlName="strength" required /><mat-error
+          *ngIf="productForm.controls.strength?.hasError('required')"
+          >Strength is required!</mat-error
+        >
+        <mat-error *ngIf="productForm.controls.strength?.hasError('maxlength')"
+          >Maximum number of characters is 100</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Package Size</mat-label>
+        <input matInput formControlName="packageSize" required />
+        <mat-error
+          *ngIf="productForm.controls.packageSize?.hasError('required')"
+          >Package Size is required!</mat-error
+        >
+        <mat-error
+          *ngIf="productForm.controls.packageSize?.hasError('maxlength')"
+          >Maximum number of characters is 20</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Unit Of Measure</mat-label>
+        <input matInput formControlName="unit" required />
+        <mat-error *ngIf="productForm.controls.unit?.hasError('required')"
+          >Unit is required!</mat-error
+        >
+        <mat-error *ngIf="productForm.controls.unit?.hasError('maxlength')"
+          >Maximum number of characters is 2</mat-error
+        >
+      </mat-form-field>
+
+      <div class="action-buttons">
+        <button mat-raised-button color="primary" (click)="goToProducts()">
+          Cancel
+        </button>
+
+        <button
+          mat-raised-button
+          color="primary"
+          matStepperNext
+          [disabled]="!productForm.valid"
+          (click)="isEditable = true"
+        >
+          Next
+        </button>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step [stepControl]="stockForm" [editable]="isEditable">
+    <ng-template matStepLabel>Stock Details</ng-template>
+    <form [formGroup]="stockForm">
+      <mat-form-field appearance="fill">
+        <mat-label>Quantity</mat-label>
+        <input matInput formControlName="quantity" required />
+        <mat-error *ngIf="stockForm.controls.quantity?.hasError('required')"
+          >Quantity is required!</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Price</mat-label>
+        <input matInput formControlName="price" required />
+        <mat-error *ngIf="stockForm.controls.price?.hasError('required')"
+          >Price is required!</mat-error
+        >
+      </mat-form-field>
+      <div class="action-buttons">
+        <button mat-raised-button color="primary" matStepperPrevious>
+          Back
+        </button>
+
+        <button
+          mat-raised-button
+          color="primary"
+          matStepperNext
+          (click)="submitForms()"
+          [disabled]="!stockForm.valid"
+        >
+          {{ !productToBeUpdated ? "Save" : "Update" }}
+        </button>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    <p>
+      {{
+        !productToBeUpdated
+          ? "Product was created successfully and stock details were saved."
+          : "Product and stock details were updated accordingly!"
+      }}
+    </p>
+    <div class="action-buttons">
+      <button
+        mat-raised-button
+        color="primary"
+        *ngIf="!productToBeUpdated"
+        (click)="editProductandStock(productObject.pzn)"
+      >
+        Edit Product
+      </button>
+      <button mat-raised-button color="primary" (click)="goToProducts()">
+        See product
+      </button>
+    </div>
+  </mat-step>
+</mat-stepper>

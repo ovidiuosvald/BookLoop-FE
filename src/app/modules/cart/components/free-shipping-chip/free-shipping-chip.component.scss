@@ -1,0 +1,23 @@
+$primary-purple: #673ab7;
+$light-purple: #ede7f6; // un mov foarte deschis
+$success-purple: #d1c4e9; // pentru stare activă
+
+.chip {
+  background-color: $light-purple;
+  border-radius: 16px;
+  padding: 10px 16px;
+  font-weight: 600;
+  margin: 10px 0;
+  user-select: none;
+  border: 1px solid lighten($primary-purple, 30%);
+  transition: background-color 0.3s ease;
+}
+
+.free-shipping {
+  border: 1px solid $primary-purple;
+}
+
+.highlight {
+  color: darken($primary-purple, 15%);
+  font-weight: bold;
+}

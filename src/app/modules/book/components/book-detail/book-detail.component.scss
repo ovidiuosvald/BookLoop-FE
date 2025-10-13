@@ -1,0 +1,59 @@
+.book-detail-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.book-detail-content {
+  display: flex;
+  max-width: 1300px;
+  width: 100%;
+  gap: 60px;
+  align-items: flex-start;
+}
+
+.book-cover {
+  width: 300px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.book-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+  text-align: left;
+
+  h2 {
+    font-size: 2rem;
+    margin: 0;
+  }
+
+  h4 {
+    font-size: 1.4rem;
+    margin: 0;
+    color: #555;
+  }
+
+  p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+}
+
+.book-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  min-width: 200px;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.price-stock p {
+  margin: 6px 0;
+}

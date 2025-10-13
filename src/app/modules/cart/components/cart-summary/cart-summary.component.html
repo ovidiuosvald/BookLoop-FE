@@ -1,0 +1,20 @@
+<div class="summary-card">
+  <h2>Sumar comandă</h2>
+
+  <div class="summary-row">
+    <span>Produse ({{ cartItems.length }})</span>
+    <span>{{ totalProductsPrice | number : "1.2-2" }} Lei</span>
+  </div>
+
+  <div class="summary-row">
+    <span>Livrare</span>
+    <span>{{ shippingPrice | number : "1.2-2" }} Lei</span>
+  </div>
+
+  <hr />
+
+  <div class="summary-row total">
+    <strong>Total</strong>
+    <strong>{{ totalPrice | number : "1.2-2" }} Lei</strong>
+  </div>
+</div>

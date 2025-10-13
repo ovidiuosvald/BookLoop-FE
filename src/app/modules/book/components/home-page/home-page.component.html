@@ -1,0 +1,17 @@
+<div class="main-area">
+  <app-book-carousel [books]="promoBooks" mode="single"></app-book-carousel>
+
+  <div class="shipping-info-container">
+    <div class="shipping-box">
+      <mat-icon class="shipping-icon">local_shipping</mat-icon>
+      <div class="shipping-text">Livrare gratuită în librărie</div>
+    </div>
+
+    <div class="shipping-box">
+      <mat-icon class="shipping-icon">shopping_cart</mat-icon>
+      <div class="shipping-text">Livrare gratuită peste 200 lei</div>
+    </div>
+  </div>
+
+  <app-book-carousel [books]="newBooks" mode="multi"></app-book-carousel>
+</div>
