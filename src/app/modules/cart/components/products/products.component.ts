@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { Book } from 'src/app/models/book.model';
 import { BookService } from 'src/app/services/book.service';
 import { CommonService } from 'src/app/services/common.service';
@@ -15,17 +14,16 @@ export class ProductsComponent {
   constructor(
     private commonService: CommonService,
     private bookService: BookService,
-    private router: Router
   ) {
     ['101', '126', '134'].forEach((id) => {
       this.bookService.getBookByBookIdUsingGET(id).subscribe((book) => {
-        next: this.cartItems.push(book);
+        this.cartItems.push(book);
       });
     });
   }
 
   nextStep() {
-    this.commonService.gotToCheckout();
+    this.commonService.goToCheckout();
   }
 
   onRemove(itemId: string) {
@@ -42,7 +40,7 @@ export class ProductsComponent {
   get totalProductsPrice(): number {
     return this.cartItems.reduce(
       (total, item) => total + item.currentPrice * item.quantity,
-      0
+      0,
     );
   }
 }

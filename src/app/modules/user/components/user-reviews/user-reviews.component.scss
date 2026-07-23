@@ -2,7 +2,7 @@
   display: block;
 }
 
-.favorites-page {
+.reviews-page {
   display: flex;
   flex-direction: column;
   gap: 32px;
@@ -17,7 +17,7 @@
   }
 
   p {
-    margin: 8px 0 0;
+    margin-top: 8px;
     font-size: 14px;
     color: #6b7280;
   }
@@ -30,22 +30,18 @@
   justify-content: center;
 
   min-height: 350px;
-  padding: 32px;
-
   text-align: center;
 
   mat-icon {
     width: 72px;
     height: 72px;
-    margin-bottom: 16px;
-
     font-size: 72px;
     color: #c7c7c7;
+    margin-bottom: 16px;
   }
 
   h2 {
     margin: 0;
-
     font-size: 1.5rem;
     font-weight: 600;
     color: #1f2937;
@@ -53,11 +49,7 @@
 
   p {
     margin-top: 12px;
-
     max-width: 420px;
-
-    font-size: 1rem;
-    line-height: 1.6;
     color: #6b7280;
   }
 }

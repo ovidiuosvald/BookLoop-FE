@@ -11,18 +11,21 @@ import { UserService } from '../services/user.service';
 })
 export class UserGuard implements CanActivate {
   public isUserLoggedIn: boolean = false;
-  constructor(private _router: Router, private _userService: UserService) {}
+  constructor(
+    private router: Router,
+    private userService: UserService,
+  ) {}
 
   public canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    state: RouterStateSnapshot,
   ) {
-    this._userService.isUserLoggedIn$.subscribe({
+    this.userService.isUserLoggedIn$.subscribe({
       next: (value: boolean) => (this.isUserLoggedIn = value),
     });
 
     if (!this.isUserLoggedIn) {
-      this._router.navigate(['/login'], {
+      this.router.navigate(['/login'], {
         queryParams: { returnUrl: state.url },
         queryParamsHandling: 'merge',
       });
@@ -35,7 +38,7 @@ export class UserGuard implements CanActivate {
 
   public canActivateChild(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    state: RouterStateSnapshot,
   ) {
     return this.canActivate(route, state);
   }

@@ -1,117 +1,150 @@
-import { CommonService } from 'src/app/services/common.service';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { UserInterface } from '../models/user.model';
+
+import { CommonService } from 'src/app/services/common.service';
 import { CredentialsInterface } from '../models/credentials.model';
+import { UserInterface } from '../models/user.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root',
+})
 export class UserService {
-  private readonly _baseUrl: string = 'http://localhost:8080';
-  private _isUserLoggedIn$: BehaviorSubject<boolean> =
-    new BehaviorSubject<boolean>(false);
-  private _authenticatedUser$: BehaviorSubject<UserInterface> =
-    new BehaviorSubject<UserInterface>({ username: '' });
+  private readonly baseUrl = 'http://localhost:8080';
+  private readonly userStorageKey = 'user';
 
-  public authenticatedUser$: Observable<UserInterface>;
-  public isUserLoggedIn$: Observable<boolean>;
+  private readonly isUserLoggedInSubject = new BehaviorSubject<boolean>(false);
 
-  public get authenticatedUser() {
-    return this._authenticatedUser$.value;
+  private readonly authenticatedUserSubject =
+    new BehaviorSubject<UserInterface>({
+      firstName: '',
+      lastName: '',
+    });
+
+  readonly isUserLoggedIn$: Observable<boolean> =
+    this.isUserLoggedInSubject.asObservable();
+
+  readonly authenticatedUser$: Observable<UserInterface> =
+    this.authenticatedUserSubject.asObservable();
+
+  get authenticatedUser(): UserInterface {
+    return this.authenticatedUserSubject.value;
   }
 
   constructor(
-    private _httpClient: HttpClient,
-    private _commonService: CommonService
+    private readonly httpClient: HttpClient,
+    private readonly commonService: CommonService,
   ) {
-    this.authenticatedUser$ = this._authenticatedUser$.asObservable();
-    this.isUserLoggedIn$ = this._isUserLoggedIn$.asObservable();
-
-    const userFromStorage = window.localStorage.getItem('user');
-
-    if (!!userFromStorage) {
-      this._isUserLoggedIn$.next(true);
-
-      this._authenticatedUser$.next(JSON.parse(userFromStorage!));
-    } else {
-      this._isUserLoggedIn$.next(false);
-    }
+    this.restoreUserFromStorage();
   }
 
-  public createUserUsingPOST(user: UserInterface): Observable<UserInterface> {
-    return this._httpClient.post(
-      `${this._baseUrl}/user/register`,
-      user
-    ) as Observable<UserInterface>;
-  }
-  public changePasswordUsingPUT(
-    user: UserInterface
-  ): Observable<UserInterface> {
-    return this._httpClient.put(
-      `${this._baseUrl}/user/change-password`,
-      user
-    ) as Observable<UserInterface>;
+  createUserUsingPOST(user: UserInterface): Observable<UserInterface> {
+    return this.httpClient.post<UserInterface>(
+      `${this.baseUrl}/user/register`,
+      user,
+    );
   }
 
-  public updateUserUsingPUT(user: UserInterface): Observable<UserInterface> {
-    return this._httpClient.put(
-      `${this._baseUrl}/user/update`,
-      user
-    ) as Observable<UserInterface>;
-  }
-  public getUserByEmailUsingGET(email: string): Observable<UserInterface> {
-    return this._httpClient.get(
-      `${this._baseUrl}/user/get-user-by-email/${email}`
-    ) as Observable<UserInterface>;
+  changePasswordUsingPUT(user: UserInterface): Observable<UserInterface> {
+    return this.httpClient.put<UserInterface>(
+      `${this.baseUrl}/user/change-password`,
+      user,
+    );
   }
 
-  public loginUsingPOST(
-    credentials: CredentialsInterface
+  updateUserUsingPUT(user: UserInterface): Observable<UserInterface> {
+    return this.httpClient.put<UserInterface>(
+      `${this.baseUrl}/user/update`,
+      user,
+    );
+  }
+
+  getUserByEmailUsingGET(email: string): Observable<UserInterface> {
+    return this.httpClient.get<UserInterface>(
+      `${this.baseUrl}/user/get-user-by-email/${encodeURIComponent(email)}`,
+    );
+  }
+
+  loginUsingPOST(
+    credentials: CredentialsInterface,
   ): Observable<HttpResponse<string>> {
     const formData = new FormData();
 
     formData.append('username', credentials.email);
     formData.append('password', credentials.password);
 
-    return this._httpClient.post(
-      `${this._baseUrl}/login`,
-      formData
-    ) as Observable<HttpResponse<string>>;
-  }
-
-  public logoutUsingPOST() {
-    this._httpClient.post(`${this._baseUrl}/logout`, {}).subscribe({
-      next: () => this._logout(),
+    return this.httpClient.post(`${this.baseUrl}/login`, formData, {
+      observe: 'response',
+      responseType: 'text',
     });
   }
 
-  public getUser(email: string) {
-    this.getUserByEmailUsingGET(email).subscribe({
-      next: (user: UserInterface) => {
-        this._authenticatedUser$.next(user);
-        this._isUserLoggedIn$.next(true);
-        this._setLocalStorageKey(email, user);
-        this._commonService.goToHomePage();
-      },
+  logoutUsingPOST(): void {
+    this.httpClient.post<void>(`${this.baseUrl}/logout`, {}).subscribe({
+      next: () => this.logout(),
       error: () =>
-        this._commonService.showSnackBarError(
-          'Failed to get user information!'
+        this.commonService.showSnackBarError(
+          'Delogarea nu a putut fi realizată.',
         ),
     });
   }
 
-  private _logout() {
-    this._authenticatedUser$.next({ username: '' });
-    this._isUserLoggedIn$.next(false);
-    this._removeLocalStorageKey();
-    this._commonService.goToLoginPage();
+  getUser(email: string): void {
+    this.getUserByEmailUsingGET(email).subscribe({
+      next: (user: UserInterface) => {
+        this.setAuthenticatedUser(user);
+        this.commonService.goToHomePage();
+      },
+      error: () =>
+        this.commonService.showSnackBarError(
+          'Datele utilizatorului nu au putut fi încărcate.',
+        ),
+    });
   }
 
-  private _removeLocalStorageKey(): void {
-    window.localStorage.removeItem('user');
+  updateAuthenticatedUser(user: UserInterface): void {
+    this.setAuthenticatedUser(user);
   }
 
-  private _setLocalStorageKey(email: string, user: UserInterface): void {
-    window.localStorage.setItem('user', JSON.stringify(user));
+  private setAuthenticatedUser(user: UserInterface): void {
+    this.authenticatedUserSubject.next(user);
+    this.isUserLoggedInSubject.next(true);
+    this.setUserInStorage(user);
+  }
+
+  private logout(): void {
+    this.authenticatedUserSubject.next({
+      firstName: '',
+      lastName: '',
+    });
+
+    this.isUserLoggedInSubject.next(false);
+    this.removeUserFromStorage();
+    this.commonService.goToLoginPage();
+  }
+
+  private restoreUserFromStorage(): void {
+    const storedUser = window.localStorage.getItem(this.userStorageKey);
+
+    if (!storedUser) {
+      return;
+    }
+
+    try {
+      const user = JSON.parse(storedUser) as UserInterface;
+
+      this.authenticatedUserSubject.next(user);
+      this.isUserLoggedInSubject.next(true);
+    } catch {
+      this.removeUserFromStorage();
+    }
+  }
+
+  private setUserInStorage(user: UserInterface): void {
+    window.localStorage.setItem(this.userStorageKey, JSON.stringify(user));
+  }
+
+  private removeUserFromStorage(): void {
+    window.localStorage.removeItem(this.userStorageKey);
   }
 }

@@ -1,1 +1,63 @@
-<p>test</p>
+<section class="user-details" *ngIf="authenticatedUser$ | async as user">
+  <div class="section-header">
+    <h2>Datele mele</h2>
+    <p>Gestionează informațiile asociate contului tău.</p>
+  </div>
+
+  <div class="details-card">
+    <div class="card-header">
+      <div class="card-title">
+        <mat-icon>person</mat-icon>
+        <span>Informații personale</span>
+      </div>
+
+      <button
+        mat-stroked-button
+        type="button"
+        class="edit-button"
+        (click)="openUpdateProfileDialog(user)"
+      >
+        <mat-icon>edit</mat-icon>
+        Modifică
+      </button>
+    </div>
+
+    <div class="card-content">
+      <div class="info-row">
+        <span class="label">Nume</span>
+        <span class="value">{{ user.firstName }} {{ user.lastName }}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="label">Email</span>
+        <span class="value">{{ user.email }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="details-card">
+    <div class="card-header">
+      <div class="card-title">
+        <mat-icon>lock_outline</mat-icon>
+        <span>Parolă și securitate</span>
+      </div>
+    </div>
+
+    <div class="card-content">
+      <p class="security-text">
+        Pentru a-ți păstra contul în siguranță, îți recomandăm să îți schimbi
+        parola periodic.
+      </p>
+
+      <button
+        mat-flat-button
+        color="primary"
+        type="button"
+        (click)="openChangePasswordDialog()"
+      >
+        <mat-icon>lock_reset</mat-icon>
+        Schimbă parola
+      </button>
+    </div>
+  </div>
+</section>

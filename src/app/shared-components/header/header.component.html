@@ -31,8 +31,23 @@
     </div>
 
     <div class="custom-search-bar">
-      <input type="text" placeholder="Caută..." [(ngModel)]="searchTerm" />
-      <button *ngIf="searchTerm" (click)="searchTerm = ''">&#10006;</button>
+      <input
+        type="text"
+        placeholder="Caută după titlu sau autor..."
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange($event)"
+        (keyup.enter)="onSearch()"
+      />
+
+      <button
+        type="button"
+        (click)="searchTerm ? clearSearch() : onSearch()"
+        [attr.aria-label]="searchTerm ? 'Șterge căutarea' : 'Caută'"
+      >
+        <mat-icon class="search">{{
+          searchTerm ? "close" : "search"
+        }}</mat-icon>
+      </button>
     </div>
   </div>
 
@@ -41,18 +56,37 @@
       <mat-icon>perm_identity</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="openChangePasswordDialog()">
-        <mat-icon>create</mat-icon>
+      <button mat-menu-item (click)="goToProfile()">
+        <mat-icon>person_outline</mat-icon>
+        <span>Datele mele</span>
       </button>
-      <button mat-button (click)="openUpdateUsernameDialog()">
-        <mat-icon>create</mat-icon>
-        <span>Update username</span>
-        <span class="mat-button-focus-overlay"></span>
+
+      <mat-divider></mat-divider>
+
+      <button mat-menu-item (click)="goToOrders()">
+        <mat-icon>receipt_long</mat-icon>
+        <span>Comenzile mele</span>
       </button>
-      <button mat-menu-item (click)="openLogoutDialog()">
-        <mat-icon>exit_to_app</mat-icon>
-        <span>Log out</span>
-        <span class="mat-button-focus-overlay"></span>
+
+      <button mat-menu-item (click)="goToFavorites()">
+        <mat-icon>favorite_border</mat-icon>
+        <span>Favorite</span>
+      </button>
+
+      <button mat-menu-item (click)="goToReviews()">
+        <mat-icon>rate_review</mat-icon>
+        <span>Recenziile mele</span>
+      </button>
+
+      <mat-divider></mat-divider>
+
+      <button
+        mat-menu-item
+        class="logout-menu-item"
+        (click)="openLogoutDialog()"
+      >
+        <mat-icon>logout</mat-icon>
+        <span>Delogare</span>
       </button>
     </mat-menu>
 

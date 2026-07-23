@@ -13,7 +13,7 @@ export class BookDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private bookService: BookService
+    private bookService: BookService,
   ) {}
 
   ngOnInit(): void {

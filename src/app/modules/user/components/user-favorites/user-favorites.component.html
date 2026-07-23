@@ -1,0 +1,20 @@
+<div class="favorites-page">
+  <div class="page-header">
+    <h1>Favorite</h1>
+    <p>Cărțile salvate de tine vor apărea aici.</p>
+  </div>
+
+  <ng-container *ngIf="favoriteBooks.length; else emptyState">
+    <app-book-list [booksInput]="favoriteBooks"></app-book-list>
+  </ng-container>
+
+  <ng-template #emptyState>
+    <div class="empty-state">
+      <mat-icon>favorite_border</mat-icon>
+
+      <h2>Nu ai cărți favorite</h2>
+
+      <p>Salvează cărțile preferate apăsând pe iconița inimă.</p>
+    </div>
+  </ng-template>
+</div>

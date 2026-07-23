@@ -1,82 +1,234 @@
 mat-toolbar {
-  height: 100px;
   display: flex;
-  flex-direction: row;
+  align-items: center;
   justify-content: space-between;
-  gap: 200px;
-  padding: 8px 60px;
+
+  min-height: 90px;
+  padding: 8px 48px;
+  gap: 32px;
 
   .logo {
-    width: 200px;
     display: flex;
+    align-items: center;
+    flex-shrink: 0;
+
+    width: 150px;
     cursor: pointer;
 
     img {
-      width: 100px;
+      display: block;
+      width: 110px;
+      height: auto;
     }
-  }
-
-  .right-menu {
-    width: 200px;
-    display: flex;
-    flex-direction: row;
-    gap: -10px;
   }
 
   .bookloop-content {
     display: flex;
-    flex-direction: row;
-    gap: 40px;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    gap: 32px;
+    min-width: 0;
+
+    .books {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      gap: 4px;
+    }
 
     .books-button {
-      font-size: large;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
       cursor: pointer;
-      letter-spacing: 1px;
     }
 
     .custom-search-bar {
-      cursor: pointer;
-      width: 100%;
-      max-width: 600px;
-      height: 36px;
       display: flex;
       align-items: center;
-      border: 1px solid #ccc;
-      border-radius: 8px;
+
+      width: 100%;
+      max-width: 520px;
+      height: 44px;
+
       overflow: hidden;
-      background-color: #fff;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      border: 1px solid #d8d8d8;
+      border-radius: 10px;
+
+      background-color: #ffffff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+      &:focus-within {
+        border-color: #673ab7;
+        box-shadow: 0 0 0 3px rgba(103, 58, 183, 0.15);
+      }
+
+      input {
+        flex: 1;
+        min-width: 0;
+        height: 100%;
+
+        padding: 0 14px;
+
+        border: none;
+        outline: none;
+        background: transparent;
+
+        color: #333333;
+        font-family: inherit;
+        font-size: 16px;
+
+        &::placeholder {
+          color: #858585;
+        }
+      }
+
+      button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 48px;
+        height: 100%;
+        padding: 0;
+
+        border: none;
+        background: transparent;
+
+        color: #777777;
+        cursor: pointer;
+
+        transition:
+          background-color 0.2s ease,
+          color 0.2s ease;
+
+        &:hover {
+          color: #673ab7;
+          background: #f5f0fc;
+        }
+      }
+    }
+  }
+
+  .right-menu {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-shrink: 0;
+
+    width: 160px;
+    gap: 4px;
+
+    button {
+      min-width: 44px;
+      padding: 0 8px;
     }
 
-    .custom-search-bar input {
-      flex: 1;
-      height: 100%;
-      border: none;
-      outline: none;
-      padding: 0 12px;
-      font-size: 16px;
-    }
-
-    .custom-search-bar button {
-      background: none;
-      border: none;
-      padding: 0 12px;
-      cursor: pointer;
-      font-size: 18px;
-      color: #888;
-    }
-
-    .custom-search-bar button:hover {
-      color: #333;
+    mat-icon {
+      margin: 0;
+      font-size: 27px;
+      width: 27px;
+      height: 27px;
     }
   }
 }
 
-button .mat-ripple-element {
-  display: none !important;
+.mat-icon.search {
+  margin: 0;
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
 }
 
-button:focus {
-  outline: none;
-  box-shadow: none;
+button:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 2px;
+}
+
+@media (max-width: 1200px) {
+  mat-toolbar {
+    padding: 8px 24px;
+    gap: 20px;
+
+    .logo {
+      width: 120px;
+    }
+
+    .bookloop-content {
+      gap: 16px;
+
+      .custom-search-bar {
+        max-width: 400px;
+      }
+    }
+
+    .right-menu {
+      width: auto;
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  mat-toolbar {
+    .bookloop-content {
+      .books {
+        display: none;
+      }
+
+      .custom-search-bar {
+        max-width: none;
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  mat-toolbar {
+    min-height: 72px;
+    padding: 8px 12px;
+    gap: 10px;
+
+    .logo {
+      width: auto;
+
+      img {
+        width: 82px;
+      }
+    }
+
+    .bookloop-content {
+      .custom-search-bar {
+        height: 40px;
+
+        input {
+          padding: 0 10px;
+          font-size: 14px;
+        }
+
+        button {
+          width: 40px;
+        }
+      }
+    }
+
+    .right-menu {
+      gap: 0;
+
+      button {
+        min-width: 38px;
+        padding: 0 5px;
+      }
+
+      mat-icon {
+        font-size: 23px;
+        width: 23px;
+        height: 23px;
+      }
+    }
+  }
 }

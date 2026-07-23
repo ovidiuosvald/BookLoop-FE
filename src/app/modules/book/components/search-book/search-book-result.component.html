@@ -1,0 +1,25 @@
+<div *ngIf="!loading && books.length === 0" class="no-results">
+  <img
+    src="assets/images/no-books-found.svg"
+    alt="No books found"
+    class="no-results-image"
+  />
+
+  <h2>Nicio carte nu a fost găsită</h2>
+
+  <p>
+    Nu am găsit nicio carte care să corespundă căutării dumneavoastră. Încercați
+    un alt titlu sau autor.
+  </p>
+
+  <app-nav-button
+    [iconPosition]="'left'"
+    icon="arrow_backward"
+    text="Întoarce-te la pagina de start"
+    (clicked)="goToHome()"
+  >
+  </app-nav-button>
+</div>
+
+<app-book-list *ngIf="!loading && books.length > 0" [booksInput]="books">
+</app-book-list>

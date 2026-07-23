@@ -12,13 +12,15 @@ import { confirmPasswordValidator } from 'src/app/validators/confirm-passwod.val
 })
 export class ChangePasswordComponent implements OnInit {
   public updateUserForm!: FormGroup;
-  public hide: boolean = true;
+  hideOldPassword = true;
+  hideNewPassword = true;
+  hideConfirmPassword = true;
   public authenticatedUser?: UserInterface;
 
   constructor(
     private _formBuilder: FormBuilder,
     private _userService: UserService,
-    private _commonService: CommonService
+    private _commonService: CommonService,
   ) {
     this.authenticatedUser = this._userService.authenticatedUser;
   }
@@ -32,7 +34,8 @@ export class ChangePasswordComponent implements OnInit {
     const userToBeUpdated: UserInterface = {
       userId: this.authenticatedUser?.userId,
       email: this.authenticatedUser?.email,
-      username: this.authenticatedUser?.username,
+      firstName: this.authenticatedUser?.firstName,
+      lastName: this.authenticatedUser?.lastName,
       password: this.updateUserForm.controls.password.value,
       newPassword: this.updateUserForm.controls.newPassword.value,
     };
@@ -40,10 +43,10 @@ export class ChangePasswordComponent implements OnInit {
     this._userService.changePasswordUsingPUT(userToBeUpdated).subscribe({
       next: () => {
         this._userService.logoutUsingPOST();
-        this._commonService.showSnackBarSuccess(
-          'Account was updated successfully!'
+        (this._commonService.showSnackBarSuccess(
+          'Account was updated successfully!',
         ),
-          this._commonService.goToLoginPage();
+          this._commonService.goToLoginPage());
       },
       error: (response) => {
         this._commonService.showSnackBarError(response.error);
@@ -53,7 +56,7 @@ export class ChangePasswordComponent implements OnInit {
 
   private _createUpdateUserForm(): void {
     const passwordRegExp: RegExp = new RegExp(
-      '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~`!@#$%^&()--+={}[]|\\:;<>,.?/_₹])(?=.{8,20})'
+      '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~`!@#$%^&()--+={}[]|\\:;<>,.?/_₹])(?=.{8,20})',
     );
     this.updateUserForm = this._formBuilder.group(
       {
@@ -81,9 +84,9 @@ export class ChangePasswordComponent implements OnInit {
       {
         validators: confirmPasswordValidator(
           'newPassword',
-          'confirmNewPassword'
+          'confirmNewPassword',
         ),
-      }
+      },
     );
   }
 }

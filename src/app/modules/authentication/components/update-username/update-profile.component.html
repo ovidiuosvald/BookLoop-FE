@@ -1,0 +1,89 @@
+<div class="dialog-header">
+  <div class="dialog-icon">
+    <mat-icon>person</mat-icon>
+  </div>
+
+  <div>
+    <h2>Editează profilul</h2>
+    <p>Actualizează numele și prenumele contului tău.</p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<form [formGroup]="updateUserForm" (ngSubmit)="submitUpdateUserForm()">
+  <div class="dialog-content">
+    <mat-form-field appearance="outline">
+      <mat-label>Prenume</mat-label>
+
+      <input
+        matInput
+        type="text"
+        formControlName="firstName"
+        autocomplete="given-name"
+      />
+
+      <mat-error *ngIf="updateUserForm.controls.firstName.hasError('required')">
+        Prenumele este obligatoriu.
+      </mat-error>
+
+      <mat-error
+        *ngIf="updateUserForm.controls.firstName.hasError('minlength')"
+      >
+        Prenumele trebuie să conțină minimum 2 caractere.
+      </mat-error>
+
+      <mat-error
+        *ngIf="updateUserForm.controls.firstName.hasError('maxlength')"
+      >
+        Prenumele poate conține maximum 100 de caractere.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Nume</mat-label>
+
+      <input
+        matInput
+        type="text"
+        formControlName="lastName"
+        autocomplete="family-name"
+      />
+
+      <mat-error *ngIf="updateUserForm.controls.lastName.hasError('required')">
+        Numele este obligatoriu.
+      </mat-error>
+
+      <mat-error *ngIf="updateUserForm.controls.lastName.hasError('minlength')">
+        Numele trebuie să conțină minimum 2 caractere.
+      </mat-error>
+
+      <mat-error *ngIf="updateUserForm.controls.lastName.hasError('maxlength')">
+        Numele poate conține maximum 100 de caractere.
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="dialog-actions">
+    <button
+      mat-stroked-button
+      type="button"
+      mat-dialog-close
+      class="cancel-button"
+    >
+      Anulează
+    </button>
+
+    <button
+      mat-flat-button
+      color="primary"
+      type="submit"
+      [disabled]="updateUserForm.invalid"
+      class="submit-button"
+    >
+      Actualizează profilul
+    </button>
+  </div>
+</form>

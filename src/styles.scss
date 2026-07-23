@@ -33,3 +33,23 @@ body {
   text-wrap: nowrap;
   max-width: fit-content !important;
 }
+
+.dialog-backdrop {
+  background: rgba(28, 18, 45, 0.72);
+  backdrop-filter: blur(3px);
+
+  .mat-mdc-dialog-container {
+    --mdc-dialog-container-shape: 20px;
+    --mdc-dialog-container-color: #ffffff;
+
+    box-shadow:
+      0 24px 64px rgba(31, 20, 51, 0.3),
+      0 8px 24px rgba(31, 20, 51, 0.16);
+  }
+
+  .mat-mdc-dialog-surface {
+    overflow: hidden;
+    border: 1px solid #e7def4;
+    border-radius: 20px;
+  }
+}

@@ -1,0 +1,20 @@
+<div class="reviews-page">
+  <div class="page-header">
+    <h1>Recenziile mele</h1>
+    <p>Toate recenziile scrise de tine vor apărea aici.</p>
+  </div>
+
+  <ng-container *ngIf="reviews.length; else emptyState">
+    <!-- aici va veni lista de recenzii -->
+  </ng-container>
+
+  <ng-template #emptyState>
+    <div class="empty-state">
+      <mat-icon>rate_review</mat-icon>
+
+      <h2>Nu ai scris încă nicio recenzie</h2>
+
+      <p>După ce vei evalua o carte, recenzia va apărea aici.</p>
+    </div>
+  </ng-template>
+</div>

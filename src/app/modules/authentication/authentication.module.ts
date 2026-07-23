@@ -1,12 +1,10 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { RegisterPageComponent } from './components/register-page/register-page.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
-import { UpdateUsernameComponent } from './components/update-username/update-username.component';
-import { MaterialModule } from '../material.module';
+import { UpdateProfileComponent } from './components/update-username/update-profile.component';
+import { SharedModule } from 'src/app/shared-components/shared.module';
 
 const authRoutes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -19,15 +17,9 @@ const authRoutes: Routes = [
     RegisterPageComponent,
     LoginPageComponent,
     ChangePasswordComponent,
-    UpdateUsernameComponent,
+    UpdateProfileComponent,
   ],
-  imports: [
-    RouterModule.forChild(authRoutes),
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MaterialModule,
-  ],
+  imports: [RouterModule.forChild(authRoutes), SharedModule],
   providers: [],
   exports: [RouterModule],
 })

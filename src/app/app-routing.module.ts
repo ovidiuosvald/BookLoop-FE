@@ -6,7 +6,7 @@ const routes: Routes = [
     path: 'auth',
     loadChildren: () =>
       import('./modules/authentication/authentication.module').then(
-        (module) => module.AuthenticationModule
+        (module) => module.AuthenticationModule,
       ),
   },
   {
@@ -20,7 +20,7 @@ const routes: Routes = [
       import('./modules/cart/cart.module').then((m) => m.CartModule),
   },
   {
-    path: 'user',
+    path: 'account',
     loadChildren: () =>
       import('./modules/user/user.module').then((m) => m.UserModule),
   },

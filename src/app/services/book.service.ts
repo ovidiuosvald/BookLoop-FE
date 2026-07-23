@@ -22,7 +22,7 @@ export class BookService {
   }
 
   getBookByBookIdUsingGET(bookId: string): Observable<Book> {
-    return this.httpClient.get(`${this.baseUrl}/${bookId}`) as Observable<Book>;
+    return this.httpClient.get<Book>(`${this.baseUrl}/id/${bookId}`);
   }
 
   getNewBooksUsingGET(): Observable<Book[]> {
@@ -38,26 +38,32 @@ export class BookService {
   createBookUsingPOST(book: Book): Observable<Book> {
     return this.httpClient.post(
       `${this.baseUrl}/create`,
-      book
+      book,
     ) as Observable<Book>;
   }
 
   updateBookUsingPUT(book: Book): Observable<Book> {
     return this.httpClient.put(
       `${this.baseUrl}/update`,
-      book
+      book,
     ) as Observable<Book>;
   }
 
   deleteBookUsingDELETE(bookId: string): Observable<Book> {
     return this.httpClient.delete(
-      `${this.baseUrl}/delete/${bookId}`
+      `${this.baseUrl}/delete/${bookId}`,
     ) as Observable<Book>;
   }
 
   getBooksByCategoryCodeUsingGET(categoryCode: string): Observable<Book[]> {
     return this.httpClient.get(
-      `${this.baseUrl}/category/${categoryCode}`
+      `${this.baseUrl}/category/${categoryCode}`,
     ) as Observable<Book[]>;
+  }
+
+  searchBooks(query: string): Observable<Book[]> {
+    return this.httpClient.get<Book[]>(
+      `${this.baseUrl}/search?q=${encodeURIComponent(query)}`,
+    );
   }
 }

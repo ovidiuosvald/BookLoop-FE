@@ -1,0 +1,61 @@
+<aside class="user-sidebar">
+  <nav class="sidebar-navigation">
+    <a
+      class="sidebar-item"
+      routerLink="details"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <span class="sidebar-item-content">
+        <mat-icon>person_outline</mat-icon>
+        <span>Datele mele</span>
+      </span>
+
+      <mat-icon class="sidebar-arrow">chevron_right</mat-icon>
+    </a>
+
+    <div class="sidebar-divider"></div>
+
+    <a class="sidebar-item" routerLink="orders" routerLinkActive="active">
+      <span class="sidebar-item-content">
+        <mat-icon>receipt_long</mat-icon>
+        <span>Comenzile mele</span>
+      </span>
+
+      <mat-icon class="sidebar-arrow">chevron_right</mat-icon>
+    </a>
+
+    <a class="sidebar-item" routerLink="favorites" routerLinkActive="active">
+      <span class="sidebar-item-content">
+        <mat-icon>favorite_border</mat-icon>
+        <span>Favorite</span>
+      </span>
+
+      <mat-icon class="sidebar-arrow">chevron_right</mat-icon>
+    </a>
+
+    <a class="sidebar-item" routerLink="reviews" routerLinkActive="active">
+      <span class="sidebar-item-content">
+        <mat-icon>rate_review</mat-icon>
+        <span>Recenziile mele</span>
+      </span>
+
+      <mat-icon class="sidebar-arrow">chevron_right</mat-icon>
+    </a>
+
+    <div class="sidebar-divider"></div>
+
+    <button
+      class="sidebar-item logout"
+      type="button"
+      (click)="openLogoutDialog()"
+    >
+      <span class="sidebar-item-content">
+        <mat-icon>logout</mat-icon>
+        <span>Delogare</span>
+      </span>
+
+      <mat-icon class="sidebar-arrow">chevron_right</mat-icon>
+    </button>
+  </nav>
+</aside>

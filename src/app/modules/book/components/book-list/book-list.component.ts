@@ -1,4 +1,10 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Book } from 'src/app/models/book.model';
 import { BookService } from 'src/app/services/book.service';
@@ -9,7 +15,9 @@ import { CommonService } from 'src/app/services/common.service';
   templateUrl: './book-list.component.html',
   styleUrls: ['./book-list.component.scss'],
 })
-export class BookListComponent {
+export class BookListComponent implements OnInit, OnChanges {
+  @Input() booksInput: Book[] = [];
+
   categoryCode!: string;
   books: Book[] = [];
 
@@ -17,15 +25,22 @@ export class BookListComponent {
     private commonService: CommonService,
     private route: ActivatedRoute,
     private bookService: BookService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
+    if (this.booksInput.length > 0) {
+      this.books = this.booksInput;
+      return;
+    }
+
     this.route.paramMap.subscribe((params) => {
       const navigation = this.router.getCurrentNavigation();
       const isBestseller =
         navigation?.extras.state?.isBestseller || history.state.isBestseller;
+
       const categoryCode = params.get('categoryCode');
+
       if (isBestseller) {
         this.loadBestsellers();
       } else if (categoryCode) {
@@ -33,6 +48,12 @@ export class BookListComponent {
         this.loadBooksByCategoryCode(categoryCode);
       }
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['booksInput']) {
+      this.books = this.booksInput;
+    }
   }
 
   loadBestsellers(): void {
