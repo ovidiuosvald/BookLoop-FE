@@ -53,3 +53,13 @@ body {
     border-radius: 20px;
   }
 }
+
+.authentication-required-dialog-panel {
+  .mat-mdc-dialog-container {
+    --mdc-dialog-container-shape: 18px;
+  }
+
+  .mat-mdc-dialog-surface {
+    border-radius: 18px;
+  }
+}

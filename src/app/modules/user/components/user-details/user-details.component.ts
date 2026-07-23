@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { UserInterface } from 'src/app/models/user.model';
 import { ChangePasswordComponent } from 'src/app/modules/authentication/components/change-password/change-password.component';
-import { UpdateProfileComponent } from 'src/app/modules/authentication/components/update-username/update-profile.component';
+import { UpdateProfileComponent } from 'src/app/modules/authentication/components/update-profile/update-profile.component';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({

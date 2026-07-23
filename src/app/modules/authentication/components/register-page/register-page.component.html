@@ -1,120 +1,157 @@
-<mat-card>
-  <div class="card-title">
-    <mat-card-title>Register new account</mat-card-title>
-  </div>
+<div class="register-page">
+  <mat-card class="register-card">
+    <div class="card-header">
+      <h1>Creează-ți un cont</h1>
+      <p>
+        Înregistrează-te pentru a beneficia de toate funcționalitățile BookLoop.
+      </p>
+    </div>
 
-  <div mat-card-content>
-    <form [formGroup]="registerForm">
-      <mat-form-field appearance="standard">
-        <mat-label>Email address</mat-label>
-        <input
-          matInput
-          formControlName="email"
-          placeholder="email@example.com"
-          type="email"
-          required
-        />
-        <mat-error *ngIf="registerForm.controls.email.hasError('required')"
-          >Email is required!</mat-error
-        >
-        <mat-error *ngIf="registerForm.controls.email.hasError('email')"
-          >Email does not have a valid format!</mat-error
-        >
-      </mat-form-field>
-      <mat-form-field appearance="standard">
-        <mat-label>Username</mat-label>
-        <input matInput formControlName="username" type="text" required />
-        <mat-error *ngIf="registerForm.controls.username.hasError('required')"
-          >Username is required!</mat-error
-        >
-        <mat-error *ngIf="registerForm.controls.username.hasError('minlength')"
-          >Username must have minimum 5 characters!</mat-error
-        >
-        <mat-error *ngIf="registerForm.controls.username.hasError('maxlength')"
-          >Username must have maximum 50 characters!</mat-error
-        >
-        <mat-error *ngIf="registerForm.controls.username.hasError('noSpaces')"
-          >Username cannot contain spaces.</mat-error
-        >
-      </mat-form-field>
-      <mat-form-field
-        appearance="standard"
-        [ngClass]="{
-          'password-field': registerForm.controls.password.hasError('pattern')
-        }"
-      >
-        <mat-label>Password</mat-label>
-        <input
-          matInput
-          formControlName="password"
-          [type]="hide ? 'password' : 'text'"
-          required
-        /><mat-error *ngIf="registerForm.controls.password.hasError('required')"
-          >Password is required!</mat-error
-        >
-        <mat-error *ngIf="registerForm.controls.password.hasError('minlength')"
-          >Password must have minimum 8 characters!</mat-error
-        >
-        <mat-error *ngIf="registerForm.controls.password.hasError('maxlength')"
-          >Password must have maximum 20 characters!</mat-error
-        >
-        <mat-error *ngIf="registerForm.controls.password.hasError('pattern')"
-          >Password must contain at least 1 capital letter, 1 small letter, 1
-          digit and 1 symbol!</mat-error
-        >
+    <mat-card-content>
+      <form [formGroup]="registerForm" (ngSubmit)="submitRegisterForm()">
+        <div class="name-fields">
+          <mat-form-field appearance="outline">
+            <mat-label>Prenume</mat-label>
+
+            <mat-icon matPrefix>person_outline</mat-icon>
+
+            <input matInput formControlName="firstName" type="text" required />
+
+            <mat-error
+              *ngIf="registerForm.controls.firstName.hasError('required')"
+            >
+              Prenumele este obligatoriu.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Nume</mat-label>
+
+            <mat-icon matPrefix>person_outline</mat-icon>
+
+            <input matInput formControlName="lastName" type="text" required />
+
+            <mat-error
+              *ngIf="registerForm.controls.lastName.hasError('required')"
+            >
+              Numele este obligatoriu.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Adresă de email</mat-label>
+
+          <mat-icon matPrefix>mail_outline</mat-icon>
+
+          <input
+            matInput
+            formControlName="email"
+            placeholder="email@exemplu.ro"
+            type="email"
+            required
+          />
+
+          <mat-error *ngIf="registerForm.controls.email.hasError('required')">
+            Adresa de email este obligatorie.
+          </mat-error>
+
+          <mat-error *ngIf="registerForm.controls.email.hasError('email')">
+            Introdu o adresă de email validă.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Parolă</mat-label>
+
+          <mat-icon matPrefix>lock_outline</mat-icon>
+
+          <input
+            matInput
+            formControlName="password"
+            [type]="hidePassword ? 'password' : 'text'"
+          />
+
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hidePassword = !hidePassword"
+          >
+            <mat-icon>
+              {{ hidePassword ? "visibility_off" : "visibility" }}
+            </mat-icon>
+          </button>
+
+          <mat-error
+            *ngIf="registerForm.controls.password.hasError('required')"
+          >
+            Parola este obligatorie.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Confirmă parola</mat-label>
+
+          <mat-icon matPrefix>lock_outline</mat-icon>
+
+          <input
+            matInput
+            formControlName="confirmPassword"
+            [type]="hideConfirmPassword ? 'password' : 'text'"
+            required
+          />
+
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hideConfirmPassword = !hideConfirmPassword"
+            [attr.aria-label]="
+              hideConfirmPassword ? 'Afișează parola' : 'Ascunde parola'
+            "
+          >
+            <mat-icon>
+              {{ hideConfirmPassword ? "visibility_off" : "visibility" }}
+            </mat-icon>
+          </button>
+
+          <mat-error
+            *ngIf="registerForm.controls.confirmPassword.hasError('required')"
+          >
+            Confirmarea parolei este obligatorie.
+          </mat-error>
+
+          <mat-error
+            *ngIf="
+              registerForm.controls.confirmPassword.touched &&
+              registerForm.controls.confirmPassword.hasError('comparePasswords')
+            "
+          >
+            Parolele nu coincid.
+          </mat-error>
+        </mat-form-field>
 
         <button
-          mat-icon-button
-          matSuffix
-          (click)="hide = !hide"
-          [attr.aria-label]="'Hide password'"
-          [attr.aria-pressed]="hide"
-        >
-          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
-        </button>
-      </mat-form-field>
-      <mat-form-field appearance="standard">
-        <mat-label>Confirm Password</mat-label>
-        <input
-          matInput
-          formControlName="confirmPassword"
-          [type]="hide ? 'password' : 'text'"
-          required
-        /><mat-error
-          *ngIf="registerForm.controls.confirmPassword.hasError('required')"
-          >Password is required!</mat-error
-        ><mat-error
-          *ngIf="
-            registerForm.controls.confirmPassword.hasError('comparePasswords')
-          "
-          >Passwords are not matching! Please try again!</mat-error
-        >
-        <button
-          mat-icon-button
-          matSuffix
-          (click)="hide = !hide"
-          [attr.aria-label]="'Hide password'"
-          [attr.aria-pressed]="hide"
-        >
-          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
-        </button>
-      </mat-form-field>
-      <div class="action-buttons">
-        <button
+          class="register-button"
           mat-raised-button
-          class="center-button"
           color="primary"
-          (click)="submitRegisterForm()"
-          [disabled]="!registerForm.valid"
+          type="submit"
+          [disabled]="registerForm.invalid"
         >
-          Register
+          Creează cont
         </button>
+      </form>
+
+      <div class="login-section">
+        <span>Ai deja un cont?</span>
+        <a routerLink="/auth/login">Autentifică-te</a>
       </div>
-    </form>
-  </div>
-</mat-card>
-<mat-card class="second-mat-card"
-  ><small>
-    You already have an account? Log in <a (click)="goToLogin()"> here.</a>
-  </small></mat-card
->
+
+      <a class="guest-link" routerLink="/">
+        <mat-icon>arrow_back</mat-icon>
+        Continuă fără autentificare
+      </a>
+    </mat-card-content>
+  </mat-card>
+</div>

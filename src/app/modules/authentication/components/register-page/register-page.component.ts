@@ -1,11 +1,11 @@
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { take } from 'rxjs';
+
 import { UserInterface } from '../../../../models/user.model';
 import { UserService } from '../../../../services/user.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
-import { take } from 'rxjs';
 import { CommonService } from 'src/app/services/common.service';
 import { confirmPasswordValidator } from 'src/app/validators/confirm-passwod.validator';
-import { noSpacesValidator } from 'src/app/validators/username.validator';
 
 @Component({
   selector: 'app-register-page',
@@ -14,56 +14,73 @@ import { noSpacesValidator } from 'src/app/validators/username.validator';
 })
 export class RegisterPageComponent implements OnInit {
   public registerForm!: FormGroup;
-  public hide: boolean = true;
+
+  public hidePassword = true;
+  public hideConfirmPassword = true;
 
   constructor(
-    private _formBuilder: FormBuilder,
-    private _userService: UserService,
-    private _commonService: CommonService
+    private formBuilder: FormBuilder,
+    private userService: UserService,
+    private commonService: CommonService,
   ) {}
 
   ngOnInit(): void {
-    this._createRegisterForm();
+    this.createRegisterForm();
   }
 
-  public goToLogin() {
-    this._commonService.goToLoginPage();
-  }
-  public submitRegisterForm() {
+  public submitRegisterForm(): void {
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched();
+      return;
+    }
+
+    const { firstName, lastName, email, password } =
+      this.registerForm.getRawValue();
+
     const user: UserInterface = {
-      userId: null,
+      firstName,
+      lastName,
+      email,
+      password,
       creationDate: new Date(),
-      ...this.registerForm.getRawValue(),
     };
-    this._createUserObject(user);
+
+    this.createUser(user);
   }
 
-  private _createRegisterForm(): void {
-    const passwordRegExp: RegExp = new RegExp(
-      '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~`!@#$%^&()--+={}|\\:;<>,.?/_₹])(?=.{8,20})'
+  private createRegisterForm(): void {
+    const passwordRegExp = new RegExp(
+      '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~`!@#$%^&()\\-+=\\[\\]{}|\\\\:;<>,.?/_₹])(?=.{8,20}$)',
     );
-    this.registerForm = this._formBuilder.group(
+
+    this.registerForm = this.formBuilder.group(
       {
-        email: ['', [Validators.required, Validators.email]],
-        username: [
+        firstName: [
           '',
           [
             Validators.required,
-            noSpacesValidator,
-            Validators.minLength(5),
+            Validators.minLength(2),
             Validators.maxLength(50),
           ],
         ],
+        lastName: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(2),
+            Validators.maxLength(50),
+          ],
+        ],
+        email: ['', [Validators.required, Validators.email]],
         password: [
           '',
           [
             Validators.required,
-            Validators.pattern(passwordRegExp),
             Validators.minLength(8),
             Validators.maxLength(20),
+            Validators.pattern(passwordRegExp),
           ],
         ],
-
         confirmPassword: [
           '',
           [
@@ -75,27 +92,30 @@ export class RegisterPageComponent implements OnInit {
       },
       {
         validators: confirmPasswordValidator('password', 'confirmPassword'),
-      }
+      },
     );
   }
 
-  private _createUserObject(user: UserInterface): void {
-    this._userService
+  private createUser(user: UserInterface): void {
+    this.userService
       .createUserUsingPOST(user)
       .pipe(take(1))
       .subscribe({
         next: () => {
-          this._commonService.showSnackBarSuccess(
-            'Account was created successfully! Please log in!'
+          this.commonService.showSnackBarSuccess(
+            'Contul a fost creat cu succes. Te poți autentifica.',
           );
-          this._commonService.goToLoginPage();
+
+          this.commonService.goToLoginPage();
         },
         error: (response) => {
-          if (!!response) {
-            this._commonService.showSnackBarError(response.error);
+          if (response?.error) {
+            this.commonService.showSnackBarError(response.error);
+            return;
           }
-          this._commonService.showSnackBarError(
-            'Something went wrong! Account was not created successfull!'
+
+          this.commonService.showSnackBarError(
+            'A apărut o eroare. Contul nu a putut fi creat.',
           );
         },
       });

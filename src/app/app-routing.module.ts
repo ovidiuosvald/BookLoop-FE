@@ -20,7 +20,7 @@ const routes: Routes = [
       import('./modules/cart/cart.module').then((m) => m.CartModule),
   },
   {
-    path: 'account',
+    path: 'user',
     loadChildren: () =>
       import('./modules/user/user.module').then((m) => m.UserModule),
   },

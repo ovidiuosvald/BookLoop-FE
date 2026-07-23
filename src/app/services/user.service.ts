@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -42,6 +42,9 @@ export class UserService {
     return this.httpClient.post<UserInterface>(
       `${this.baseUrl}/user/register`,
       user,
+      {
+        withCredentials: true,
+      },
     );
   }
 
@@ -49,6 +52,21 @@ export class UserService {
     return this.httpClient.put<UserInterface>(
       `${this.baseUrl}/user/change-password`,
       user,
+      {
+        withCredentials: true,
+      },
+    );
+  }
+
+  forgotPasswordUsingPOST(email: string): Observable<void> {
+    return this.httpClient.post<void>(
+      `${this.baseUrl}/user/forgot-password`,
+      {
+        email,
+      },
+      {
+        withCredentials: true,
+      },
     );
   }
 
@@ -56,37 +74,54 @@ export class UserService {
     return this.httpClient.put<UserInterface>(
       `${this.baseUrl}/user/update`,
       user,
+      {
+        withCredentials: true,
+      },
     );
   }
 
   getUserByEmailUsingGET(email: string): Observable<UserInterface> {
     return this.httpClient.get<UserInterface>(
       `${this.baseUrl}/user/get-user-by-email/${encodeURIComponent(email)}`,
+      {
+        withCredentials: true,
+      },
     );
   }
 
   loginUsingPOST(
     credentials: CredentialsInterface,
   ): Observable<HttpResponse<string>> {
-    const formData = new FormData();
+    const body = new HttpParams()
+      .set('username', credentials.email.trim())
+      .set('password', credentials.password);
 
-    formData.append('username', credentials.email);
-    formData.append('password', credentials.password);
-
-    return this.httpClient.post(`${this.baseUrl}/login`, formData, {
+    return this.httpClient.post(`${this.baseUrl}/login`, body.toString(), {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
       observe: 'response',
       responseType: 'text',
+      withCredentials: true,
     });
   }
 
   logoutUsingPOST(): void {
-    this.httpClient.post<void>(`${this.baseUrl}/logout`, {}).subscribe({
-      next: () => this.logout(),
-      error: () =>
-        this.commonService.showSnackBarError(
-          'Delogarea nu a putut fi realizată.',
-        ),
-    });
+    this.httpClient
+      .post<void>(
+        `${this.baseUrl}/logout`,
+        {},
+        {
+          withCredentials: true,
+        },
+      )
+      .subscribe({
+        next: () => this.logout(),
+        error: () =>
+          this.commonService.showSnackBarError(
+            'Delogarea nu a putut fi realizată.',
+          ),
+      });
   }
 
   getUser(email: string): void {
@@ -120,7 +155,7 @@ export class UserService {
 
     this.isUserLoggedInSubject.next(false);
     this.removeUserFromStorage();
-    this.commonService.goToLoginPage();
+    this.commonService.goToHomePage();
   }
 
   private restoreUserFromStorage(): void {

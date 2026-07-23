@@ -1,19 +1,23 @@
-import { UserService } from './services/user.service';
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
-  title = 'BookStore';
-  public isUserLoggedIn$?: Observable<boolean>;
+export class AppComponent {
+  showHeader = true;
 
-  constructor(private _userService: UserService) {}
-
-  ngOnInit() {
-    this.isUserLoggedIn$ = this._userService.isUserLoggedIn$;
+  constructor(private router: Router) {
+    this.router.events
+      .pipe(
+        filter(
+          (event): event is NavigationEnd => event instanceof NavigationEnd,
+        ),
+      )
+      .subscribe((event) => {
+        this.showHeader = !event.urlAfterRedirects.startsWith('/auth');
+      });
   }
 }

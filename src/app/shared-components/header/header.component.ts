@@ -1,19 +1,10 @@
-import {
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  map,
-  Observable,
-  Subject,
-  takeUntil,
-} from 'rxjs';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-
-import { UserService } from '../../services/user.service';
-import { DialogBoxConfirmationComponent } from '../dialog-box-confirmation/dialog-box-confirmation.component';
-import { CommonService } from 'src/app/services/common.service';
-import { CategoryService } from 'src/app/services/category.service';
+import { Router } from '@angular/router';
+import { Observable, take } from 'rxjs';
+import { UserService } from 'src/app/services/user.service';
+import { AuthenticationRequiredDialogComponent } from '../authentication-required-dialog/authentication-required-dialog.component';
+import { LogoutDialogComponent } from '../logout-dialog/logout-dialog.component';
 import { Category } from 'src/app/models/category.model';
 
 @Component({
@@ -21,126 +12,136 @@ import { Category } from 'src/app/models/category.model';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent {
+  readonly isUserLoggedIn$: Observable<boolean>;
+
   searchTerm = '';
-  authenticatedUser$: Observable<string>;
+
   categories: Category[] = [];
 
-  private readonly searchSubject = new Subject<string>();
-  private readonly destroy$ = new Subject<void>();
-
   constructor(
+    private readonly router: Router,
     private readonly dialog: MatDialog,
     private readonly userService: UserService,
-    private readonly commonService: CommonService,
-    private readonly categoryService: CategoryService,
   ) {
-    this.authenticatedUser$ = this.userService.authenticatedUser$.pipe(
-      map((user) => `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim()),
-    );
-
-    this.getAllCategories();
+    this.isUserLoggedIn$ = this.userService.isUserLoggedIn$;
   }
 
-  ngOnInit(): void {
-    this.searchSubject
-      .pipe(
-        map((value) => value.trim()),
-        debounceTime(400),
-        distinctUntilChanged(),
-        filter((value) => value.length >= 2),
-        takeUntil(this.destroy$),
-      )
-      .subscribe((query) => {
-        this.commonService.goToSearch(query);
-      });
+  goToHomePage(): void {
+    this.router.navigate(['/']);
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+  goToBooks(category: Category): void {
+    this.router.navigate(['/product'], {
+      queryParams: {
+        category: category.categoryName,
+      },
+    });
   }
 
-  onSearchChange(value: string): void {
-    this.searchTerm = value;
+  goToBestsellers(): void {
+    this.router.navigate(['/product'], {
+      queryParams: {
+        bestseller: true,
+      },
+    });
+  }
 
-    if (!value.trim()) {
-      this.clearSearch();
-      return;
-    }
-
-    this.searchSubject.next(value);
+  goToOffers(): void {
+    this.router.navigate(['/product'], {
+      queryParams: {
+        offers: true,
+      },
+    });
   }
 
   onSearch(): void {
-    const query = this.searchTerm.trim();
+    const value = this.searchTerm.trim();
 
-    if (query.length < 2) {
+    if (!value) {
       return;
     }
 
-    this.commonService.goToSearch(query);
+    this.router.navigate(['/product'], {
+      queryParams: {
+        search: value,
+      },
+    });
   }
 
   clearSearch(): void {
     this.searchTerm = '';
-    this.commonService.goToHomePage();
-  }
 
-  getAllCategories(): void {
-    this.categoryService.getAllCategoriesUsingGET().subscribe({
-      next: (data) => {
-        this.categories = data;
+    this.router.navigate(['/product'], {
+      queryParams: {
+        search: null,
       },
-      error: (error) => {
-        console.error('Eroare la obținerea categoriilor:', error);
-      },
+      queryParamsHandling: 'merge',
     });
   }
 
-  goToHomePage(): void {
-    this.commonService.goToHomePage();
+  goToLogin(): void {
+    this.router.navigate(['/auth/login']);
   }
 
-  goToBooks(category: Category): void {
-    this.commonService.goToBooks(category);
-  }
-
-  goToCart(): void {
-    this.commonService.goToCart();
-  }
-
-  goToBestsellers(): void {
-    this.commonService.goToBestsellers();
+  goToRegister(): void {
+    this.router.navigate(['/auth/register']);
   }
 
   goToProfile(): void {
-    this.commonService.goToProfile();
+    this.router.navigate(['/user/profile']);
   }
 
   goToOrders(): void {
-    this.commonService.goToOrders();
+    this.router.navigate(['/user/orders']);
   }
 
   goToFavorites(): void {
-    this.commonService.goToFavorites();
+    this.router.navigate(['/user/favorites']);
   }
 
   goToReviews(): void {
-    this.commonService.goToReviews();
+    this.router.navigate(['/user/reviews']);
+  }
+
+  goToCart(): void {
+    this.router.navigate(['/cart']);
+  }
+
+  onFavoritesClick(): void {
+    this.isUserLoggedIn$.pipe(take(1)).subscribe((isUserLoggedIn: boolean) => {
+      if (isUserLoggedIn) {
+        this.goToFavorites();
+        return;
+      }
+
+      this.openAuthenticationRequiredDialog();
+    });
   }
 
   openLogoutDialog(): void {
-    const dialogRef = this.dialog.open(DialogBoxConfirmationComponent, {
-      data: {
-        message: 'Are you sure you want to log out?',
-      },
+    const dialogRef = this.dialog.open(LogoutDialogComponent, {
+      width: '420px',
+      maxWidth: 'calc(100vw - 32px)',
+      autoFocus: false,
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'yes') {
-        this.userService.logoutUsingPOST();
-      }
+    dialogRef
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe((confirmed: boolean | undefined) => {
+        if (confirmed) {
+          this.userService.logoutUsingPOST();
+        }
+      });
+  }
+
+  private openAuthenticationRequiredDialog(): void {
+    this.dialog.open(AuthenticationRequiredDialogComponent, {
+      width: '620px',
+      maxWidth: 'calc(100vw - 32px)',
+      autoFocus: false,
+      panelClass: 'authentication-required-dialog-panel',
     });
   }
 }

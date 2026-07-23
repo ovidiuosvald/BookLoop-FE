@@ -10,41 +10,47 @@ import { CredentialsInterface } from 'src/app/models/credentials.model';
   styleUrls: ['./login-page.component.scss'],
 })
 export class LoginPageComponent implements OnInit {
-  public hide: boolean = true;
+  public hide = true;
   public loginForm!: FormGroup;
 
   constructor(
-    private _formBuilder: FormBuilder,
-    private _userService: UserService,
-    private _commonService: CommonService
+    private formBuilder: FormBuilder,
+    private userService: UserService,
+    private commonService: CommonService,
   ) {}
 
   ngOnInit(): void {
-    this._createForm();
-  }
-  public goToRegister() {
-    this._commonService.goToRegisterPage();
-  }
-  public login() {
-    const credentials: CredentialsInterface = {
-      ...this.loginForm.getRawValue(),
-    };
-    if (this.loginForm.valid) {
-      this._userService.loginUsingPOST(credentials).subscribe({
-        next: () => {
-          this._userService.getUser(credentials.email);
-        },
-        error: () => {
-          this._commonService.showSnackBarError('Bad credentials!');
-        },
-      });
-    }
+    this.createForm();
   }
 
-  private _createForm(): void {
-    this.loginForm = this._formBuilder.group({
+  public goToRegister(): void {
+    this.commonService.goToRegisterPage();
+  }
+
+  public login(): void {
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      return;
+    }
+
+    const credentials: CredentialsInterface = this.loginForm.getRawValue();
+
+    this.userService.loginUsingPOST(credentials).subscribe({
+      next: () => {
+        this.userService.getUser(credentials.email);
+      },
+      error: () => {
+        this.commonService.showSnackBarError(
+          'Emailul sau parola sunt incorecte.',
+        );
+      },
+    });
+  }
+
+  private createForm(): void {
+    this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
+      password: ['', Validators.required],
     });
   }
 }

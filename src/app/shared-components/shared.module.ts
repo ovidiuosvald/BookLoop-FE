@@ -7,12 +7,16 @@ import { DialogBoxConfirmationComponent } from './dialog-box-confirmation/dialog
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { AuthenticationRequiredDialogComponent } from './authentication-required-dialog/authentication-required-dialog.component';
+import { LogoutDialogComponent } from './logout-dialog/logout-dialog.component';
 
 @NgModule({
   declarations: [
     NavButtonComponent,
     HeaderComponent,
     DialogBoxConfirmationComponent,
+    AuthenticationRequiredDialogComponent,
+    LogoutDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -36,6 +40,8 @@ import { HttpClientModule } from '@angular/common/http';
     NavButtonComponent,
     HeaderComponent,
     DialogBoxConfirmationComponent,
+    AuthenticationRequiredDialogComponent,
+    LogoutDialogComponent,
   ],
 })
 export class SharedModule {}

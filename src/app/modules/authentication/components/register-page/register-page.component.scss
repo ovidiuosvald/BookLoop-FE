@@ -1,78 +1,147 @@
-:host {
-  height: 100%;
+.register-page {
+  min-height: 100vh;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 20px;
-  background-color: rgba(0, 0, 0, 0.04);
+  padding: 40px 20px;
+  background: #f6f3fb;
+  box-sizing: border-box;
 }
 
-mat-card {
-  width: 340px;
+.register-card {
+  width: 100%;
+  max-width: 680px;
+  overflow: hidden;
+  border-radius: 16px;
+  padding: 0;
+  box-shadow: 0 8px 28px rgba(70, 35, 120, 0.16);
+}
+
+.card-header {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  padding: 34px 40px 30px;
+  text-align: center;
+  color: white;
+  background: #673ab7;
+
+  > mat-icon {
+    width: 42px;
+    height: 42px;
+    margin-bottom: 12px;
+    font-size: 42px;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 600;
+  }
+
+  p {
+    max-width: 480px;
+    margin: 8px 0 0;
+    font-size: 16px;
+    line-height: 1.5;
+    opacity: 0.9;
+  }
+}
+
+mat-card-content {
+  padding: 38px 48px 36px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.name-fields {
+  display: flex;
+  gap: 16px;
+
+  mat-form-field {
+    flex: 1;
+  }
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.register-button {
+  width: 100%;
+  min-height: 52px;
+  margin-top: 6px;
+  font-size: 17px;
+}
+
+.login-section {
+  display: flex;
   justify-content: center;
-  padding: 0px;
+  gap: 5px;
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid #e7e1ee;
 
-  .card-title {
-    border-radius: 5px 5px 0px 0px;
-    width: 100%;
-    height: 70px;
-    background-color: var(--deep-purple);
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 10px;
+  a {
+    color: #673ab7;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.guest-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 22px;
+  color: #5f5966;
+  font-weight: 500;
+  text-decoration: none;
+
+  mat-icon {
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
   }
 
-  mat-card-title,
-  small {
-    text-align: center;
+  &:hover {
+    color: #673ab7;
+  }
+}
+
+@media (max-width: 650px) {
+  .register-page {
+    align-items: flex-start;
+    padding: 20px 12px;
   }
 
-  form {
-    display: flex;
+  .register-card {
+    border-radius: 12px;
+  }
+
+  .card-header {
+    padding: 28px 20px;
+
+    h1 {
+      font-size: 27px;
+    }
+  }
+
+  mat-card-content {
+    padding: 30px 22px;
+  }
+
+  .name-fields {
     flex-direction: column;
-    padding: 16px;
-    gap: 10px;
-
-    mat-error {
-      text-align: justify;
-      letter-spacing: normal;
-    }
-
-    mat-form-field {
-      margin: 5px 0px;
-    }
-
-    .action-buttons {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-
-      .center-button {
-        width: 100%;
-      }
-    }
+    gap: 0;
   }
-}
-
-a {
-  color: var(--deep-purple);
-  text-decoration: underline;
-  cursor: auto;
-}
-
-a:hover {
-  cursor: pointer;
-}
-
-.second-mat-card {
-  padding: 16px 0px;
-}
-
-.password-field {
-  margin-bottom: 50px;
 }

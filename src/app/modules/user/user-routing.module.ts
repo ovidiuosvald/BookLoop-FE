@@ -14,10 +14,10 @@ const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'details',
+        redirectTo: 'profile',
       },
       {
-        path: 'details',
+        path: 'profile',
         component: UserDetailsComponent,
       },
       {

@@ -1,0 +1,39 @@
+<div class="dialog-container">
+  <button
+    mat-icon-button
+    class="close-button"
+    aria-label="Închide"
+    (click)="close()"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <div class="warning-icon">
+    <mat-icon>priority_high</mat-icon>
+  </div>
+
+  <h2>
+    Pentru a putea adăuga cărți la favorite, trebuie să fii autentificat în
+    contul tău BookLoop.
+  </h2>
+
+  <div class="dialog-actions">
+    <button
+      mat-flat-button
+      color="primary"
+      class="login-button"
+      (click)="goToLogin()"
+    >
+      Autentificare
+    </button>
+
+    <button
+      mat-stroked-button
+      color="primary"
+      class="register-button"
+      (click)="goToRegister()"
+    >
+      Creează un cont nou
+    </button>
+  </div>
+</div>

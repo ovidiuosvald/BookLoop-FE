@@ -1,62 +1,83 @@
-<mat-card>
-  <div class="card-title">
-    <mat-card-title>Log in to account</mat-card-title>
-  </div>
+<div class="login-page">
+  <mat-card class="login-card">
+    <div class="card-header">
+      <h1>Bine ai revenit!</h1>
+      <p>Autentifică-te pentru a continua în BookLoop.</p>
+    </div>
 
-  <div mat-card-content>
-    <form [formGroup]="loginForm">
-      <mat-form-field appearance="standard">
-        <mat-label>Email address</mat-label>
-        <input
-          matInput
-          formControlName="email"
-          placeholder="email@example.com"
-          type="email"
-          required
-        />
-        <mat-error *ngIf="loginForm.controls.email.hasError('required')"
-          >Email is required!</mat-error
-        >
-      </mat-form-field>
-      <mat-form-field appearance="standard">
-        <mat-label>Password</mat-label>
-        <input
-          matInput
-          formControlName="password"
-          [type]="hide ? 'password' : 'text'"
-          required
-        />
-        <mat-error *ngIf="loginForm.controls.password.hasError('required')"
-          >Password is required!</mat-error
-        >
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="login()">
+        <mat-form-field appearance="outline">
+          <mat-label>Adresă de email</mat-label>
+
+          <mat-icon matPrefix>mail_outline</mat-icon>
+
+          <input
+            matInput
+            formControlName="email"
+            placeholder="email@exemplu.ro"
+            type="email"
+            required
+          />
+
+          <mat-error *ngIf="loginForm.controls.email.hasError('required')">
+            Adresa de email este obligatorie.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Parolă</mat-label>
+
+          <mat-icon matPrefix>lock_outline</mat-icon>
+
+          <input
+            matInput
+            formControlName="password"
+            [type]="hide ? 'password' : 'text'"
+            required
+          />
+
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hide = !hide"
+            [attr.aria-label]="hide ? 'Afișează parola' : 'Ascunde parola'"
+          >
+            <mat-icon>
+              {{ hide ? "visibility_off" : "visibility" }}
+            </mat-icon>
+          </button>
+
+          <mat-error *ngIf="loginForm.controls.password.hasError('required')">
+            Parola este obligatorie.
+          </mat-error>
+        </mat-form-field>
+
+        <a class="forgot-password-link" routerLink="/auth/forgot-password">
+          Ai uitat parola?
+        </a>
 
         <button
-          mat-icon-button
-          matSuffix
-          (click)="hide = !hide"
-          [attr.aria-label]="'Hide password'"
-          [attr.aria-pressed]="hide"
-        >
-          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
-        </button>
-      </mat-form-field>
-      <div class="action-buttons">
-        <button
-          class="center-button"
+          class="login-button"
           mat-raised-button
           color="primary"
           type="submit"
-          (click)="login()"
+          [disabled]="loginForm.invalid"
         >
-          Log in
+          Autentificare
         </button>
+      </form>
+
+      <div class="register-section">
+        <span>Nu ai cont?</span>
+        <a routerLink="/auth/register">Creează unul</a>
       </div>
-    </form>
-  </div>
-</mat-card>
-<mat-card class="second-mat-card"
-  ><small>
-    You don't have an account? Register
-    <a (click)="goToRegister()"> here.</a>
-  </small></mat-card
->
+
+      <a class="guest-link" routerLink="/">
+        <mat-icon>arrow_back</mat-icon>
+        Continuă fără autentificare
+      </a>
+    </mat-card-content>
+  </mat-card>
+</div>
