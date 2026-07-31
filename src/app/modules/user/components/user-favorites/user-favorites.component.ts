@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Book } from 'src/app/models/book.model';
+import { CommonService } from 'src/app/services/common.service';
+import { FavoriteService } from 'src/app/services/favorite.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-user-favorites',
@@ -7,9 +10,78 @@ import { Book } from 'src/app/models/book.model';
   styleUrls: ['./user-favorites.component.scss'],
 })
 export class UserFavoritesComponent implements OnInit {
-  favoriteBooks: Book[] = [];
+  public favoriteBooks: Book[] = [];
+  public isLoading = true;
+
+  constructor(
+    private readonly favoriteService: FavoriteService,
+    private readonly userService: UserService,
+    private readonly commonService: CommonService,
+  ) {}
 
   ngOnInit(): void {
-    // aici vom încărca favoritele din service
+    this.loadFavoriteBooks();
+  }
+
+  private loadFavoriteBooks(): void {
+    const userId = this.userService.authenticatedUser.userId;
+
+    if (!userId) {
+      this.isLoading = false;
+
+      this.commonService.showSnackBarError(
+        'Datele utilizatorului nu au putut fi identificate.',
+      );
+
+      return;
+    }
+
+    this.favoriteService.getUserFavorites(userId).subscribe({
+      next: (books: Book[]) => {
+        this.favoriteBooks = books;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Eroare favorite:', error);
+
+        this.isLoading = false;
+        this.commonService.showSnackBarError(
+          'Cărțile favorite nu au putut fi încărcate.',
+        );
+      },
+    });
+  }
+
+  public goToSpecificBook(bookId: number): void {
+    this.commonService.goToSpecificBook(bookId);
+  }
+
+  public addToCart(book: Book): void {
+    console.log(`${book.bookName} adăugat în coș.`);
+  }
+
+  public removeFromFavorites(book: Book): void {
+    const userId = this.userService.authenticatedUser.userId;
+
+    if (!userId) {
+      return;
+    }
+
+    this.favoriteService.removeFavorite(userId, book.bookId).subscribe({
+      next: () => {
+        this.favoriteBooks = this.favoriteBooks.filter(
+          (favoriteBook) => favoriteBook.bookId !== book.bookId,
+        );
+
+        this.commonService.showSnackBarSuccess(
+          'Cartea a fost eliminată din favorite.',
+        );
+      },
+      error: () => {
+        this.commonService.showSnackBarError(
+          'Cartea nu a putut fi eliminată din favorite.',
+        );
+      },
+    });
   }
 }

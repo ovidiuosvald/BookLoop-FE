@@ -24,7 +24,7 @@ export class BookCarouselComponent {
     if (this.currentSlide > 0) this.currentSlide--;
   }
 
-  goToSpecificBook(bookId: string): void {
+  goToSpecificBook(bookId: number): void {
     this.commonService.goToSpecificBook(bookId);
   }
 }

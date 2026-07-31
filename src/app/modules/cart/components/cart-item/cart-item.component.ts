@@ -11,9 +11,9 @@ export class CartItemComponent {
   @Input() showGiftWrapOption = false;
   @Input() giftWrapSelected = false;
 
-  @Output() remove = new EventEmitter<string>(); // emit id
+  @Output() remove = new EventEmitter<number>(); // emit id
   @Output() quantityChange = new EventEmitter<{
-    id: string;
+    id: number;
     quantity: number;
   }>();
   @Output() giftWrapChange = new EventEmitter<boolean>();
@@ -33,7 +33,7 @@ export class CartItemComponent {
     if (!isNaN(newQuantity) && newQuantity > 0) {
       this.item.quantity = newQuantity;
       this.quantityChange.emit({
-        id: this.item.bookId, // trimitem doar id și quantity
+        id: this.item.bookId,
         quantity: this.item.quantity,
       });
     } else {

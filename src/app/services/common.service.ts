@@ -1,13 +1,15 @@
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Category } from '../models/category.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root',
+})
 export class CommonService {
   constructor(
-    private snackBar: MatSnackBar,
-    private router: Router,
+    private readonly snackBar: MatSnackBar,
+    private readonly router: Router,
   ) {}
 
   showSnackBarSuccess(message: string): void {
@@ -32,7 +34,7 @@ export class CommonService {
     this.router.navigate(['/books', category.categoryCode]);
   }
 
-  goToSpecificBook(bookId: string): void {
+  goToSpecificBook(bookId: number): void {
     this.router.navigate(['/book', bookId]);
   }
 
@@ -54,13 +56,17 @@ export class CommonService {
 
   goToBestsellers(): void {
     this.router.navigate(['/books/bestsellere'], {
-      state: { isBestseller: true },
+      state: {
+        isBestseller: true,
+      },
     });
   }
 
   goToSearch(query: string): void {
     this.router.navigate(['/search'], {
-      queryParams: { q: query },
+      queryParams: {
+        q: query,
+      },
     });
   }
 

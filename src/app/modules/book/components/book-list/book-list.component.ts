@@ -9,6 +9,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Book } from 'src/app/models/book.model';
 import { BookService } from 'src/app/services/book.service';
 import { CommonService } from 'src/app/services/common.service';
+import { FavoriteService } from 'src/app/services/favorite.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-book-list',
@@ -22,10 +24,12 @@ export class BookListComponent implements OnInit, OnChanges {
   books: Book[] = [];
 
   constructor(
-    private commonService: CommonService,
-    private route: ActivatedRoute,
-    private bookService: BookService,
-    private router: Router,
+    private readonly commonService: CommonService,
+    private readonly route: ActivatedRoute,
+    private readonly bookService: BookService,
+    private readonly router: Router,
+    private readonly favoriteService: FavoriteService,
+    private readonly userService: UserService,
   ) {}
 
   ngOnInit(): void {
@@ -74,11 +78,35 @@ export class BookListComponent implements OnInit, OnChanges {
     console.log(`${book.bookName} adăugat în coș.`);
   }
 
-  toggleFavorite(book: Book) {
-    book.isFavorite = !book.isFavorite;
+  goToSpecificBook(bookId: number) {
+    this.commonService.goToSpecificBook(bookId);
   }
 
-  goToSpecificBook(bookId: string) {
-    this.commonService.goToSpecificBook(bookId);
+  toggleFavorite(book: Book): void {
+    const userId = this.userService.authenticatedUser.userId;
+
+    if (!userId) {
+      this.commonService.showSnackBarError(
+        'Trebuie să fii autentificat pentru a salva cărți la favorite.',
+      );
+      return;
+    }
+
+    this.favoriteService.toggleFavorite(userId, book).subscribe({
+      next: (isFavorite: boolean) => {
+        book.isFavorite = isFavorite;
+
+        this.commonService.showSnackBarSuccess(
+          isFavorite
+            ? 'Cartea a fost adăugată la favorite.'
+            : 'Cartea a fost eliminată din favorite.',
+        );
+      },
+      error: () => {
+        this.commonService.showSnackBarError(
+          'Favoritele nu au putut fi actualizate.',
+        );
+      },
+    });
   }
 }

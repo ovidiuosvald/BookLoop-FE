@@ -17,6 +17,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   imports: [
@@ -38,6 +39,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatDividerModule,
     MatRadioModule,
     MatTooltipModule,
+    MatProgressSpinnerModule,
   ],
   exports: [
     MatIconModule,
@@ -58,6 +60,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatDividerModule,
     MatRadioModule,
     MatTooltipModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class MaterialModule {}

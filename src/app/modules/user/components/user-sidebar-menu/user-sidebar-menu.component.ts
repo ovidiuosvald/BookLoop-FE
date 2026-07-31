@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { take } from 'rxjs';
 
 import { UserService } from 'src/app/services/user.service';
-import { DialogBoxConfirmationComponent } from 'src/app/shared-components/dialog-box-confirmation/dialog-box-confirmation.component';
+import { LogoutDialogComponent } from 'src/app/shared-components/logout-dialog/logout-dialog.component';
 
 @Component({
   selector: 'app-user-sidebar-menu',
@@ -16,16 +17,19 @@ export class UserSidebarMenuComponent {
   ) {}
 
   openLogoutDialog(): void {
-    const dialogRef = this.dialog.open(DialogBoxConfirmationComponent, {
-      data: {
-        message: 'Are you sure you want to log out?',
-      },
+    const dialogRef = this.dialog.open(LogoutDialogComponent, {
+      width: '420px',
+      maxWidth: 'calc(100vw - 32px)',
+      autoFocus: false,
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'yes') {
-        this.userService.logoutUsingPOST();
-      }
-    });
+    dialogRef
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe((confirmed: boolean | undefined) => {
+        if (confirmed) {
+          this.userService.logoutUsingPOST();
+        }
+      });
   }
 }

@@ -168,6 +168,15 @@ export class UserService {
     try {
       const user = JSON.parse(storedUser) as UserInterface;
 
+      if (
+        !user ||
+        typeof user !== 'object' ||
+        typeof user.userId !== 'number'
+      ) {
+        this.removeUserFromStorage();
+        return;
+      }
+
       this.authenticatedUserSubject.next(user);
       this.isUserLoggedInSubject.next(true);
     } catch {

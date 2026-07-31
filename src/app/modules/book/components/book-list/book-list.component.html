@@ -7,7 +7,7 @@
     />
     <h3>{{ book.bookName }}</h3>
     <p>Autor: {{ book.author }}</p>
-    <p>Preț: {{ book.currentPrice | currency : "RON" : "code" }}</p>
+    <p>Preț: {{ book.currentPrice | currency: "RON" : "code" }}</p>
 
     <app-action-buttons
       [isFavorite]="book.isFavorite"

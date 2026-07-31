@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 import { UserInterface } from 'src/app/models/user.model';
 import { CommonService } from 'src/app/services/common.service';
 import { UserService } from 'src/app/services/user.service';
@@ -17,6 +18,7 @@ export class UpdateProfileComponent implements OnInit {
     private formBuilder: FormBuilder,
     private userService: UserService,
     private commonService: CommonService,
+    private dialogRef: MatDialogRef<UpdateProfileComponent>,
   ) {
     this.authenticatedUser = this.userService.authenticatedUser;
   }
@@ -53,12 +55,14 @@ export class UpdateProfileComponent implements OnInit {
     this.userService.updateUserUsingPUT(userToBeUpdated).subscribe({
       next: () => {
         this.commonService.showSnackBarSuccess(
-          'Account was updated successfully!',
+          'Profilul tău a fost actualizat cu succes.',
         );
 
         if (this.authenticatedUser?.email) {
           this.userService.getUser(this.authenticatedUser.email);
         }
+
+        this.dialogRef.close(true);
       },
       error: (response) => {
         this.commonService.showSnackBarError(response.error);

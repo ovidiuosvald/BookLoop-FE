@@ -26,11 +26,11 @@ export class ProductsComponent {
     this.commonService.goToCheckout();
   }
 
-  onRemove(itemId: string) {
+  onRemove(itemId: number) {
     this.cartItems = this.cartItems.filter((item) => item.bookId !== itemId);
   }
 
-  onQuantityChange(event: { id: string; quantity: number }) {
+  onQuantityChange(event: { id: number; quantity: number }) {
     const item = this.cartItems.find((i) => i.bookId === event.id);
     if (item) {
       item.quantity = event.quantity;

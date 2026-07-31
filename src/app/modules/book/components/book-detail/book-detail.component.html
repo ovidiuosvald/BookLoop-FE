@@ -1,34 +1,47 @@
-<div class="book-detail-wrapper">
-  <div class="book-detail-content">
-    <!-- Coloana 1: imagine -->
-    <img class="book-cover" [src]="book.coverUrl" alt="{{ book.bookName }}" />
+<ng-container *ngIf="book as currentBook; else loadingState">
+  <div class="book-detail-wrapper">
+    <div class="book-detail-content">
+      <img
+        class="book-cover"
+        [src]="currentBook.coverUrl"
+        [alt]="currentBook.bookName"
+      />
 
-    <!-- Coloana 2: titlu, autor, descriere -->
-    <div class="book-info">
-      <h2>{{ book.bookName }}</h2>
-      <h4>{{ book.author }}</h4>
-      <p>{{ book.description }}</p>
-    </div>
-
-    <!-- Coloana 3: preț + butoane -->
-    <div class="book-side">
-      <div class="price-stock">
-        <p>
-          <strong>Preț:</strong>
-          {{ book.currentPrice | currency : "RON" : "symbol" : "1.2-2" }}
-        </p>
-        <p>
-          <strong>Stoc:</strong>
-          {{ book.quantity ? "Disponibil" : "Indisponibil" }}
-        </p>
-        <p *ngIf="book.quantity">Nr. bucăți: {{ book.quantity }}</p>
+      <div class="book-info">
+        <h2>{{ currentBook.bookName }}</h2>
+        <h4>{{ currentBook.author }}</h4>
+        <p>{{ currentBook.description }}</p>
       </div>
 
-      <app-action-buttons
-        [isFavorite]="book.isFavorite"
-        (addToCart)="addToCart()"
-        (toggleFavorite)="toggleFavorite()"
-      ></app-action-buttons>
+      <div class="book-side">
+        <div class="price-stock">
+          <p>
+            <strong>Preț:</strong>
+            {{
+              currentBook.currentPrice | currency: "RON" : "symbol" : "1.2-2"
+            }}
+          </p>
+
+          <p>
+            <strong>Stoc:</strong>
+            {{ currentBook.quantity ? "Disponibil" : "Indisponibil" }}
+          </p>
+
+          <p *ngIf="currentBook.quantity">
+            Nr. bucăți: {{ currentBook.quantity }}
+          </p>
+        </div>
+
+        <app-action-buttons
+          [isFavorite]="currentBook.isFavorite"
+          (addToCart)="addToCart()"
+          (toggleFavorite)="toggleFavorite(currentBook)"
+        ></app-action-buttons>
+      </div>
     </div>
   </div>
-</div>
+</ng-container>
+
+<ng-template #loadingState>
+  <div class="loading-state">Se încarcă detaliile cărții...</div>
+</ng-template>

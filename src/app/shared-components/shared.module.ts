@@ -3,7 +3,6 @@ import { NavButtonComponent } from './nav-button/nav-button.component';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../modules/material.module';
 import { HeaderComponent } from './header/header.component';
-import { DialogBoxConfirmationComponent } from './dialog-box-confirmation/dialog-box-confirmation.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -14,7 +13,6 @@ import { LogoutDialogComponent } from './logout-dialog/logout-dialog.component';
   declarations: [
     NavButtonComponent,
     HeaderComponent,
-    DialogBoxConfirmationComponent,
     AuthenticationRequiredDialogComponent,
     LogoutDialogComponent,
   ],
@@ -39,7 +37,6 @@ import { LogoutDialogComponent } from './logout-dialog/logout-dialog.component';
     // components
     NavButtonComponent,
     HeaderComponent,
-    DialogBoxConfirmationComponent,
     AuthenticationRequiredDialogComponent,
     LogoutDialogComponent,
   ],

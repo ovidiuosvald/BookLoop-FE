@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { Observable, take } from 'rxjs';
+
+import { Category } from 'src/app/models/category.model';
+import { CommonService } from 'src/app/services/common.service';
 import { UserService } from 'src/app/services/user.service';
+
 import { AuthenticationRequiredDialogComponent } from '../authentication-required-dialog/authentication-required-dialog.component';
 import { LogoutDialogComponent } from '../logout-dialog/logout-dialog.component';
-import { Category } from 'src/app/models/category.model';
+import { CategoryService } from 'src/app/services/category.service';
 
 @Component({
   selector: 'app-header',
@@ -16,96 +19,89 @@ export class HeaderComponent {
   readonly isUserLoggedIn$: Observable<boolean>;
 
   searchTerm = '';
-
   categories: Category[] = [];
 
   constructor(
-    private readonly router: Router,
     private readonly dialog: MatDialog,
     private readonly userService: UserService,
+    private readonly commonService: CommonService,
+    private categoryService: CategoryService,
   ) {
     this.isUserLoggedIn$ = this.userService.isUserLoggedIn$;
+    this.getAllCategroies();
+  }
+
+  getAllCategroies(): void {
+    this.categoryService.getAllCategoriesUsingGET().subscribe({
+      next: (data) => {
+        this.categories = data;
+      },
+      error: (err) => {
+        console.error('Eroare la obținerea categoriilor:', err);
+      },
+    });
   }
 
   goToHomePage(): void {
-    this.router.navigate(['/']);
+    this.commonService.goToHomePage();
   }
 
   goToBooks(category: Category): void {
-    this.router.navigate(['/product'], {
-      queryParams: {
-        category: category.categoryName,
-      },
-    });
+    this.commonService.goToBooks(category);
   }
 
   goToBestsellers(): void {
-    this.router.navigate(['/product'], {
-      queryParams: {
-        bestseller: true,
-      },
-    });
+    this.commonService.goToBestsellers();
   }
 
   goToOffers(): void {
-    this.router.navigate(['/product'], {
-      queryParams: {
-        offers: true,
-      },
-    });
+    // Temporar, până ai o rută sau o metodă dedicată pentru oferte.
+    this.commonService.showSnackBarError(
+      'Pagina de oferte nu este disponibilă momentan.',
+    );
   }
 
   onSearch(): void {
-    const value = this.searchTerm.trim();
+    const query = this.searchTerm.trim();
 
-    if (!value) {
+    if (!query) {
       return;
     }
 
-    this.router.navigate(['/product'], {
-      queryParams: {
-        search: value,
-      },
-    });
+    this.commonService.goToSearch(query);
   }
 
   clearSearch(): void {
     this.searchTerm = '';
-
-    this.router.navigate(['/product'], {
-      queryParams: {
-        search: null,
-      },
-      queryParamsHandling: 'merge',
-    });
+    this.commonService.goToHomePage();
   }
 
   goToLogin(): void {
-    this.router.navigate(['/auth/login']);
+    this.commonService.goToLoginPage();
   }
 
   goToRegister(): void {
-    this.router.navigate(['/auth/register']);
+    this.commonService.goToRegisterPage();
   }
 
   goToProfile(): void {
-    this.router.navigate(['/user/profile']);
+    this.commonService.goToProfile();
   }
 
   goToOrders(): void {
-    this.router.navigate(['/user/orders']);
+    this.commonService.goToOrders();
   }
 
   goToFavorites(): void {
-    this.router.navigate(['/user/favorites']);
+    this.commonService.goToFavorites();
   }
 
   goToReviews(): void {
-    this.router.navigate(['/user/reviews']);
+    this.commonService.goToReviews();
   }
 
   goToCart(): void {
-    this.router.navigate(['/cart']);
+    this.commonService.goToCart();
   }
 
   onFavoritesClick(): void {

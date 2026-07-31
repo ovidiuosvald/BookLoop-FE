@@ -9,18 +9,18 @@ import { Book } from 'src/app/models/book.model';
 export class CartItemListComponent {
   @Input() cartItems: Book[] = [];
 
-  @Output() remove = new EventEmitter<string>();
+  @Output() remove = new EventEmitter<number>();
   @Output() quantityChange = new EventEmitter<{
-    id: string;
+    id: number;
     quantity: number;
   }>();
   @Output() giftWrapChange = new EventEmitter<boolean>();
 
-  onRemove(id: string) {
+  onRemove(id: number) {
     this.remove.emit(id);
   }
 
-  onQuantityChange(event: { id: string; quantity: number }) {
+  onQuantityChange(event: { id: number; quantity: number }) {
     this.quantityChange.emit(event);
   }
 }

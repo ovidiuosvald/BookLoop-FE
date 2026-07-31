@@ -7,14 +7,15 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class ActionButtonsComponent {
   @Input() isFavorite = false;
+
   @Output() addToCart = new EventEmitter<void>();
   @Output() toggleFavorite = new EventEmitter<void>();
 
-  onAddToCart() {
+  onAddToCart(): void {
     this.addToCart.emit();
   }
 
-  onToggleFavorite() {
+  onToggleFavorite(): void {
     this.toggleFavorite.emit();
   }
 }

@@ -4,17 +4,74 @@
     <p>Cărțile salvate de tine vor apărea aici.</p>
   </div>
 
-  <ng-container *ngIf="favoriteBooks.length; else emptyState">
-    <app-book-list [booksInput]="favoriteBooks"></app-book-list>
+  <div *ngIf="isLoading" class="loading-container">Se încarcă...</div>
+
+  <ng-container *ngIf="!isLoading">
+    <div
+      class="favorites-list"
+      *ngIf="favoriteBooks.length > 0; else emptyState"
+    >
+      <article class="favorite-card" *ngFor="let book of favoriteBooks">
+        <img
+          class="book-cover"
+          [src]="book.coverUrl"
+          [alt]="book.bookName"
+          (click)="goToSpecificBook(book.bookId)"
+        />
+
+        <div class="book-info">
+          <h2 (click)="goToSpecificBook(book.bookId)">
+            {{ book.bookName }}
+          </h2>
+
+          <p class="author">de {{ book.author }}</p>
+
+          <p class="description">
+            {{ book.description | slice: 0 : 160 }}
+            <span *ngIf="book.description.length > 160">...</span>
+          </p>
+
+          <span class="stock" [class.out-of-stock]="!book.quantity">
+            {{ book.quantity ? "În stoc" : "Indisponibil" }}
+          </span>
+        </div>
+
+        <div class="book-actions">
+          <strong class="price">
+            {{ book.currentPrice | currency: "RON" : "symbol" : "1.2-2" }}
+          </strong>
+
+          <button
+            mat-flat-button
+            color="primary"
+            type="button"
+            (click)="addToCart(book)"
+          >
+            <mat-icon>shopping_cart</mat-icon>
+            Adaugă în coș
+          </button>
+
+          <button
+            mat-stroked-button
+            type="button"
+            class="remove-favorite-button"
+            (click)="removeFromFavorites(book)"
+          >
+            <mat-icon>favorite</mat-icon>
+            Elimină
+          </button>
+        </div>
+      </article>
+    </div>
   </ng-container>
 
   <ng-template #emptyState>
     <div class="empty-state">
       <mat-icon>favorite_border</mat-icon>
 
-      <h2>Nu ai cărți favorite</h2>
+      <h2>Nu ai încă nicio carte favorită</h2>
 
-      <p>Salvează cărțile preferate apăsând pe iconița inimă.</p>
+      <p>Adaugă cărțile preferate la favorite apăsând pe pictograma inimii.</p>
     </div>
   </ng-template>
 </div>
