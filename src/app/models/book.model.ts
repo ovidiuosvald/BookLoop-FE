@@ -1,10 +1,12 @@
+import { Category } from './category.model';
+
 export interface Book {
   bookId: number;
   bookName: string;
   author: string;
   currentPrice: number;
   coverUrl: string;
-  category: string;
+  category: string | Category;
   quantity: number;
   description: string;
   isNew: boolean;

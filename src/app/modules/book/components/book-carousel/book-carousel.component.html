@@ -1,6 +1,11 @@
-<div class="carousel-wrapper">
-  <button class="nav-arrow left" (click)="prevSlide()">
-    <mat-icon class="arrow-icon">chevron_left</mat-icon>
+<div class="carousel-wrapper" [ngClass]="'carousel-' + mode">
+  <button
+    *ngIf="books.length > 1"
+    type="button"
+    class="nav-arrow left"
+    (click)="prevSlide()"
+  >
+    <mat-icon>chevron_left</mat-icon>
   </button>
 
   <div class="slider-container" [ngClass]="mode">
@@ -11,23 +16,43 @@
           'translateX(-' + currentSlide * (mode === 'multi' ? 20 : 100) + '%)'
         "
       >
-        <div
+        <article
           class="slide"
           *ngFor="let book of books"
-          [ngClass]="{ 'multi-slide': mode === 'multi' }"
+          [class.single-slide]="mode === 'single'"
+          [class.multi-slide]="mode === 'multi'"
         >
-          <img
-            [src]="mode === 'single' ? book.promoImageUrl : book.coverUrl"
-            [alt]="book.bookName"
+          <button
+            class="slide-content"
+            type="button"
             (click)="goToSpecificBook(book.bookId)"
-          />
-          <h4 *ngIf="mode === 'multi'">{{ book.bookName }}</h4>
-        </div>
+          >
+            <img
+              [src]="mode === 'single' ? book.promoImageUrl : book.coverUrl"
+              [alt]="book.bookName"
+            />
+
+            <div class="book-card-content" *ngIf="mode === 'multi'">
+              <h4>{{ book.bookName }}</h4>
+
+              <p>{{ book.author }}</p>
+
+              <strong>
+                {{ book.currentPrice | currency: "RON" : "symbol" : "1.2-2" }}
+              </strong>
+            </div>
+          </button>
+        </article>
       </div>
     </div>
   </div>
 
-  <button class="nav-arrow right" (click)="nextSlide()">
-    <mat-icon class="arrow-icon">chevron_right</mat-icon>
+  <button
+    *ngIf="books.length > 1"
+    type="button"
+    class="nav-arrow right"
+    (click)="nextSlide()"
+  >
+    <mat-icon>chevron_right</mat-icon>
   </button>
 </div>

@@ -6,7 +6,9 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+
 import { Book } from 'src/app/models/book.model';
+import { Category } from 'src/app/models/category.model';
 import { BookService } from 'src/app/services/book.service';
 import { CommonService } from 'src/app/services/common.service';
 import { FavoriteService } from 'src/app/services/favorite.service';
@@ -40,14 +42,18 @@ export class BookListComponent implements OnInit, OnChanges {
 
     this.route.paramMap.subscribe((params) => {
       const navigation = this.router.getCurrentNavigation();
+
       const isBestseller =
-        navigation?.extras.state?.isBestseller || history.state.isBestseller;
+        navigation?.extras.state?.isBestseller ?? history.state.isBestseller;
 
       const categoryCode = params.get('categoryCode');
 
       if (isBestseller) {
         this.loadBestsellers();
-      } else if (categoryCode) {
+        return;
+      }
+
+      if (categoryCode) {
         this.categoryCode = categoryCode;
         this.loadBooksByCategoryCode(categoryCode);
       }
@@ -61,24 +67,36 @@ export class BookListComponent implements OnInit, OnChanges {
   }
 
   loadBestsellers(): void {
-    this.bookService.getBestsellersUsingGET().subscribe((books: Book[]) => {
-      this.books = books;
+    this.bookService.getBestsellersUsingGET().subscribe({
+      next: (books: Book[]) => {
+        this.books = books;
+      },
+      error: () => {
+        this.commonService.showSnackBarError(
+          'Bestsellerele nu au putut fi încărcate.',
+        );
+      },
     });
   }
 
   loadBooksByCategoryCode(categoryCode: string): void {
-    this.bookService
-      .getBooksByCategoryCodeUsingGET(categoryCode)
-      .subscribe((books) => {
+    this.bookService.getBooksByCategoryCodeUsingGET(categoryCode).subscribe({
+      next: (books: Book[]) => {
         this.books = books;
-      });
+      },
+      error: () => {
+        this.commonService.showSnackBarError(
+          'Cărțile nu au putut fi încărcate.',
+        );
+      },
+    });
   }
 
-  addToCart(book: Book) {
+  addToCart(book: Book): void {
     console.log(`${book.bookName} adăugat în coș.`);
   }
 
-  goToSpecificBook(bookId: number) {
+  goToSpecificBook(bookId: number): void {
     this.commonService.goToSpecificBook(bookId);
   }
 
@@ -108,5 +126,9 @@ export class BookListComponent implements OnInit, OnChanges {
         );
       },
     });
+  }
+
+  getCategoryName(category: string | Category): string {
+    return typeof category === 'string' ? category : category.categoryName;
   }
 }

@@ -1,9 +1,25 @@
-<button class="action-button" (click)="onAddToCart()">
-  <mat-icon>shopping_cart</mat-icon>
-  Adaugă în coș
-</button>
+<div class="action-buttons">
+  <button
+    *ngIf="showCartButton"
+    mat-flat-button
+    color="primary"
+    class="cart-button"
+    (click)="onAddToCart()"
+  >
+    <mat-icon>shopping_cart</mat-icon>
+    Adaugă în coș
+  </button>
 
-<button class="action-button" (click)="onToggleFavorite()">
-  <mat-icon>{{ isFavorite ? "favorite" : "favorite_border" }}</mat-icon>
-  Favorite
-</button>
+  <button
+    mat-stroked-button
+    class="favorite-button"
+    [class.favorite-active]="isFavorite"
+    (click)="onToggleFavorite()"
+  >
+    <mat-icon>
+      {{ isFavorite ? "favorite" : "favorite_border" }}
+    </mat-icon>
+
+    {{ favoriteButtonText }}
+  </button>
+</div>

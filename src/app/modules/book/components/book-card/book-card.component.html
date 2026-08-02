@@ -1,0 +1,47 @@
+<article class="book-card" [class.compact]="compact">
+  <button
+    type="button"
+    class="book-image-button"
+    [attr.aria-label]="'Vezi detalii pentru ' + book.bookName"
+    (click)="onOpenBook()"
+  >
+    <img class="book-cover" [src]="book.coverUrl" [alt]="book.bookName" />
+
+    <div class="badges">
+      <span class="book-badge bestseller" *ngIf="book.isBestseller">
+        Bestseller
+      </span>
+
+      <span class="book-badge new-book" *ngIf="book.isNew"> Nou </span>
+    </div>
+  </button>
+
+  <div class="book-content">
+    <span class="category" *ngIf="book.category">
+      {{ getCategoryName(book.category) }}
+    </span>
+
+    <h3 class="book-title" (click)="onOpenBook()">
+      {{ book.bookName }}
+    </h3>
+
+    <p class="author">de {{ book.author }}</p>
+
+    <div class="book-footer">
+      <strong class="price">
+        {{ book.currentPrice | currency: "RON" : "symbol" : "1.2-2" }}
+      </strong>
+
+      <span class="stock" [class.out-of-stock]="!book.quantity">
+        {{ book.quantity ? "În stoc" : "Indisponibil" }}
+      </span>
+    </div>
+
+    <app-action-buttons
+      *ngIf="showActions"
+      [isFavorite]="book.isFavorite"
+      (addToCart)="onAddToCart()"
+      (toggleFavorite)="onToggleFavorite()"
+    ></app-action-buttons>
+  </div>
+</article>

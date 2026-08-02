@@ -8,6 +8,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class ActionButtonsComponent {
   @Input() isFavorite = false;
 
+  @Input() showCartButton = true;
+  @Input() favoriteButtonText = 'Favorite';
+
   @Output() addToCart = new EventEmitter<void>();
   @Output() toggleFavorite = new EventEmitter<void>();
 

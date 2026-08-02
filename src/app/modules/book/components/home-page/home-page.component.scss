@@ -1,67 +1,89 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
 .main-area {
-  margin-top: 80px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 40px;
+  gap: 42px;
 
-  .description-container {
-    width: 36%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-content: space-between;
+  width: 100%;
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 40px 32px 56px;
+  box-sizing: border-box;
+}
 
-    p {
-      margin-top: 20px;
-      text-align: justify;
-      text-justify: inter-word;
-
-      span {
-        color: var(--deep-purple);
-        font-weight: bold;
-      }
-    }
-
-    h1 {
-      letter-spacing: 2.5px;
-      color: var(--deep-purple);
-      font-weight: bold;
-      font-size: xx-large;
-    }
-  }
+app-book-carousel {
+  display: block;
+  width: 100%;
 }
 
 .shipping-info-container {
-  height: 100px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 100px;
-  background-color: white;
-  max-width: 1200px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
 }
 
 .shipping-box {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: 30px;
+  justify-content: center;
+  gap: 14px;
+
+  min-height: 90px;
+  padding: 20px 24px;
+  box-sizing: border-box;
+
+  color: #2d2456;
+  background: #f8f6fb;
+  border: 1px solid #e8e1f1;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(45, 36, 86, 0.05);
 }
 
 .shipping-icon {
-  margin-top: 30px;
-  height: 100px;
-  align-self: center;
-  width: fit-content;
-  font-size: 60px;
-  color: var(--deep-purple);
+  width: 32px;
+  height: 32px;
+
+  color: #6f42c1;
+  font-size: 32px;
 }
 
 .shipping-text {
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #333;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+@media (max-width: 900px) {
+  .main-area {
+    gap: 32px;
+    padding: 28px 20px 44px;
+  }
+
+  .shipping-info-container {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 650px) {
+  .main-area {
+    padding: 20px 14px 36px;
+  }
+
+  .shipping-info-container {
+    grid-template-columns: 1fr;
+  }
+
+  .shipping-box {
+    justify-content: flex-start;
+    min-height: 76px;
+    padding: 16px 18px;
+  }
+
+  .shipping-text {
+    font-size: 15px;
+  }
 }

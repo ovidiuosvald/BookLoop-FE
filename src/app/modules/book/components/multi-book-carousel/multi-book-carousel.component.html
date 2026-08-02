@@ -1,0 +1,36 @@
+<div class="carousel-wrapper" *ngIf="books.length > 0">
+  <button
+    *ngIf="books.length > visibleBooks"
+    type="button"
+    class="nav-arrow left"
+    aria-label="Cărțile anterioare"
+    [disabled]="currentSlide === 0"
+    (click)="prevSlide()"
+  >
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+
+  <div class="slider-container">
+    <div class="slider-track" [style.transform]="getTrackTransform()">
+      <div class="slide" *ngFor="let book of books">
+        <app-book-card
+          [book]="book"
+          [compact]="true"
+          [showActions]="false"
+          (openBook)="goToSpecificBook($event)"
+        ></app-book-card>
+      </div>
+    </div>
+  </div>
+
+  <button
+    *ngIf="books.length > visibleBooks"
+    type="button"
+    class="nav-arrow right"
+    aria-label="Cărțile următoare"
+    [disabled]="currentSlide === maxSlideIndex"
+    (click)="nextSlide()"
+  >
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+</div>

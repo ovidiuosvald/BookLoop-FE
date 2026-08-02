@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+
 import { Book } from 'src/app/models/book.model';
+import { Category } from 'src/app/models/category.model';
 import { BookService } from 'src/app/services/book.service';
 import { CommonService } from 'src/app/services/common.service';
 import { FavoriteService } from 'src/app/services/favorite.service';
@@ -12,26 +14,49 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./book-detail.component.scss'],
 })
 export class BookDetailComponent implements OnInit {
-  book?: Book;
+  public book?: Book;
+  public isLoading = true;
 
   constructor(
-    private route: ActivatedRoute,
-    private bookService: BookService,
-    private commonService: CommonService,
-    private userService: UserService,
-    private favoriteService: FavoriteService,
+    private readonly route: ActivatedRoute,
+    private readonly bookService: BookService,
+    private readonly commonService: CommonService,
+    private readonly userService: UserService,
+    private readonly favoriteService: FavoriteService,
   ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.bookService.getBookByBookIdUsingGET(id).subscribe((book) => {
-        this.book = book;
-      });
-    }
+    this.loadBook();
   }
 
-  toggleFavorite(book: Book): void {
+  private loadBook(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+
+    if (!id) {
+      this.isLoading = false;
+
+      this.commonService.showSnackBarError(
+        'Cartea nu a putut fi identificată.',
+      );
+      return;
+    }
+
+    this.bookService.getBookByBookIdUsingGET(id).subscribe({
+      next: (book: Book) => {
+        this.book = book;
+        this.isLoading = false;
+      },
+      error: () => {
+        this.isLoading = false;
+
+        this.commonService.showSnackBarError(
+          'Detaliile cărții nu au putut fi încărcate.',
+        );
+      },
+    });
+  }
+
+  public toggleFavorite(book: Book): void {
     const userId = this.userService.authenticatedUser.userId;
 
     if (!userId) {
@@ -59,8 +84,15 @@ export class BookDetailComponent implements OnInit {
     });
   }
 
-  addToCart() {
-    // logica de adăugat în coș
-    alert(`${this.book?.bookName} a fost adăugat în coș!`);
+  public addToCart(): void {
+    if (!this.book) {
+      return;
+    }
+
+    console.log(`${this.book.bookName} a fost adăugată în coș.`);
+  }
+
+  public getCategoryName(category: string | Category): string {
+    return typeof category === 'string' ? category : category.categoryName;
   }
 }

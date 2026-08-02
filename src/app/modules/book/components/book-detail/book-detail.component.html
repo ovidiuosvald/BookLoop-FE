@@ -1,44 +1,76 @@
 <ng-container *ngIf="book as currentBook; else loadingState">
-  <div class="book-detail-wrapper">
-    <div class="book-detail-content">
-      <img
-        class="book-cover"
-        [src]="currentBook.coverUrl"
-        [alt]="currentBook.bookName"
-      />
+  <div class="book-detail-page">
+    <article class="book-detail-card">
+      <section class="cover-section">
+        <div class="cover-wrapper">
+          <img
+            class="book-cover"
+            [src]="currentBook.coverUrl"
+            [alt]="currentBook.bookName"
+          />
 
-      <div class="book-info">
-        <h2>{{ currentBook.bookName }}</h2>
-        <h4>{{ currentBook.author }}</h4>
-        <p>{{ currentBook.description }}</p>
-      </div>
+          <div class="badges">
+            <span
+              class="book-badge bestseller"
+              *ngIf="currentBook.isBestseller"
+            >
+              Bestseller
+            </span>
 
-      <div class="book-side">
-        <div class="price-stock">
-          <p>
-            <strong>Preț:</strong>
-            {{
-              currentBook.currentPrice | currency: "RON" : "symbol" : "1.2-2"
-            }}
-          </p>
-
-          <p>
-            <strong>Stoc:</strong>
-            {{ currentBook.quantity ? "Disponibil" : "Indisponibil" }}
-          </p>
-
-          <p *ngIf="currentBook.quantity">
-            Nr. bucăți: {{ currentBook.quantity }}
-          </p>
+            <span class="book-badge new-book" *ngIf="currentBook.isNew">
+              Nou
+            </span>
+          </div>
         </div>
+      </section>
+
+      <section class="book-info">
+        <span class="category" *ngIf="currentBook.category">
+          {{ getCategoryName(currentBook.category) }}
+        </span>
+
+        <h1>{{ currentBook.bookName }}</h1>
+
+        <p class="author">
+          de <strong>{{ currentBook.author }}</strong>
+        </p>
+
+        <div class="description">
+          <h2>Despre carte</h2>
+          <p>{{ currentBook.description }}</p>
+        </div>
+      </section>
+
+      <aside class="book-side">
+        <p class="price">
+          {{ currentBook.currentPrice | currency: "RON" : "symbol" : "1.2-2" }}
+        </p>
+
+        <div class="stock" [class.out-of-stock]="!currentBook.quantity">
+          <mat-icon>
+            {{ currentBook.quantity ? "check_circle" : "cancel" }}
+          </mat-icon>
+
+          <span>
+            {{
+              currentBook.quantity
+                ? "Disponibil în stoc"
+                : "Momentan indisponibil"
+            }}
+          </span>
+        </div>
+
+        <p class="quantity" *ngIf="currentBook.quantity">
+          {{ currentBook.quantity }} exemplare disponibile
+        </p>
 
         <app-action-buttons
           [isFavorite]="currentBook.isFavorite"
           (addToCart)="addToCart()"
           (toggleFavorite)="toggleFavorite(currentBook)"
         ></app-action-buttons>
-      </div>
-    </div>
+      </aside>
+    </article>
   </div>
 </ng-container>
 
