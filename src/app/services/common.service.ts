@@ -83,10 +83,6 @@ export class CommonService {
     this.router.navigate(['/auth/register']);
   }
 
-  goToCheckout(): void {
-    this.router.navigate(['/cart/checkout']);
-  }
-
   goToBestsellers(): void {
     this.router.navigate(['/books/bestsellere'], {
       state: {
@@ -117,5 +113,9 @@ export class CommonService {
 
   goToReviews(): void {
     this.router.navigate(['/account/reviews']);
+  }
+
+  goToCheckout(): void {
+    this.router.navigate(['/checkout']);
   }
 }

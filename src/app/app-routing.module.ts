@@ -20,6 +20,13 @@ const routes: Routes = [
       import('./modules/cart/cart.module').then((m) => m.CartModule),
   },
   {
+    path: 'checkout',
+    loadChildren: () =>
+      import('./modules/checkout/checkout.module').then(
+        (module) => module.CheckoutModule,
+      ),
+  },
+  {
     path: 'account',
     loadChildren: () =>
       import('./modules/user/user.module').then((m) => m.UserModule),

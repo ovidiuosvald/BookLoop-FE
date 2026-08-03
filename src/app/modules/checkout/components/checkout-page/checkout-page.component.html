@@ -1,0 +1,12 @@
+<div class="checkout-page">
+  <div *ngIf="isLoading" class="loading-state">
+    Se încarcă datele pentru checkout...
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+    <h1>Finalizează comanda</h1>
+
+    <p>Produse în coș: {{ cart.totalItems }}</p>
+    <p>Adrese salvate: {{ addresses.length }}</p>
+  </ng-container>
+</div>
