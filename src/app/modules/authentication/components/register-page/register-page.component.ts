@@ -6,6 +6,7 @@ import { UserInterface } from '../../../../models/user.model';
 import { UserService } from '../../../../services/user.service';
 import { CommonService } from 'src/app/services/common.service';
 import { confirmPasswordValidator } from 'src/app/validators/confirm-passwod.validator';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-register-page',
@@ -98,7 +99,7 @@ export class RegisterPageComponent implements OnInit {
 
   private createUser(user: UserInterface): void {
     this.userService
-      .createUserUsingPOST(user)
+      .registerUser(user)
       .pipe(take(1))
       .subscribe({
         next: () => {
@@ -108,14 +109,14 @@ export class RegisterPageComponent implements OnInit {
 
           this.commonService.goToLoginPage();
         },
-        error: (response) => {
-          if (response?.error) {
-            this.commonService.showSnackBarError(response.error);
-            return;
-          }
+        error: (error: HttpErrorResponse) => {
+          const message =
+            typeof error.error === 'string'
+              ? error.error
+              : error.error?.message;
 
           this.commonService.showSnackBarError(
-            'A apărut o eroare. Contul nu a putut fi creat.',
+            message || 'A apărut o eroare. Contul nu a putut fi creat.',
           );
         },
       });

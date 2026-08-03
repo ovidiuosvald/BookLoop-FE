@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -52,20 +53,23 @@ export class UpdateProfileComponent implements OnInit {
       lastName: this.updateUserForm.value.lastName.trim(),
     };
 
-    this.userService.updateUserUsingPUT(userToBeUpdated).subscribe({
-      next: () => {
+    this.userService.updateUser(userToBeUpdated).subscribe({
+      next: (updatedUser: UserInterface) => {
+        this.userService.updateAuthenticatedUser(updatedUser);
+
         this.commonService.showSnackBarSuccess(
           'Profilul tău a fost actualizat cu succes.',
         );
 
-        if (this.authenticatedUser?.email) {
-          this.userService.getUser(this.authenticatedUser.email);
-        }
-
         this.dialogRef.close(true);
       },
-      error: (response) => {
-        this.commonService.showSnackBarError(response.error);
+      error: (error: HttpErrorResponse) => {
+        const message =
+          typeof error.error === 'string' ? error.error : error.error?.message;
+
+        this.commonService.showSnackBarError(
+          message || 'Profilul nu a putut fi actualizat.',
+        );
       },
     });
   }

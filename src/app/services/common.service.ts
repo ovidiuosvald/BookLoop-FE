@@ -1,7 +1,14 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+
 import { Category } from '../models/category.model';
+import {
+  NotificationData,
+  NotificationType,
+} from '../models/notification.model';
+import { NotificationComponent } from '../shared-components/notification/notification.component';
 
 @Injectable({
   providedIn: 'root',
@@ -12,20 +19,46 @@ export class CommonService {
     private readonly router: Router,
   ) {}
 
+  // notification methods
   showSnackBarSuccess(message: string): void {
-    this.snackBar.open(message, 'OK', {
-      duration: 5000,
-      panelClass: ['green-snackbar'],
-    });
+    this.showNotification(message, 'success');
   }
 
   showSnackBarError(message: string): void {
-    this.snackBar.open(message, 'OK', {
-      duration: 5000,
-      panelClass: ['red-snackbar'],
+    this.showNotification(message, 'error');
+  }
+
+  showSnackBarInfo(message: string): void {
+    this.showNotification(message, 'info');
+  }
+
+  showSnackBarWarning(message: string): void {
+    this.showNotification(message, 'warning');
+  }
+
+  showHttpError(error: HttpErrorResponse, fallbackMessage: string): void {
+    const message =
+      typeof error.error === 'string' ? error.error : error.error?.message;
+
+    this.showSnackBarError(message || fallbackMessage);
+  }
+
+  private showNotification(message: string, type: NotificationType): void {
+    const data: NotificationData = {
+      message,
+      type,
+    };
+
+    this.snackBar.openFromComponent(NotificationComponent, {
+      data,
+      duration: type === 'error' ? 6000 : 4500,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: ['bookloop-notification-panel'],
     });
   }
 
+  // navigation methods
   goToHomePage(): void {
     this.router.navigate(['/']);
   }

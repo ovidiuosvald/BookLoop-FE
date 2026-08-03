@@ -28,7 +28,7 @@ export class UserSidebarMenuComponent {
       .pipe(take(1))
       .subscribe((confirmed: boolean | undefined) => {
         if (confirmed) {
-          this.userService.logoutUsingPOST();
+          this.userService.logout();
         }
       });
   }

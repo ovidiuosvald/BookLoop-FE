@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthenticationRequiredDialogComponent } from './authentication-required-dialog/authentication-required-dialog.component';
 import { LogoutDialogComponent } from './logout-dialog/logout-dialog.component';
+import { NotificationComponent } from './notification/notification.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { LogoutDialogComponent } from './logout-dialog/logout-dialog.component';
     HeaderComponent,
     AuthenticationRequiredDialogComponent,
     LogoutDialogComponent,
+    NotificationComponent,
   ],
   imports: [
     CommonModule,

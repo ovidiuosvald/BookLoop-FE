@@ -67,7 +67,7 @@ export class BookListComponent implements OnInit, OnChanges {
   }
 
   loadBestsellers(): void {
-    this.bookService.getBestsellersUsingGET().subscribe({
+    this.bookService.getBestsellers().subscribe({
       next: (books: Book[]) => {
         this.books = books;
       },
@@ -80,7 +80,7 @@ export class BookListComponent implements OnInit, OnChanges {
   }
 
   loadBooksByCategoryCode(categoryCode: string): void {
-    this.bookService.getBooksByCategoryCodeUsingGET(categoryCode).subscribe({
+    this.bookService.getBooksByCategory(categoryCode).subscribe({
       next: (books: Book[]) => {
         this.books = books;
       },

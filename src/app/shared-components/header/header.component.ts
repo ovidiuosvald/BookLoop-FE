@@ -9,6 +9,7 @@ import { UserService } from 'src/app/services/user.service';
 import { AuthenticationRequiredDialogComponent } from '../authentication-required-dialog/authentication-required-dialog.component';
 import { LogoutDialogComponent } from '../logout-dialog/logout-dialog.component';
 import { CategoryService } from 'src/app/services/category.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-header',
@@ -28,16 +29,16 @@ export class HeaderComponent {
     private categoryService: CategoryService,
   ) {
     this.isUserLoggedIn$ = this.userService.isUserLoggedIn$;
-    this.getAllCategroies();
+    this.getAllCategories();
   }
 
-  getAllCategroies(): void {
-    this.categoryService.getAllCategoriesUsingGET().subscribe({
-      next: (data) => {
-        this.categories = data;
+  getAllCategories(): void {
+    this.categoryService.getCategories().subscribe({
+      next: (categories: Category[]) => {
+        this.categories = categories;
       },
-      error: (err) => {
-        console.error('Eroare la obținerea categoriilor:', err);
+      error: (error: HttpErrorResponse) => {
+        console.error('Eroare la obținerea categoriilor:', error);
       },
     });
   }
@@ -127,7 +128,7 @@ export class HeaderComponent {
       .pipe(take(1))
       .subscribe((confirmed: boolean | undefined) => {
         if (confirmed) {
-          this.userService.logoutUsingPOST();
+          this.userService.logout();
         }
       });
   }

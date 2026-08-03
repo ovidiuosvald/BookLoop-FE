@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Book } from 'src/app/models/book.model';
 import { CommonService } from 'src/app/services/common.service';
@@ -36,17 +37,21 @@ export class UserFavoritesComponent implements OnInit {
       return;
     }
 
-    this.favoriteService.getUserFavorites(userId).subscribe({
+    this.favoriteService.getFavorites(userId).subscribe({
       next: (books: Book[]) => {
         this.favoriteBooks = books;
         this.isLoading = false;
       },
-      error: (error) => {
+      error: (error: HttpErrorResponse) => {
         console.error('Eroare favorite:', error);
 
         this.isLoading = false;
+
+        const message =
+          typeof error.error === 'string' ? error.error : error.error?.message;
+
         this.commonService.showSnackBarError(
-          'Cărțile favorite nu au putut fi încărcate.',
+          message || 'Cărțile favorite nu au putut fi încărcate.',
         );
       },
     });

@@ -4,6 +4,7 @@ import { take } from 'rxjs';
 
 import { UserService } from '../../../../services/user.service';
 import { CommonService } from 'src/app/services/common.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-forgot-password-page',
@@ -42,7 +43,7 @@ export class ForgotPasswordPageComponent implements OnInit {
 
   private sendResetPasswordEmail(email: string): void {
     this.userService
-      .forgotPasswordUsingPOST(email)
+      .requestPasswordReset(email)
       .pipe(take(1))
       .subscribe({
         next: () => {
@@ -52,9 +53,9 @@ export class ForgotPasswordPageComponent implements OnInit {
 
           this.forgotPasswordForm.reset();
         },
-        error: (response) => {
-          if (response?.error) {
-            this.commonService.showSnackBarError(response.error);
+        error: (error: HttpErrorResponse) => {
+          if (error.error) {
+            this.commonService.showSnackBarError(error.error);
             return;
           }
 

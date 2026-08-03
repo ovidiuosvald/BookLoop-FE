@@ -4,6 +4,7 @@ import { UserService } from '../../../../services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { confirmPasswordValidator } from 'src/app/validators/confirm-passwod.validator';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-change-password',
@@ -18,19 +19,19 @@ export class ChangePasswordComponent implements OnInit {
   public authenticatedUser?: UserInterface;
 
   constructor(
-    private _formBuilder: FormBuilder,
-    private _userService: UserService,
-    private _commonService: CommonService,
+    private formBuilder: FormBuilder,
+    private userService: UserService,
+    private commonService: CommonService,
   ) {
-    this.authenticatedUser = this._userService.authenticatedUser;
+    this.authenticatedUser = this.userService.authenticatedUser;
   }
 
   ngOnInit(): void {
-    this._createUpdateUserForm();
+    this.createUpdateUserForm();
     const user = this.authenticatedUser;
   }
 
-  public submitUpdateUserForm() {
+  public submitUpdateUserForm(): void {
     const userToBeUpdated: UserInterface = {
       userId: this.authenticatedUser?.userId,
       email: this.authenticatedUser?.email,
@@ -40,25 +41,30 @@ export class ChangePasswordComponent implements OnInit {
       newPassword: this.updateUserForm.controls.newPassword.value,
     };
 
-    this._userService.changePasswordUsingPUT(userToBeUpdated).subscribe({
+    this.userService.changePassword(userToBeUpdated).subscribe({
       next: () => {
-        this._userService.logoutUsingPOST();
-        (this._commonService.showSnackBarSuccess(
-          'Account was updated successfully!',
-        ),
-          this._commonService.goToLoginPage());
+        this.commonService.showSnackBarSuccess(
+          'Parola a fost actualizată cu succes.',
+        );
+
+        this.userService.logout();
       },
-      error: (response) => {
-        this._commonService.showSnackBarError(response.error);
+      error: (error: HttpErrorResponse) => {
+        const message =
+          typeof error.error === 'string' ? error.error : error.error?.message;
+
+        this.commonService.showSnackBarError(
+          message || 'Parola nu a putut fi actualizată.',
+        );
       },
     });
   }
 
-  private _createUpdateUserForm(): void {
+  private createUpdateUserForm(): void {
     const passwordRegExp: RegExp = new RegExp(
       '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~`!@#$%^&()--+={}[]|\\:;<>,.?/_₹])(?=.{8,20})',
     );
-    this.updateUserForm = this._formBuilder.group(
+    this.updateUserForm = this.formBuilder.group(
       {
         password: ['', [Validators.required]],
 

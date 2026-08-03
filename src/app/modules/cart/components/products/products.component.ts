@@ -12,26 +12,31 @@ export class ProductsComponent {
   cartItems: Book[] = [];
 
   constructor(
-    private commonService: CommonService,
-    private bookService: BookService,
+    private readonly commonService: CommonService,
+    private readonly bookService: BookService,
   ) {
-    ['101', '126', '134'].forEach((id) => {
-      this.bookService.getBookByBookIdUsingGET(id).subscribe((book) => {
-        this.cartItems.push(book);
+    [101, 126, 134].forEach((bookId: number) => {
+      this.bookService.getBook(bookId).subscribe({
+        next: (book: Book) => {
+          this.cartItems.push(book);
+        },
       });
     });
   }
 
-  nextStep() {
+  nextStep(): void {
     this.commonService.goToCheckout();
   }
 
-  onRemove(itemId: number) {
-    this.cartItems = this.cartItems.filter((item) => item.bookId !== itemId);
+  onRemove(itemId: number): void {
+    this.cartItems = this.cartItems.filter(
+      (item: Book) => item.bookId !== itemId,
+    );
   }
 
-  onQuantityChange(event: { id: number; quantity: number }) {
-    const item = this.cartItems.find((i) => i.bookId === event.id);
+  onQuantityChange(event: { id: number; quantity: number }): void {
+    const item = this.cartItems.find((book: Book) => book.bookId === event.id);
+
     if (item) {
       item.quantity = event.quantity;
     }
@@ -39,7 +44,7 @@ export class ProductsComponent {
 
   get totalProductsPrice(): number {
     return this.cartItems.reduce(
-      (total, item) => total + item.currentPrice * item.quantity,
+      (total: number, item: Book) => total + item.currentPrice * item.quantity,
       0,
     );
   }

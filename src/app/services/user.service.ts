@@ -2,15 +2,15 @@ import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { CommonService } from 'src/app/services/common.service';
 import { CredentialsInterface } from '../models/credentials.model';
 import { UserInterface } from '../models/user.model';
+import { CommonService } from './common.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private readonly baseUrl = 'http://localhost:8080';
+  private readonly apiUrl = 'http://localhost:8080';
   private readonly userStorageKey = 'user';
 
   private readonly isUserLoggedInSubject = new BehaviorSubject<boolean>(false);
@@ -38,9 +38,9 @@ export class UserService {
     this.restoreUserFromStorage();
   }
 
-  createUserUsingPOST(user: UserInterface): Observable<UserInterface> {
+  registerUser(user: UserInterface): Observable<UserInterface> {
     return this.httpClient.post<UserInterface>(
-      `${this.baseUrl}/user/register`,
+      `${this.apiUrl}/user/register`,
       user,
       {
         withCredentials: true,
@@ -48,9 +48,9 @@ export class UserService {
     );
   }
 
-  changePasswordUsingPUT(user: UserInterface): Observable<UserInterface> {
+  changePassword(user: UserInterface): Observable<UserInterface> {
     return this.httpClient.put<UserInterface>(
-      `${this.baseUrl}/user/change-password`,
+      `${this.apiUrl}/user/change-password`,
       user,
       {
         withCredentials: true,
@@ -58,21 +58,19 @@ export class UserService {
     );
   }
 
-  forgotPasswordUsingPOST(email: string): Observable<void> {
+  requestPasswordReset(email: string): Observable<void> {
     return this.httpClient.post<void>(
-      `${this.baseUrl}/user/forgot-password`,
-      {
-        email,
-      },
+      `${this.apiUrl}/user/forgot-password`,
+      { email },
       {
         withCredentials: true,
       },
     );
   }
 
-  updateUserUsingPUT(user: UserInterface): Observable<UserInterface> {
+  updateUser(user: UserInterface): Observable<UserInterface> {
     return this.httpClient.put<UserInterface>(
-      `${this.baseUrl}/user/update`,
+      `${this.apiUrl}/user/update`,
       user,
       {
         withCredentials: true,
@@ -80,23 +78,21 @@ export class UserService {
     );
   }
 
-  getUserByEmailUsingGET(email: string): Observable<UserInterface> {
+  getUserByEmail(email: string): Observable<UserInterface> {
     return this.httpClient.get<UserInterface>(
-      `${this.baseUrl}/user/get-user-by-email/${encodeURIComponent(email)}`,
+      `${this.apiUrl}/user/get-user-by-email/${encodeURIComponent(email)}`,
       {
         withCredentials: true,
       },
     );
   }
 
-  loginUsingPOST(
-    credentials: CredentialsInterface,
-  ): Observable<HttpResponse<string>> {
+  login(credentials: CredentialsInterface): Observable<HttpResponse<string>> {
     const body = new HttpParams()
       .set('username', credentials.email.trim())
       .set('password', credentials.password);
 
-    return this.httpClient.post(`${this.baseUrl}/login`, body.toString(), {
+    return this.httpClient.post(`${this.apiUrl}/login`, body.toString(), {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
@@ -106,34 +102,38 @@ export class UserService {
     });
   }
 
-  logoutUsingPOST(): void {
+  logout(): void {
     this.httpClient
       .post<void>(
-        `${this.baseUrl}/logout`,
+        `${this.apiUrl}/logout`,
         {},
         {
           withCredentials: true,
         },
       )
       .subscribe({
-        next: () => this.logout(),
-        error: () =>
+        next: () => {
+          this.clearAuthenticatedUser();
+        },
+        error: () => {
           this.commonService.showSnackBarError(
             'Delogarea nu a putut fi realizată.',
-          ),
+          );
+        },
       });
   }
 
-  getUser(email: string): void {
-    this.getUserByEmailUsingGET(email).subscribe({
+  loadAuthenticatedUser(email: string): void {
+    this.getUserByEmail(email).subscribe({
       next: (user: UserInterface) => {
         this.setAuthenticatedUser(user);
         this.commonService.goToHomePage();
       },
-      error: () =>
+      error: () => {
         this.commonService.showSnackBarError(
           'Datele utilizatorului nu au putut fi încărcate.',
-        ),
+        );
+      },
     });
   }
 
@@ -147,7 +147,7 @@ export class UserService {
     this.setUserInStorage(user);
   }
 
-  private logout(): void {
+  private clearAuthenticatedUser(): void {
     this.authenticatedUserSubject.next({
       firstName: '',
       lastName: '',

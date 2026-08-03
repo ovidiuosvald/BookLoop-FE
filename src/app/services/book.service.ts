@@ -1,69 +1,54 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+
 import { Book } from '../models/book.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BookService {
-  private readonly baseUrl: string = 'http://localhost:8080/book';
+  private readonly apiUrl = 'http://localhost:8080/book';
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private readonly httpClient: HttpClient) {}
 
-  getAllBookssUsingGET(): Observable<Book[]> {
-    return this.httpClient.get(`${this.baseUrl}`) as Observable<Book[]>;
+  getBooks(): Observable<Book[]> {
+    return this.httpClient.get<Book[]>(this.apiUrl);
   }
 
-  getBooksByCategoryIdUsingGET(categoryId: string): Observable<Book[]> {
-    return this.httpClient.get(`${this.baseUrl}/${categoryId}`) as Observable<
-      Book[]
-    >;
+  getBook(bookId: number): Observable<Book> {
+    return this.httpClient.get<Book>(`${this.apiUrl}/id/${bookId}`);
   }
 
-  getBookByBookIdUsingGET(bookId: string): Observable<Book> {
-    return this.httpClient.get<Book>(`${this.baseUrl}/id/${bookId}`);
+  getBooksByCategory(categoryCode: string): Observable<Book[]> {
+    return this.httpClient.get<Book[]>(
+      `${this.apiUrl}/category/${categoryCode}`,
+    );
   }
 
-  getNewBooksUsingGET(): Observable<Book[]> {
-    return this.httpClient.get(`${this.baseUrl}/new`) as Observable<Book[]>;
+  getNewBooks(): Observable<Book[]> {
+    return this.httpClient.get<Book[]>(`${this.apiUrl}/new`);
   }
 
-  getBestsellersUsingGET(): Observable<Book[]> {
-    return this.httpClient.get(`${this.baseUrl}/bestsellers`) as Observable<
-      Book[]
-    >;
-  }
-
-  createBookUsingPOST(book: Book): Observable<Book> {
-    return this.httpClient.post(
-      `${this.baseUrl}/create`,
-      book,
-    ) as Observable<Book>;
-  }
-
-  updateBookUsingPUT(book: Book): Observable<Book> {
-    return this.httpClient.put(
-      `${this.baseUrl}/update`,
-      book,
-    ) as Observable<Book>;
-  }
-
-  deleteBookUsingDELETE(bookId: string): Observable<Book> {
-    return this.httpClient.delete(
-      `${this.baseUrl}/delete/${bookId}`,
-    ) as Observable<Book>;
-  }
-
-  getBooksByCategoryCodeUsingGET(categoryCode: string): Observable<Book[]> {
-    return this.httpClient.get(
-      `${this.baseUrl}/category/${categoryCode}`,
-    ) as Observable<Book[]>;
+  getBestsellers(): Observable<Book[]> {
+    return this.httpClient.get<Book[]>(`${this.apiUrl}/bestsellers`);
   }
 
   searchBooks(query: string): Observable<Book[]> {
     return this.httpClient.get<Book[]>(
-      `${this.baseUrl}/search?q=${encodeURIComponent(query)}`,
+      `${this.apiUrl}/search?q=${encodeURIComponent(query)}`,
     );
+  }
+
+  createBook(book: Book): Observable<Book> {
+    return this.httpClient.post<Book>(`${this.apiUrl}/create`, book);
+  }
+
+  updateBook(book: Book): Observable<Book> {
+    return this.httpClient.put<Book>(`${this.apiUrl}/update`, book);
+  }
+
+  deleteBook(bookId: number): Observable<void> {
+    return this.httpClient.delete<void>(`${this.apiUrl}/delete/${bookId}`);
   }
 }

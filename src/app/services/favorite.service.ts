@@ -1,17 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
+
 import { Book } from '../models/book.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FavoriteService {
-  private readonly baseUrl = 'http://localhost:8080/favorite';
+  private readonly apiUrl = 'http://localhost:8080/favorite';
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private readonly httpClient: HttpClient) {}
 
-  public toggleFavorite(userId: number, book: Book): Observable<boolean> {
+  toggleFavorite(userId: number, book: Book): Observable<boolean> {
     if (book.isFavorite) {
       return this.removeFavorite(userId, book.bookId).pipe(map(() => false));
     }
@@ -19,21 +20,25 @@ export class FavoriteService {
     return this.addFavorite(userId, book.bookId).pipe(map(() => true));
   }
 
-  public getUserFavorites(userId: number): Observable<Book[]> {
-    return this.httpClient.get<Book[]>(`${this.baseUrl}/user/${userId}`, {
+  getFavorites(userId: number): Observable<Book[]> {
+    return this.httpClient.get<Book[]>(`${this.apiUrl}/user/${userId}`, {
       withCredentials: true,
     });
   }
 
-  public addFavorite(userId: number, bookId: number): Observable<unknown> {
-    return this.httpClient.post(`${this.baseUrl}/create/${userId}/${bookId}`, {
-      withCredentials: true,
-    });
+  addFavorite(userId: number, bookId: number): Observable<void> {
+    return this.httpClient.post<void>(
+      `${this.apiUrl}/create/${userId}/${bookId}`,
+      {},
+      {
+        withCredentials: true,
+      },
+    );
   }
 
-  public removeFavorite(userId: number, bookId: number): Observable<void> {
+  removeFavorite(userId: number, bookId: number): Observable<void> {
     return this.httpClient.delete<void>(
-      `${this.baseUrl}/delete/${userId}/${bookId}`,
+      `${this.apiUrl}/delete/${userId}/${bookId}`,
       {
         withCredentials: true,
       },

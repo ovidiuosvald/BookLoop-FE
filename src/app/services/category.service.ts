@@ -1,35 +1,33 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+
 import { Category } from '../models/category.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CategoryService {
-  private readonly baseUrl: string = 'http://localhost:8080/category';
+  private readonly apiUrl = 'http://localhost:8080/category';
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private readonly httpClient: HttpClient) {}
 
-  getAllCategoriesUsingGET(): Observable<Category[]> {
-    return this.httpClient.get(`${this.baseUrl}`) as Observable<Category[]>;
+  getCategories(): Observable<Category[]> {
+    return this.httpClient.get<Category[]>(this.apiUrl);
   }
 
-  createCategoryUsingPOST(category: Category): Observable<Category> {
-    return this.httpClient.post(
-      `${this.baseUrl}/create`,
-      category
-    ) as Observable<Category>;
+  createCategory(category: Category): Observable<Category> {
+    return this.httpClient.post<Category>(`${this.apiUrl}/create`, category);
   }
 
-  updateCategoryUsingPUT(category: Category): Observable<Category> {
-    return this.httpClient.put(
-      `${this.baseUrl}/update/${category.categoryId}`,
-      category
-    ) as Observable<Category>;
+  updateCategory(category: Category): Observable<Category> {
+    return this.httpClient.put<Category>(
+      `${this.apiUrl}/update/${category.categoryId}`,
+      category,
+    );
   }
 
-  deleteCategoryUsingDELETE(categoryId: number): Observable<void> {
-    return this.httpClient.delete<void>(`${this.baseUrl}/${categoryId}`);
+  deleteCategory(categoryId: number): Observable<void> {
+    return this.httpClient.delete<void>(`${this.apiUrl}/${categoryId}`);
   }
 }

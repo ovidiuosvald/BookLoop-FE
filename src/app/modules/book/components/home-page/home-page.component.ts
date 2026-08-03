@@ -16,11 +16,11 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
   constructor(
     private commonService: CommonService,
-    private bookService: BookService
+    private bookService: BookService,
   ) {}
 
   ngOnInit(): void {
-    const sub = this.bookService.getAllBookssUsingGET().subscribe({
+    const sub = this.bookService.getBooks().subscribe({
       next: (books: Book[]) => {
         this.promoBooks = books.filter((b) => !!b.promoImageUrl);
         this.newBooks = books.filter((b) => b.isNew);

@@ -41,7 +41,7 @@ export class BookDetailComponent implements OnInit {
       return;
     }
 
-    this.bookService.getBookByBookIdUsingGET(id).subscribe({
+    this.bookService.getBook(Number(id)).subscribe({
       next: (book: Book) => {
         this.book = book;
         this.isLoading = false;

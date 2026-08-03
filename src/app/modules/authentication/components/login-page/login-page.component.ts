@@ -35,9 +35,9 @@ export class LoginPageComponent implements OnInit {
 
     const credentials: CredentialsInterface = this.loginForm.getRawValue();
 
-    this.userService.loginUsingPOST(credentials).subscribe({
+    this.userService.login(credentials).subscribe({
       next: () => {
-        this.userService.getUser(credentials.email);
+        this.userService.loadAuthenticatedUser(credentials.email);
       },
       error: () => {
         this.commonService.showSnackBarError(
