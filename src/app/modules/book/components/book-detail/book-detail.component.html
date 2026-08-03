@@ -52,11 +52,7 @@
           </mat-icon>
 
           <span>
-            {{
-              currentBook.quantity
-                ? "Disponibil în stoc"
-                : "Momentan indisponibil"
-            }}
+            {{ currentBook.quantity ? "În stoc" : "Stoc epuizat" }}
           </span>
         </div>
 
@@ -66,7 +62,8 @@
 
         <app-action-buttons
           [isFavorite]="currentBook.isFavorite"
-          (addToCart)="addToCart()"
+          [inStock]="book.quantity > 0"
+          (addToCart)="addToCart(currentBook)"
           (toggleFavorite)="toggleFavorite(currentBook)"
         ></app-action-buttons>
       </aside>

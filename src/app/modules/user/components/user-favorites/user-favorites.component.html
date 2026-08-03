@@ -32,7 +32,7 @@
           </p>
 
           <span class="stock" [class.out-of-stock]="!book.quantity">
-            {{ book.quantity ? "În stoc" : "Indisponibil" }}
+            {{ book.quantity ? "În stoc" : "Stoc epuizat" }}
           </span>
         </div>
 
@@ -41,25 +41,12 @@
             {{ book.currentPrice | currency: "RON" : "symbol" : "1.2-2" }}
           </strong>
 
-          <button
-            mat-flat-button
-            color="primary"
-            type="button"
-            (click)="addToCart(book)"
-          >
-            <mat-icon>shopping_cart</mat-icon>
-            Adaugă în coș
-          </button>
-
-          <button
-            mat-stroked-button
-            type="button"
-            class="remove-favorite-button"
-            (click)="removeFromFavorites(book)"
-          >
-            <mat-icon>favorite</mat-icon>
-            Elimină
-          </button>
+          <app-action-buttons
+            [isFavorite]="true"
+            [inStock]="book.quantity > 0"
+            (addToCart)="addToCart(book)"
+            (toggleFavorite)="removeFromFavorites(book)"
+          ></app-action-buttons>
         </div>
       </article>
     </div>

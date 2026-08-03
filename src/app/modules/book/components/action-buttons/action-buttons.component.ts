@@ -7,6 +7,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class ActionButtonsComponent {
   @Input() isFavorite = false;
+  @Input() inStock = true;
 
   @Input() showCartButton = true;
   @Input() favoriteButtonText = 'Favorite';

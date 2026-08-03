@@ -1,23 +1,58 @@
 <div class="cart-item">
-  <img [src]="item.coverUrl" alt="{{ item.bookName }}" class="book-cover" />
+  <img class="book-cover" [src]="item.coverUrl" [alt]="item.bookName" />
 
   <div class="book-info">
-    <div class="title">{{ item.bookName }}</div>
-    <button class="remove-btn" (click)="onRemove()">
-      <mat-icon>delete</mat-icon> <span class="remove-label"></span>Șterge
-    </button>
+    <h3 class="title">{{ item.bookName }}</h3>
+
+    <p class="author">de {{ item.author }}</p>
+
+    <div class="item-actions">
+      <button
+        *ngIf="!item.isFavorite; else alreadyFavorite"
+        type="button"
+        class="text-action favorite-action"
+        (click)="onMoveToFavorites()"
+      >
+        <mat-icon>favorite_border</mat-icon>
+        Mută la favorite
+      </button>
+
+      <ng-template #alreadyFavorite>
+        <span class="text-action already-favorite">
+          <mat-icon>favorite</mat-icon>
+          Deja în favorite
+        </span>
+      </ng-template>
+
+      <button
+        type="button"
+        class="text-action remove-action"
+        (click)="onRemove()"
+      >
+        <mat-icon>delete_outline</mat-icon>
+        Șterge
+      </button>
+    </div>
   </div>
 
   <div class="quantity">
+    <label [for]="'quantity-' + item.cartItemId">Cantitate</label>
+
     <input
+      [id]="'quantity-' + item.cartItemId"
       type="number"
-      [value]="item.quantity"
       min="1"
-      (input)="onQuantityChange($event)"
+      [value]="item.quantity"
+      (input)="onQuantityInput($event)"
+      (change)="onQuantityChange($event)"
     />
   </div>
 
   <div class="price">
-    {{ getTotalPrice() | currency : "RON" : "symbol" : "1.2-2" : "ro" }}
+    <span>Subtotal</span>
+
+    <strong>
+      {{ item.subtotal | currency: "RON" : "symbol" : "1.2-2" : "ro" }}
+    </strong>
   </div>
 </div>

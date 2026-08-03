@@ -6,6 +6,7 @@ export interface CartItem {
   currentPrice: number;
   coverUrl: string;
   quantity: number;
+  availableQuantity: number;
   isNew: boolean;
   isBestseller: boolean;
   isFavorite: boolean;

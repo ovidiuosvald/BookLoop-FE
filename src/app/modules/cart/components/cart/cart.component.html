@@ -1,0 +1,64 @@
+<div class="cart-page">
+  <div *ngIf="isLoading" class="loading-state">
+    Se încarcă coșul de cumpărături...
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+    <ng-container *ngIf="cart as currentCart">
+      <ng-container *ngIf="currentCart.items.length > 0; else emptyCart">
+        <div class="cart-container">
+          <div class="cart-header">
+            <div>
+              <h1>Coșul de cumpărături</h1>
+
+              <p>
+                Ai
+                {{ currentCart.totalItems }}
+                {{
+                  currentCart.totalItems === 1
+                    ? "produs în coș"
+                    : "produse în coș"
+                }}.
+              </p>
+            </div>
+          </div>
+
+          <div class="cart-content">
+            <div class="cart-items-column">
+              <app-cart-item-list
+                [cartItems]="currentCart.items"
+                (remove)="removeBook($event)"
+                (quantityChange)="updateQuantity($event)"
+                (moveToFavorites)="moveToFavorites($event)"
+              ></app-cart-item-list>
+
+              <app-free-shipping-chip
+                [total]="currentCart.subtotal"
+              ></app-free-shipping-chip>
+            </div>
+
+            <div class="cart-summary-column">
+              <app-cart-summary
+                [subtotal]="currentCart.subtotal"
+                [shippingPrice]="currentCart.shippingPrice"
+                [totalPrice]="currentCart.totalPrice"
+                [totalItems]="currentCart.totalItems"
+              ></app-cart-summary>
+
+              <app-nav-button
+                [iconPosition]="'right'"
+                icon="arrow_forward"
+                text="Continuă spre finalizarea comenzii"
+                (clicked)="nextStep()"
+              ></app-nav-button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+
+  <ng-template #emptyCart>
+    <app-empty-cart (goHome)="goToHomePage()"></app-empty-cart>
+  </ng-template>
+</div>

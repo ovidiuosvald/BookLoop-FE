@@ -1,9 +1,9 @@
 <div class="action-buttons">
   <button
-    *ngIf="showCartButton"
     mat-flat-button
-    color="primary"
+    type="button"
     class="cart-button"
+    [disabled]="!inStock"
     (click)="onAddToCart()"
   >
     <mat-icon>shopping_cart</mat-icon>
@@ -12,6 +12,7 @@
 
   <button
     mat-stroked-button
+    type="button"
     class="favorite-button"
     [class.favorite-active]="isFavorite"
     (click)="onToggleFavorite()"

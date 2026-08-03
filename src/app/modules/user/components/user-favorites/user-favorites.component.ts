@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Book } from 'src/app/models/book.model';
+import { CartService } from 'src/app/services/cart.service';
 import { CommonService } from 'src/app/services/common.service';
 import { FavoriteService } from 'src/app/services/favorite.service';
 import { UserService } from 'src/app/services/user.service';
@@ -18,6 +19,7 @@ export class UserFavoritesComponent implements OnInit {
     private readonly favoriteService: FavoriteService,
     private readonly userService: UserService,
     private readonly commonService: CommonService,
+    private readonly cartService: CartService,
   ) {}
 
   ngOnInit(): void {
@@ -61,8 +63,29 @@ export class UserFavoritesComponent implements OnInit {
     this.commonService.goToSpecificBook(bookId);
   }
 
-  public addToCart(book: Book): void {
-    console.log(`${book.bookName} adăugat în coș.`);
+  addToCart(book: Book): void {
+    const userId = this.userService.authenticatedUser.userId;
+
+    if (!userId) {
+      this.commonService.showSnackBarError(
+        'Trebuie să fii autentificat pentru a adăuga cărți în coș.',
+      );
+      return;
+    }
+
+    this.cartService.addBook(userId, book.bookId).subscribe({
+      next: () => {
+        this.commonService.showSnackBarSuccess(
+          'Cartea a fost adăugată în coș.',
+        );
+      },
+      error: (error: HttpErrorResponse) => {
+        this.commonService.showHttpError(
+          error,
+          'Cartea nu a putut fi adăugată în coș.',
+        );
+      },
+    });
   }
 
   public removeFromFavorites(book: Book): void {

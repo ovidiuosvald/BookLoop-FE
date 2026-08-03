@@ -1,5 +1,6 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Book } from 'src/app/models/book.model';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+
+import { CartItem } from 'src/app/models/cart-item.model';
 
 @Component({
   selector: 'app-cart-item-list',
@@ -7,20 +8,26 @@ import { Book } from 'src/app/models/book.model';
   styleUrls: ['./cart-item-list.component.scss'],
 })
 export class CartItemListComponent {
-  @Input() cartItems: Book[] = [];
+  @Input() cartItems: CartItem[] = [];
 
   @Output() remove = new EventEmitter<number>();
+
   @Output() quantityChange = new EventEmitter<{
-    id: number;
+    bookId: number;
     quantity: number;
   }>();
-  @Output() giftWrapChange = new EventEmitter<boolean>();
 
-  onRemove(id: number) {
-    this.remove.emit(id);
+  @Output() moveToFavorites = new EventEmitter<number>();
+
+  onRemove(bookId: number): void {
+    this.remove.emit(bookId);
   }
 
-  onQuantityChange(event: { id: number; quantity: number }) {
+  onQuantityChange(event: { bookId: number; quantity: number }): void {
     this.quantityChange.emit(event);
+  }
+
+  onMoveToFavorites(bookId: number): void {
+    this.moveToFavorites.emit(bookId);
   }
 }

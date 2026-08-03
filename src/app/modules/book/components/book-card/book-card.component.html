@@ -33,13 +33,14 @@
       </strong>
 
       <span class="stock" [class.out-of-stock]="!book.quantity">
-        {{ book.quantity ? "În stoc" : "Indisponibil" }}
+        {{ book.quantity ? "În stoc" : "Stoc epuizat" }}
       </span>
     </div>
 
     <app-action-buttons
       *ngIf="showActions"
       [isFavorite]="book.isFavorite"
+      [inStock]="book.quantity > 0"
       (addToCart)="onAddToCart()"
       (toggleFavorite)="onToggleFavorite()"
     ></app-action-buttons>

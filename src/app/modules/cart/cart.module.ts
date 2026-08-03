@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { ProductsComponent } from './components/products/products.component';
 import { CartSummaryComponent } from './components/cart-summary/cart-summary.component';
 import { EmptyCartComponent } from './components/empty-cart/empty-cart.component';
 import { CartItemComponent } from './components/cart-item/cart-item.component';
@@ -8,10 +7,11 @@ import { FreeShippingChipComponent } from './components/free-shipping-chip/free-
 import { CartCheckoutComponent } from './components/cart-checkout/cart-checkout.component';
 import { CartRoutingModule } from './cart-routing.module';
 import { SharedModule } from 'src/app/shared-components/shared.module';
+import { CartComponent } from './components/cart/cart.component';
 
 @NgModule({
   declarations: [
-    ProductsComponent,
+    CartComponent,
     CartSummaryComponent,
     EmptyCartComponent,
     CartItemComponent,
