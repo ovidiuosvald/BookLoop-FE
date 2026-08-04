@@ -1,1 +1,141 @@
-<p>checkout-billing works!</p>
+<mat-card class="billing-card">
+  <app-checkout-section-header
+    [step]="3"
+    title="Facturare"
+    description="Alege tipul facturii și completează datele necesare."
+  ></app-checkout-section-header>
+
+  <div [formGroup]="form">
+    <mat-radio-group class="billing-options" formControlName="type">
+      <label
+        class="billing-option"
+        [class.selected]="form.get('type')?.value === 'INDIVIDUAL'"
+      >
+        <mat-radio-button color="primary" value="INDIVIDUAL"></mat-radio-button>
+
+        <div class="option-content">
+          <div class="option-title">
+            <mat-icon>person</mat-icon>
+            <span>Persoană fizică</span>
+          </div>
+
+          <p>Factura va fi emisă folosind datele personale.</p>
+        </div>
+      </label>
+
+      <label
+        class="billing-option"
+        [class.selected]="form.get('type')?.value === 'COMPANY'"
+      >
+        <mat-radio-button color="primary" value="COMPANY"></mat-radio-button>
+
+        <div class="option-content">
+          <div class="option-title">
+            <mat-icon>business</mat-icon>
+            <span>Persoană juridică</span>
+          </div>
+
+          <p>Completează datele companiei pentru facturare.</p>
+        </div>
+      </label>
+    </mat-radio-group>
+
+    <div *ngIf="!isCompany" class="individual-info">
+      <mat-icon>check_circle</mat-icon>
+
+      <span> Vor fi folosite aceleași date ca la adresa de livrare. </span>
+    </div>
+
+    <div *ngIf="isCompany" class="company-form" formGroupName="companyDetails">
+      <div class="form-header">
+        <h3>Date companie</h3>
+        <p>Completează informațiile pentru emiterea facturii.</p>
+      </div>
+
+      <div class="form-grid">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Denumire companie</mat-label>
+          <input matInput formControlName="companyName" />
+
+          <mat-error
+            *ngIf="form.get('companyDetails.companyName')?.hasError('required')"
+          >
+            Denumirea companiei este obligatorie.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>CUI</mat-label>
+          <input matInput formControlName="cui" />
+
+          <mat-error
+            *ngIf="form.get('companyDetails.cui')?.hasError('required')"
+          >
+            CUI-ul este obligatoriu.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Nr. Registrul Comerțului</mat-label>
+          <input matInput formControlName="registrationNumber" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Bancă</mat-label>
+          <input matInput formControlName="bank" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Cont bancar</mat-label>
+          <input matInput formControlName="bankAccount" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Țară</mat-label>
+          <mat-select formControlName="country">
+            <mat-option value="România"> România </mat-option>
+          </mat-select>
+
+          <mat-error
+            *ngIf="form.get('companyDetails.country')?.hasError('required')"
+          >
+            Țara este obligatorie.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Județ</mat-label>
+          <input matInput formControlName="county" />
+
+          <mat-error
+            *ngIf="form.get('companyDetails.county')?.hasError('required')"
+          >
+            Județul este obligatoriu.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Oraș</mat-label>
+          <input matInput formControlName="city" />
+
+          <mat-error
+            *ngIf="form.get('companyDetails.city')?.hasError('required')"
+          >
+            Orașul este obligatoriu.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Adresă completă</mat-label>
+          <input matInput formControlName="addressLine" />
+
+          <mat-error
+            *ngIf="form.get('companyDetails.addressLine')?.hasError('required')"
+          >
+            Adresa companiei este obligatorie.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</mat-card>

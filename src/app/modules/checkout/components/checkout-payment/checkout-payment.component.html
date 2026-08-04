@@ -1,1 +1,65 @@
-<p>checkout-payment works!</p>
+<mat-card class="payment-card">
+  <app-checkout-section-header
+    [step]="4"
+    title="Plată"
+    description="Alege metoda prin care dorești să achiți comanda."
+  ></app-checkout-section-header>
+
+  <div [formGroup]="form">
+    <mat-radio-group class="payment-options" formControlName="method">
+      <label
+        class="payment-option"
+        [class.selected]="form.get('method')?.value === 'CASH_ON_DELIVERY'"
+      >
+        <mat-radio-button
+          color="primary"
+          value="CASH_ON_DELIVERY"
+        ></mat-radio-button>
+
+        <div class="option-content">
+          <div class="option-title">
+            <mat-icon>payments</mat-icon>
+            <span>Plată ramburs</span>
+          </div>
+
+          <p>Plătești numerar la livrarea coletului.</p>
+        </div>
+      </label>
+
+      <label
+        class="payment-option"
+        [class.selected]="form.get('method')?.value === 'CARD'"
+      >
+        <mat-radio-button color="primary" value="CARD"></mat-radio-button>
+
+        <div class="option-content">
+          <div class="option-title">
+            <mat-icon>credit_card</mat-icon>
+            <span>Card bancar</span>
+          </div>
+
+          <p>Plată securizată online.</p>
+        </div>
+      </label>
+
+      <label
+        class="payment-option"
+        [class.selected]="form.get('method')?.value === 'BANK_TRANSFER'"
+      >
+        <mat-radio-button
+          color="primary"
+          value="BANK_TRANSFER"
+        ></mat-radio-button>
+
+        <div class="option-content">
+          <div class="option-title">
+            <mat-icon>account_balance</mat-icon>
+            <span>Transfer bancar</span>
+          </div>
+
+          <p>Vei primi factura proformă pe email.</p>
+        </div>
+      </label>
+    </mat-radio-group>
+  </div>
+</mat-card>

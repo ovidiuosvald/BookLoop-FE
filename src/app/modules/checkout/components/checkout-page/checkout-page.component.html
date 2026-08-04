@@ -1,12 +1,62 @@
 <div class="checkout-page">
   <div *ngIf="isLoading" class="loading-state">
-    Se încarcă datele pentru checkout...
+    Se încarcă datele pentru finalizarea comenzii...
   </div>
 
-  <ng-container *ngIf="!isLoading">
-    <h1>Finalizează comanda</h1>
+  <ng-container *ngIf="!isLoading && cart as currentCart">
+    <button mat-button class="back-to-cart-button" routerLink="/cart">
+      <mat-icon>arrow_back</mat-icon>
 
-    <p>Produse în coș: {{ cart.totalItems }}</p>
-    <p>Adrese salvate: {{ addresses.length }}</p>
+      Înapoi la coș
+    </button>
+    <header class="page-header">
+      <h1>Finalizează comanda</h1>
+
+      <p>
+        Verifică opțiunile de livrare, facturare și plată înainte de plasarea
+        comenzii.
+      </p>
+    </header>
+
+    <div class="checkout-layout">
+      <main class="checkout-content">
+        <app-checkout-address
+          [addresses]="addresses"
+          [selectedAddressId]="selectedAddressId"
+          [form]="deliveryAddressForm"
+          (selectedAddressIdChange)="onSelectedAddressIdChange($event)"
+        ></app-checkout-address>
+
+        <app-checkout-delivery [form]="deliveryForm"></app-checkout-delivery>
+
+        <app-checkout-billing [form]="billingForm"></app-checkout-billing>
+
+        <app-checkout-payment [form]="paymentForm"></app-checkout-payment>
+
+        <mat-card class="terms-card" [formGroup]="checkoutForm">
+          <mat-checkbox color="primary" formControlName="termsAccepted">
+            Sunt de acord cu Termenii și condițiile BookLoop.
+          </mat-checkbox>
+
+          <mat-error
+            *ngIf="
+              checkoutForm.get('termsAccepted')?.touched &&
+              checkoutForm.get('termsAccepted')?.hasError('required')
+            "
+          >
+            Trebuie să accepți termenii și condițiile.
+          </mat-error>
+        </mat-card>
+      </main>
+
+      <aside class="checkout-sidebar">
+        <app-checkout-summary
+          [cart]="currentCart"
+          [loading]="isPlacingOrder"
+          [canPlaceOrder]="checkoutForm.valid"
+          (placeOrder)="placeOrder()"
+        ></app-checkout-summary>
+      </aside>
+    </div>
   </ng-container>
 </div>

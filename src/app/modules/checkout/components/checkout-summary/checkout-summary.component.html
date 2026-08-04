@@ -1,1 +1,64 @@
-<p>checkout-summary works!</p>
+<mat-card class="summary-card">
+  <h2>Sumar comandă</h2>
+
+  <div class="summary-row">
+    <span>Produse ({{ cart.totalItems }})</span>
+
+    <strong>
+      {{ cart.subtotal | currency: "RON" : "symbol" : "1.2-2" }}
+    </strong>
+  </div>
+
+  <div class="summary-row">
+    <span>Transport</span>
+
+    <strong>
+      <ng-container *ngIf="cart.shippingPrice > 0; else freeShippingPrice">
+        {{ cart.shippingPrice | currency: "RON" : "symbol" : "1.2-2" }}
+      </ng-container>
+
+      <ng-template #freeShippingPrice> Gratuit </ng-template>
+    </strong>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div class="summary-row total">
+    <span>Total</span>
+
+    <strong>
+      {{ cart.totalPrice | currency: "RON" : "symbol" : "1.2-2" }}
+    </strong>
+  </div>
+
+  <button
+    mat-flat-button
+    type="button"
+    class="place-order-button"
+    [disabled]="loading || !canPlaceOrder"
+    (click)="onPlaceOrder()"
+  >
+    <mat-icon>shopping_bag</mat-icon>
+
+    {{ loading ? "Se plasează..." : "Plasează comanda" }}
+  </button>
+
+  <ng-container *ngIf="cart.shippingPrice > 0; else freeShippingMessage">
+    <div class="delivery-message">
+      <mat-icon>local_shipping</mat-icon>
+
+      <span>
+        Transport gratuit la comenzi peste
+        <strong>200 lei</strong>
+      </span>
+    </div>
+  </ng-container>
+
+  <ng-template #freeShippingMessage>
+    <div class="delivery-message success">
+      <mat-icon>check_circle</mat-icon>
+
+      <span> Transport gratuit inclus </span>
+    </div>
+  </ng-template>
+</mat-card>

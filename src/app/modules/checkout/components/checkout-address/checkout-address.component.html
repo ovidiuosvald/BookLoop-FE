@@ -1,1 +1,162 @@
-<p>checkout-address works!</p>
+<mat-card class="address-card">
+  <app-checkout-section-header
+    [step]="1"
+    title="Adresa de livrare"
+    description="Alege o adresă salvată sau completează una nouă."
+  ></app-checkout-section-header>
+
+  <ng-container *ngIf="addresses.length > 0; else emptyState">
+    <div
+      *ngFor="let address of addresses; trackBy: trackByAddressId"
+      class="saved-address"
+      [class.selected]="selectedAddressId === address.addressId"
+      (click)="selectAddress(address.addressId!)"
+    >
+      <div class="address-header">
+        <mat-icon>
+          {{
+            selectedAddressId === address.addressId
+              ? "radio_button_checked"
+              : "radio_button_unchecked"
+          }}
+        </mat-icon>
+
+        <span class="default-badge" *ngIf="address.isDefault"> Implicită </span>
+      </div>
+
+      <h3>{{ address.firstName }} {{ address.lastName }}</h3>
+
+      <p>{{ address.phoneNumber }}</p>
+      <p>{{ address.addressLine }}</p>
+      <p>{{ address.city }}, {{ address.county }}</p>
+    </div>
+
+    <button
+      mat-stroked-button
+      type="button"
+      class="new-address-button"
+      (click)="showAddressForm()"
+    >
+      <mat-icon>add</mat-icon>
+      Adaugă adresă nouă
+    </button>
+  </ng-container>
+
+  <ng-template #emptyState>
+    <div class="empty-addresses">
+      <mat-icon>location_off</mat-icon>
+
+      <h3>Nu ai adrese salvate</h3>
+
+      <p>Completează prima adresă pentru livrarea comenzii.</p>
+
+      <button
+        mat-flat-button
+        type="button"
+        class="add-first-address-button"
+        (click)="showAddressForm()"
+      >
+        Adaugă adresă
+      </button>
+    </div>
+  </ng-template>
+
+  <div *ngIf="showNewAddressForm" class="new-address-form" [formGroup]="form">
+    <div class="form-header">
+      <div>
+        <h3>Adresă nouă</h3>
+        <p>Completează datele necesare pentru livrare.</p>
+      </div>
+
+      <button
+        *ngIf="addresses.length > 0"
+        mat-icon-button
+        type="button"
+        aria-label="Închide formularul"
+        (click)="cancelNewAddress()"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <div class="form-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Prenume</mat-label>
+        <input matInput formControlName="firstName" />
+
+        <mat-error *ngIf="form.get('firstName')?.hasError('required')">
+          Prenumele este obligatoriu.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Nume</mat-label>
+        <input matInput formControlName="lastName" />
+
+        <mat-error *ngIf="form.get('lastName')?.hasError('required')">
+          Numele este obligatoriu.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Telefon</mat-label>
+        <input matInput type="tel" formControlName="phoneNumber" />
+
+        <mat-error *ngIf="form.get('phoneNumber')?.hasError('required')">
+          Numărul de telefon este obligatoriu.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Țară</mat-label>
+        <mat-select formControlName="country">
+          <mat-option value="România">România</mat-option>
+        </mat-select>
+
+        <mat-error *ngIf="form.get('country')?.hasError('required')">
+          Țara este obligatorie.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Județ</mat-label>
+        <input matInput formControlName="county" />
+
+        <mat-error *ngIf="form.get('county')?.hasError('required')">
+          Județul este obligatoriu.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Oraș</mat-label>
+        <input matInput formControlName="city" />
+
+        <mat-error *ngIf="form.get('city')?.hasError('required')">
+          Orașul este obligatoriu.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Adresă completă</mat-label>
+        <input
+          matInput
+          formControlName="addressLine"
+          placeholder="Stradă, număr, bloc, apartament"
+        />
+
+        <mat-error *ngIf="form.get('addressLine')?.hasError('required')">
+          Adresa este obligatorie.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Cod poștal</mat-label>
+        <input matInput formControlName="postalCode" />
+      </mat-form-field>
+    </div>
+
+    <mat-checkbox color="primary" formControlName="saveDeliveryAddress">
+      Salvează această adresă în contul meu
+    </mat-checkbox>
+  </div>
+</mat-card>

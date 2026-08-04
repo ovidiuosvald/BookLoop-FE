@@ -8,9 +8,19 @@ import { CheckoutBillingComponent } from './components/checkout-billing/checkout
 import { CheckoutPaymentComponent } from './components/checkout-payment/checkout-payment.component';
 import { CheckoutSummaryComponent } from './components/checkout-summary/checkout-summary.component';
 import { CheckoutSuccessComponent } from './components/checkout-success/checkout-success.component';
+import { CheckoutSectionHeaderComponent } from './components/checkout-section-header/checkout-section-header.component';
 
 @NgModule({
-  declarations: [CheckoutPageComponent, CheckoutAddressComponent, CheckoutDeliveryComponent, CheckoutBillingComponent, CheckoutPaymentComponent, CheckoutSummaryComponent, CheckoutSuccessComponent],
+  declarations: [
+    CheckoutPageComponent,
+    CheckoutAddressComponent,
+    CheckoutDeliveryComponent,
+    CheckoutBillingComponent,
+    CheckoutPaymentComponent,
+    CheckoutSummaryComponent,
+    CheckoutSuccessComponent,
+    CheckoutSectionHeaderComponent,
+  ],
   imports: [SharedModule, CheckoutRoutingModule],
 })
 export class CheckoutModule {}
