@@ -7,13 +7,17 @@
 
   <div [formGroup]="form">
     <mat-radio-group class="payment-options" formControlName="method">
-      <label
+      <div
         class="payment-option"
-        [class.selected]="form.get('method')?.value === 'CASH_ON_DELIVERY'"
+        [class.selected]="
+          form.get('method')?.value === paymentMethod.CashOnDelivery
+        "
+        (click)="selectMethod(paymentMethod.CashOnDelivery)"
       >
         <mat-radio-button
           color="primary"
-          value="CASH_ON_DELIVERY"
+          [value]="paymentMethod.CashOnDelivery"
+          (click)="$event.stopPropagation()"
         ></mat-radio-button>
 
         <div class="option-content">
@@ -24,31 +28,38 @@
 
           <p>Plătești numerar la livrarea coletului.</p>
         </div>
-      </label>
+      </div>
 
-      <label
-        class="payment-option"
-        [class.selected]="form.get('method')?.value === 'CARD'"
-      >
-        <mat-radio-button color="primary" value="CARD"></mat-radio-button>
+      <div class="payment-option disabled">
+        <mat-radio-button
+          color="primary"
+          [value]="paymentMethod.Card"
+          disabled
+        ></mat-radio-button>
 
         <div class="option-content">
           <div class="option-title">
             <mat-icon>credit_card</mat-icon>
             <span>Card bancar</span>
+
+            <span class="coming-soon-badge"> În curând </span>
           </div>
 
-          <p>Plată securizată online.</p>
+          <p>Plata online va fi disponibilă într-o versiune viitoare.</p>
         </div>
-      </label>
+      </div>
 
-      <label
+      <div
         class="payment-option"
-        [class.selected]="form.get('method')?.value === 'BANK_TRANSFER'"
+        [class.selected]="
+          form.get('method')?.value === paymentMethod.BankTransfer
+        "
+        (click)="selectMethod(paymentMethod.BankTransfer)"
       >
         <mat-radio-button
           color="primary"
-          value="BANK_TRANSFER"
+          [value]="paymentMethod.BankTransfer"
+          (click)="$event.stopPropagation()"
         ></mat-radio-button>
 
         <div class="option-content">
@@ -59,7 +70,7 @@
 
           <p>Vei primi factura proformă pe email.</p>
         </div>
-      </label>
+      </div>
     </mat-radio-group>
   </div>
 </mat-card>

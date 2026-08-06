@@ -35,6 +35,7 @@
       mat-stroked-button
       type="button"
       class="new-address-button"
+      *ngIf="!showNewAddressForm"
       (click)="showAddressForm()"
     >
       <mat-icon>add</mat-icon>
@@ -43,7 +44,7 @@
   </ng-container>
 
   <ng-template #emptyState>
-    <div class="empty-addresses">
+    <div class="empty-addresses" *ngIf="!showNewAddressForm">
       <mat-icon>location_off</mat-icon>
 
       <h3>Nu ai adrese salvate</h3>
@@ -72,7 +73,7 @@
         *ngIf="addresses.length > 0"
         mat-icon-button
         type="button"
-        aria-label="Închide formularul"
+        aria-label="Închide formularul pentru adresă nouă"
         (click)="cancelNewAddress()"
       >
         <mat-icon>close</mat-icon>
@@ -82,76 +83,123 @@
     <div class="form-grid">
       <mat-form-field appearance="outline">
         <mat-label>Prenume</mat-label>
-        <input matInput formControlName="firstName" />
 
-        <mat-error *ngIf="form.get('firstName')?.hasError('required')">
-          Prenumele este obligatoriu.
+        <input
+          matInput
+          type="text"
+          formControlName="firstName"
+          autocomplete="given-name"
+        />
+
+        <mat-error *ngIf="shouldShowError('firstName')">
+          {{ getError("firstName") }}
         </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Nume</mat-label>
-        <input matInput formControlName="lastName" />
 
-        <mat-error *ngIf="form.get('lastName')?.hasError('required')">
-          Numele este obligatoriu.
+        <input
+          matInput
+          type="text"
+          formControlName="lastName"
+          autocomplete="family-name"
+        />
+
+        <mat-error *ngIf="shouldShowError('lastName')">
+          {{ getError("lastName") }}
         </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Telefon</mat-label>
-        <input matInput type="tel" formControlName="phoneNumber" />
 
-        <mat-error *ngIf="form.get('phoneNumber')?.hasError('required')">
-          Numărul de telefon este obligatoriu.
+        <input
+          matInput
+          type="tel"
+          formControlName="phoneNumber"
+          autocomplete="tel"
+          placeholder="0712345678"
+        />
+
+        <mat-error *ngIf="shouldShowError('phoneNumber')">
+          {{ getError("phoneNumber") }}
         </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Țară</mat-label>
+
         <mat-select formControlName="country">
           <mat-option value="România">România</mat-option>
         </mat-select>
 
-        <mat-error *ngIf="form.get('country')?.hasError('required')">
-          Țara este obligatorie.
+        <mat-error *ngIf="shouldShowError('country')">
+          {{ getError("country") }}
         </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Județ</mat-label>
-        <input matInput formControlName="county" />
 
-        <mat-error *ngIf="form.get('county')?.hasError('required')">
-          Județul este obligatoriu.
+        <input
+          matInput
+          type="text"
+          formControlName="county"
+          autocomplete="address-level1"
+        />
+
+        <mat-error *ngIf="shouldShowError('county')">
+          {{ getError("county") }}
         </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Oraș</mat-label>
-        <input matInput formControlName="city" />
 
-        <mat-error *ngIf="form.get('city')?.hasError('required')">
-          Orașul este obligatoriu.
+        <input
+          matInput
+          type="text"
+          formControlName="city"
+          autocomplete="address-level2"
+        />
+
+        <mat-error *ngIf="shouldShowError('city')">
+          {{ getError("city") }}
         </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Adresă completă</mat-label>
+
         <input
           matInput
+          type="text"
           formControlName="addressLine"
+          autocomplete="street-address"
           placeholder="Stradă, număr, bloc, apartament"
         />
 
-        <mat-error *ngIf="form.get('addressLine')?.hasError('required')">
-          Adresa este obligatorie.
+        <mat-error *ngIf="shouldShowError('addressLine')">
+          {{ getError("addressLine") }}
         </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Cod poștal</mat-label>
-        <input matInput formControlName="postalCode" />
+
+        <input
+          matInput
+          type="text"
+          inputmode="numeric"
+          formControlName="postalCode"
+          autocomplete="postal-code"
+          maxlength="6"
+        />
+
+        <mat-error *ngIf="shouldShowError('postalCode')">
+          {{ getError("postalCode") }}
+        </mat-error>
       </mat-form-field>
     </div>
 

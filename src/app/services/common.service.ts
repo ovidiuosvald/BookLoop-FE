@@ -100,7 +100,7 @@ export class CommonService {
   }
 
   goToProfile(): void {
-    this.router.navigate(['/account/details']);
+    this.router.navigate(['/account/profile']);
   }
 
   goToOrders(): void {

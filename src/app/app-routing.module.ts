@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { TermsAndConditionsComponent } from './pages/terms-and-conditions/terms-and-conditions.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,10 @@ const routes: Routes = [
     path: 'account',
     loadChildren: () =>
       import('./modules/user/user.module').then((m) => m.UserModule),
+  },
+  {
+    path: 'terms-and-conditions',
+    component: TermsAndConditionsComponent,
   },
 ];
 

@@ -1,1 +1,55 @@
-<p>checkout-success works!</p>
+<div class="success-page" *ngIf="order as currentOrder">
+  <mat-card class="success-card">
+    <div class="success-icon">
+      <mat-icon>check</mat-icon>
+    </div>
+
+    <h1>Comanda a fost plasată cu succes!</h1>
+
+    <p class="success-message">
+      Îți mulțumim pentru comandă. Detaliile acesteia sunt disponibile în
+      secțiunea „Comenzile mele”.
+    </p>
+
+    <div class="order-info">
+      <div class="info-row">
+        <span>Număr comandă</span>
+        <strong>#{{ currentOrder.orderId }}</strong>
+      </div>
+
+      <div class="info-row">
+        <span>Total</span>
+        <strong>
+          {{ currentOrder.totalPrice | currency: "RON" : "symbol" : "1.2-2" }}
+        </strong>
+      </div>
+
+      <div class="info-row">
+        <span>Status</span>
+        <strong>Plasată</strong>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button
+        mat-flat-button
+        type="button"
+        class="orders-button"
+        routerLink="/account/orders"
+      >
+        <mat-icon>receipt_long</mat-icon>
+        Vezi comenzile mele
+      </button>
+
+      <button
+        mat-stroked-button
+        type="button"
+        class="continue-button"
+        routerLink="/"
+      >
+        <mat-icon>menu_book</mat-icon>
+        Continuă cumpărăturile
+      </button>
+    </div>
+  </mat-card>
+</div>

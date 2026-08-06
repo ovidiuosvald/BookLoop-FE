@@ -3,21 +3,33 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
+
 import {
-  PaymentMethod,
   BillingType,
   DeliveryMethod,
+  PaymentMethod,
 } from 'src/app/enums/order.enums';
-
 import { Address } from 'src/app/models/address.model';
 import { Cart } from 'src/app/models/cart.model';
-
 import { PlaceOrderRequest } from 'src/app/models/place-order-request.model';
 import { AddressService } from 'src/app/services/address.service';
 import { CartService } from 'src/app/services/cart.service';
 import { CommonService } from 'src/app/services/common.service';
 import { OrderService } from 'src/app/services/order.service';
 import { UserService } from 'src/app/services/user.service';
+import {
+  ADDRESS_MAX_LENGTH,
+  ADDRESS_MIN_LENGTH,
+  CITY_MAX_LENGTH,
+  CITY_MIN_LENGTH,
+  COMPANY_NAME_MAX_LENGTH,
+  CUI_REGEX,
+  IBAN_REGEX,
+  NAME_MAX_LENGTH,
+  NAME_MIN_LENGTH,
+  PHONE_REGEX,
+  POSTAL_CODE_REGEX,
+} from 'src/app/validators/validation.constants';
 
 @Component({
   selector: 'app-checkout-page',
@@ -74,6 +86,7 @@ export class CheckoutPageComponent implements OnInit {
       this.deliveryAddressForm.disable({
         emitEvent: false,
       });
+
       return;
     }
 
@@ -83,17 +96,23 @@ export class CheckoutPageComponent implements OnInit {
   }
 
   placeOrder(): void {
+    if (this.isPlacingOrder) {
+      return;
+    }
+
     const userId = this.userService.authenticatedUser.userId;
 
     if (!userId) {
       this.commonService.showSnackBarError(
         'Datele utilizatorului nu au putut fi identificate.',
       );
+
       return;
     }
 
     if (!this.cart?.items.length) {
       this.commonService.showSnackBarWarning('Coșul este gol.');
+
       return;
     }
 
@@ -107,6 +126,7 @@ export class CheckoutPageComponent implements OnInit {
       this.commonService.showSnackBarWarning(
         'Completează toate câmpurile obligatorii.',
       );
+
       return;
     }
 
@@ -142,14 +162,53 @@ export class CheckoutPageComponent implements OnInit {
   private buildForm(): void {
     this.checkoutForm = this.formBuilder.group({
       deliveryAddress: this.formBuilder.group({
-        firstName: ['', Validators.required],
-        lastName: ['', Validators.required],
-        phoneNumber: ['', Validators.required],
+        firstName: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(NAME_MIN_LENGTH),
+            Validators.maxLength(NAME_MAX_LENGTH),
+          ],
+        ],
+
+        lastName: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(NAME_MIN_LENGTH),
+            Validators.maxLength(NAME_MAX_LENGTH),
+          ],
+        ],
+
+        phoneNumber: [
+          '',
+          [Validators.required, Validators.pattern(PHONE_REGEX)],
+        ],
+
         country: ['România', Validators.required],
+
         county: ['', Validators.required],
-        city: ['', Validators.required],
-        addressLine: ['', Validators.required],
-        postalCode: [''],
+
+        city: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(CITY_MIN_LENGTH),
+            Validators.maxLength(CITY_MAX_LENGTH),
+          ],
+        ],
+
+        addressLine: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(ADDRESS_MIN_LENGTH),
+            Validators.maxLength(ADDRESS_MAX_LENGTH),
+          ],
+        ],
+
+        postalCode: ['', Validators.pattern(POSTAL_CODE_REGEX)],
+
         saveDeliveryAddress: [false],
       }),
 
@@ -161,15 +220,41 @@ export class CheckoutPageComponent implements OnInit {
         type: [BillingType.Individual, Validators.required],
 
         companyDetails: this.formBuilder.group({
-          companyName: [''],
-          cui: [''],
-          registrationNumber: [''],
-          bank: [''],
-          bankAccount: [''],
+          companyName: [
+            '',
+            [
+              Validators.minLength(NAME_MIN_LENGTH),
+              Validators.maxLength(COMPANY_NAME_MAX_LENGTH),
+            ],
+          ],
+
+          cui: ['', Validators.pattern(CUI_REGEX)],
+
+          registrationNumber: ['', Validators.maxLength(50)],
+
+          bank: ['', Validators.maxLength(100)],
+
+          bankAccount: ['', Validators.pattern(IBAN_REGEX)],
+
           country: ['România'],
+
           county: [''],
-          city: [''],
-          addressLine: [''],
+
+          city: [
+            '',
+            [
+              Validators.minLength(CITY_MIN_LENGTH),
+              Validators.maxLength(CITY_MAX_LENGTH),
+            ],
+          ],
+
+          addressLine: [
+            '',
+            [
+              Validators.minLength(ADDRESS_MIN_LENGTH),
+              Validators.maxLength(ADDRESS_MAX_LENGTH),
+            ],
+          ],
         }),
       }),
 
@@ -192,6 +277,7 @@ export class CheckoutPageComponent implements OnInit {
       );
 
       this.commonService.goToLoginPage();
+
       return;
     }
 
@@ -228,6 +314,7 @@ export class CheckoutPageComponent implements OnInit {
       this.deliveryAddressForm.disable({
         emitEvent: false,
       });
+
       return;
     }
 

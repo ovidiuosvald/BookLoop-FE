@@ -13,8 +13,8 @@
     <span>Transport</span>
 
     <strong>
-      <ng-container *ngIf="cart.shippingPrice > 0; else freeShippingPrice">
-        {{ cart.shippingPrice | currency: "RON" : "symbol" : "1.2-2" }}
+      <ng-container *ngIf="shippingPrice > 0; else freeShippingPrice">
+        {{ shippingPrice | currency: "RON" : "symbol" : "1.2-2" }}
       </ng-container>
 
       <ng-template #freeShippingPrice> Gratuit </ng-template>
@@ -27,7 +27,7 @@
     <span>Total</span>
 
     <strong>
-      {{ cart.totalPrice | currency: "RON" : "symbol" : "1.2-2" }}
+      {{ totalPrice | currency: "RON" : "symbol" : "1.2-2" }}
     </strong>
   </div>
 
@@ -43,7 +43,7 @@
     {{ loading ? "Se plasează..." : "Plasează comanda" }}
   </button>
 
-  <ng-container *ngIf="cart.shippingPrice > 0; else freeShippingMessage">
+  <ng-container *ngIf="shippingPrice > 0; else freeShippingMessage">
     <div class="delivery-message">
       <mat-icon>local_shipping</mat-icon>
 
@@ -58,7 +58,7 @@
     <div class="delivery-message success">
       <mat-icon>check_circle</mat-icon>
 
-      <span> Transport gratuit inclus </span>
+      <span>Transport gratuit</span>
     </div>
   </ng-template>
 </mat-card>

@@ -33,10 +33,36 @@
 
         <app-checkout-payment [form]="paymentForm"></app-checkout-payment>
 
-        <mat-card class="terms-card" [formGroup]="checkoutForm">
-          <mat-checkbox color="primary" formControlName="termsAccepted">
-            Sunt de acord cu Termenii și condițiile BookLoop.
-          </mat-checkbox>
+        <mat-card
+          class="terms-card"
+          [formGroup]="checkoutForm"
+          [class.invalid]="
+            checkoutForm.get('termsAccepted')?.touched &&
+            checkoutForm.get('termsAccepted')?.invalid
+          "
+        >
+          <div class="terms-content">
+            <mat-icon class="terms-icon">verified_user</mat-icon>
+
+            <div class="terms-text">
+              <mat-checkbox color="primary" formControlName="termsAccepted">
+                Am citit și sunt de acord cu
+                <a
+                  routerLink="/terms-and-conditions"
+                  target="_blank"
+                  (click)="$event.stopPropagation()"
+                >
+                  Termenii și condițiile
+                </a>
+                BookLoop.
+              </mat-checkbox>
+
+              <p>
+                Prin plasarea comenzii confirm că informațiile introduse sunt
+                corecte.
+              </p>
+            </div>
+          </div>
 
           <mat-error
             *ngIf="
@@ -44,7 +70,7 @@
               checkoutForm.get('termsAccepted')?.hasError('required')
             "
           >
-            Trebuie să accepți termenii și condițiile.
+            Trebuie să accepți Termenii și condițiile pentru a plasa comanda.
           </mat-error>
         </mat-card>
       </main>
@@ -52,6 +78,7 @@
       <aside class="checkout-sidebar">
         <app-checkout-summary
           [cart]="currentCart"
+          [deliveryMethod]="deliveryForm.get('method')?.value"
           [loading]="isPlacingOrder"
           [canPlaceOrder]="checkoutForm.valid"
           (placeOrder)="placeOrder()"

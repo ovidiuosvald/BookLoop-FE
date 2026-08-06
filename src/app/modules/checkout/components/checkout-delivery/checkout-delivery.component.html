@@ -5,45 +5,53 @@
     description="Alege modalitatea prin care dorești să primești comanda."
   ></app-checkout-section-header>
 
-  <mat-radio-group
-    class="delivery-options"
-    [formGroup]="form"
-    formControlName="method"
-  >
-    <label
-      class="delivery-option"
-      [class.selected]="form.get('method')?.value === 'COURIER'"
-    >
-      <mat-radio-button color="primary" value="COURIER"></mat-radio-button>
+  <div [formGroup]="form">
+    <mat-radio-group class="delivery-options" formControlName="method">
+      <div
+        class="delivery-option"
+        [class.selected]="form.get('method')?.value === deliveryMethod.Courier"
+        (click)="selectMethod(deliveryMethod.Courier)"
+      >
+        <mat-radio-button
+          color="primary"
+          [value]="deliveryMethod.Courier"
+          (click)="$event.stopPropagation()"
+        ></mat-radio-button>
 
-      <div class="option-content">
-        <div class="option-title">
-          <mat-icon>local_shipping</mat-icon>
-          <span>Livrare prin curier</span>
+        <div class="option-content">
+          <div class="option-title">
+            <mat-icon>local_shipping</mat-icon>
+            <span>Livrare prin curier</span>
+          </div>
+
+          <p>Comanda va fi livrată la adresa selectată.</p>
         </div>
 
-        <p>Comanda va fi livrată la adresa selectată.</p>
+        <strong class="delivery-price">12,90 lei</strong>
       </div>
 
-      <strong class="delivery-price">12,90 lei</strong>
-    </label>
+      <div
+        class="delivery-option"
+        [class.selected]="form.get('method')?.value === deliveryMethod.Pickup"
+        (click)="selectMethod(deliveryMethod.Pickup)"
+      >
+        <mat-radio-button
+          color="primary"
+          [value]="deliveryMethod.Pickup"
+          (click)="$event.stopPropagation()"
+        ></mat-radio-button>
 
-    <label
-      class="delivery-option"
-      [class.selected]="form.get('method')?.value === 'PICKUP'"
-    >
-      <mat-radio-button color="primary" value="PICKUP"></mat-radio-button>
+        <div class="option-content">
+          <div class="option-title">
+            <mat-icon>storefront</mat-icon>
+            <span>Ridicare din librărie</span>
+          </div>
 
-      <div class="option-content">
-        <div class="option-title">
-          <mat-icon>storefront</mat-icon>
-          <span>Ridicare din librărie</span>
+          <p>BookLoop, Str. Matei Corvin nr. 46, Oradea.</p>
         </div>
 
-        <p>BookLoop, Str. Matei Corvin nr. 46, Oradea.</p>
+        <strong class="delivery-price free">Gratuit</strong>
       </div>
-
-      <strong class="delivery-price free">Gratuit</strong>
-    </label>
-  </mat-radio-group>
+    </mat-radio-group>
+  </div>
 </mat-card>

@@ -7,11 +7,16 @@
 
   <div [formGroup]="form">
     <mat-radio-group class="billing-options" formControlName="type">
-      <label
+      <div
         class="billing-option"
         [class.selected]="form.get('type')?.value === 'INDIVIDUAL'"
+        (click)="selectBillingType('INDIVIDUAL')"
       >
-        <mat-radio-button color="primary" value="INDIVIDUAL"></mat-radio-button>
+        <mat-radio-button
+          color="primary"
+          value="INDIVIDUAL"
+          (click)="$event.stopPropagation()"
+        ></mat-radio-button>
 
         <div class="option-content">
           <div class="option-title">
@@ -21,13 +26,18 @@
 
           <p>Factura va fi emisă folosind datele personale.</p>
         </div>
-      </label>
+      </div>
 
-      <label
+      <div
         class="billing-option"
         [class.selected]="form.get('type')?.value === 'COMPANY'"
+        (click)="selectBillingType('COMPANY')"
       >
-        <mat-radio-button color="primary" value="COMPANY"></mat-radio-button>
+        <mat-radio-button
+          color="primary"
+          value="COMPANY"
+          (click)="$event.stopPropagation()"
+        ></mat-radio-button>
 
         <div class="option-content">
           <div class="option-title">
@@ -37,7 +47,7 @@
 
           <p>Completează datele companiei pentru facturare.</p>
         </div>
-      </label>
+      </div>
     </mat-radio-group>
 
     <div *ngIf="!isCompany" class="individual-info">
@@ -55,84 +65,118 @@
       <div class="form-grid">
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Denumire companie</mat-label>
-          <input matInput formControlName="companyName" />
 
-          <mat-error
-            *ngIf="form.get('companyDetails.companyName')?.hasError('required')"
-          >
-            Denumirea companiei este obligatorie.
+          <input
+            matInput
+            type="text"
+            formControlName="companyName"
+            autocomplete="organization"
+          />
+
+          <mat-error *ngIf="shouldShowError('companyName')">
+            {{ getError("companyName") }}
           </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>CUI</mat-label>
-          <input matInput formControlName="cui" />
 
-          <mat-error
-            *ngIf="form.get('companyDetails.cui')?.hasError('required')"
-          >
-            CUI-ul este obligatoriu.
+          <input matInput type="text" formControlName="cui" />
+
+          <mat-error *ngIf="shouldShowError('cui')">
+            {{ getError("cui") }}
           </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Nr. Registrul Comerțului</mat-label>
-          <input matInput formControlName="registrationNumber" />
+
+          <input matInput type="text" formControlName="registrationNumber" />
+
+          <mat-error *ngIf="shouldShowError('registrationNumber')">
+            {{ getError("registrationNumber") }}
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Bancă</mat-label>
-          <input matInput formControlName="bank" />
+
+          <input matInput type="text" formControlName="bank" />
+
+          <mat-error *ngIf="shouldShowError('bank')">
+            {{ getError("bank") }}
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Cont bancar</mat-label>
-          <input matInput formControlName="bankAccount" />
+
+          <input
+            matInput
+            type="text"
+            formControlName="bankAccount"
+            placeholder="RO49AAAA1B31007593840000"
+          />
+
+          <mat-error *ngIf="shouldShowError('bankAccount')">
+            {{ getError("bankAccount") }}
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Țară</mat-label>
+
           <mat-select formControlName="country">
-            <mat-option value="România"> România </mat-option>
+            <mat-option value="România">România</mat-option>
           </mat-select>
 
-          <mat-error
-            *ngIf="form.get('companyDetails.country')?.hasError('required')"
-          >
-            Țara este obligatorie.
+          <mat-error *ngIf="shouldShowError('country')">
+            {{ getError("country") }}
           </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Județ</mat-label>
-          <input matInput formControlName="county" />
 
-          <mat-error
-            *ngIf="form.get('companyDetails.county')?.hasError('required')"
-          >
-            Județul este obligatoriu.
+          <input
+            matInput
+            type="text"
+            formControlName="county"
+            autocomplete="address-level1"
+          />
+
+          <mat-error *ngIf="shouldShowError('county')">
+            {{ getError("county") }}
           </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Oraș</mat-label>
-          <input matInput formControlName="city" />
 
-          <mat-error
-            *ngIf="form.get('companyDetails.city')?.hasError('required')"
-          >
-            Orașul este obligatoriu.
+          <input
+            matInput
+            type="text"
+            formControlName="city"
+            autocomplete="address-level2"
+          />
+
+          <mat-error *ngIf="shouldShowError('city')">
+            {{ getError("city") }}
           </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Adresă completă</mat-label>
-          <input matInput formControlName="addressLine" />
 
-          <mat-error
-            *ngIf="form.get('companyDetails.addressLine')?.hasError('required')"
-          >
-            Adresa companiei este obligatorie.
+          <input
+            matInput
+            type="text"
+            formControlName="addressLine"
+            autocomplete="street-address"
+          />
+
+          <mat-error *ngIf="shouldShowError('addressLine')">
+            {{ getError("addressLine") }}
           </mat-error>
         </mat-form-field>
       </div>

@@ -1,0 +1,239 @@
+<div class="terms-page">
+  <button mat-button type="button" class="back-button" routerLink="/checkout">
+    <mat-icon>arrow_back</mat-icon>
+    Înapoi la checkout
+  </button>
+
+  <header class="page-header">
+    <div class="header-icon">
+      <mat-icon>gavel</mat-icon>
+    </div>
+
+    <div>
+      <h1>Termeni și condiții</h1>
+
+      <p>Ultima actualizare: {{ lastUpdated }}</p>
+    </div>
+  </header>
+
+  <mat-card class="terms-card">
+    <div class="notice">
+      <mat-icon>info</mat-icon>
+
+      <p>
+        Această pagină face parte din aplicația demonstrativă BookLoop,
+        realizată în cadrul unui proiect de licență.
+      </p>
+    </div>
+
+    <section>
+      <h2>1. Informații generale</h2>
+
+      <p>
+        BookLoop este o aplicație web destinată prezentării și comercializării
+        online a cărților. Prin accesarea și utilizarea aplicației, utilizatorul
+        confirmă că a citit și acceptă termenii și condițiile prezentate în
+        această pagină.
+      </p>
+
+      <p>
+        Funcționalitățile disponibile includ consultarea catalogului de cărți,
+        căutarea produselor, gestionarea listei de favorite, adăugarea
+        produselor în coș și plasarea comenzilor.
+      </p>
+    </section>
+
+    <section>
+      <h2>2. Crearea și utilizarea contului</h2>
+
+      <p>
+        Pentru utilizarea anumitor funcționalități, precum gestionarea
+        favoritelor, accesarea coșului și plasarea comenzilor, este necesară
+        autentificarea într-un cont BookLoop.
+      </p>
+
+      <p>
+        Utilizatorul este responsabil pentru corectitudinea datelor introduse și
+        pentru păstrarea confidențialității datelor de autentificare. Utilizarea
+        contului de către alte persoane se realizează pe răspunderea titularului
+        acestuia.
+      </p>
+    </section>
+
+    <section>
+      <h2>3. Produsele și disponibilitatea stocului</h2>
+
+      <p>
+        BookLoop afișează pentru fiecare carte informații precum titlul,
+        autorul, descrierea, prețul, imaginea de copertă și disponibilitatea
+        produsului.
+      </p>
+
+      <p>
+        Adăugarea unei cărți în coș nu reprezintă rezervarea produsului.
+        Disponibilitatea stocului este verificată din nou în momentul plasării
+        comenzii.
+      </p>
+
+      <p>
+        În cazul în care cantitatea solicitată nu mai este disponibilă,
+        utilizatorul va fi informat și comanda nu va putea fi finalizată până la
+        actualizarea cantității.
+      </p>
+    </section>
+
+    <section>
+      <h2>4. Plasarea comenzilor</h2>
+
+      <p>
+        O comandă este considerată plasată după completarea datelor necesare,
+        selectarea metodei de livrare și a metodei de plată, acceptarea
+        termenilor și apăsarea butonului „Plasează comanda”.
+      </p>
+
+      <p>
+        După plasarea comenzii, utilizatorul primește o confirmare în aplicație
+        și poate consulta ulterior detaliile comenzii în secțiunea „Comenzile
+        mele”.
+      </p>
+
+      <p>
+        Prețurile, cantitățile și datele de livrare sunt salvate la momentul
+        plasării comenzii, pentru păstrarea corectă a istoricului.
+      </p>
+    </section>
+
+    <section>
+      <h2>5. Livrarea</h2>
+
+      <p>
+        Utilizatorul poate selecta una dintre metodele de livrare disponibile:
+      </p>
+
+      <ul>
+        <li>livrare prin curier la adresa indicată;</li>
+        <li>ridicare personală din locația BookLoop din Oradea.</li>
+      </ul>
+
+      <p>
+        Pentru livrarea prin curier poate fi aplicat un cost de transport.
+        Comenzile care depășesc pragul afișat în pagina de checkout beneficiază
+        de transport gratuit.
+      </p>
+
+      <p>Ridicarea personală din librărie este gratuită.</p>
+    </section>
+
+    <section>
+      <h2>6. Modalități de plată</h2>
+
+      <p>În aplicație pot fi afișate următoarele metode de plată:</p>
+
+      <ul>
+        <li>plată ramburs la primirea comenzii;</li>
+        <li>transfer bancar;</li>
+        <li>
+          plată online cu cardul, atunci când această funcționalitate este
+          disponibilă.
+        </li>
+      </ul>
+
+      <p>
+        Metodele indisponibile nu pot fi selectate pentru finalizarea unei
+        comenzi.
+      </p>
+    </section>
+
+    <section>
+      <h2>7. Prețuri și costuri</h2>
+
+      <p>
+        Prețurile afișate în aplicație sunt exprimate în lei. Totalul comenzii
+        este alcătuit din valoarea produselor și, după caz, costul livrării.
+      </p>
+
+      <p>
+        Valoarea finală este afișată în sumarul comenzii înainte de confirmarea
+        acesteia.
+      </p>
+    </section>
+
+    <section>
+      <h2>8. Anularea și returnarea produselor</h2>
+
+      <p>
+        Pentru o aplicație comercială reală, anularea și returnarea produselor
+        trebuie realizate în conformitate cu legislația aplicabilă și cu
+        politica de retur a comerciantului.
+      </p>
+
+      <p>
+        În versiunea demonstrativă BookLoop, fluxul complet de retur și
+        rambursare poate să nu fie implementat.
+      </p>
+    </section>
+
+    <section>
+      <h2>9. Datele personale</h2>
+
+      <p>
+        Datele furnizate de utilizator sunt utilizate pentru administrarea
+        contului, gestionarea adreselor, procesarea comenzilor și afișarea
+        istoricului acestora.
+      </p>
+
+      <p>
+        Utilizatorul trebuie să introducă informații corecte și actualizate.
+        Datele nu trebuie utilizate în alte scopuri decât cele necesare
+        funcționării aplicației.
+      </p>
+    </section>
+
+    <section>
+      <h2>10. Limitarea răspunderii</h2>
+
+      <p>
+        BookLoop este o aplicație demonstrativă. Pot exista funcționalități
+        aflate în dezvoltare, informații fictive sau servicii externe care nu
+        sunt integrate într-un mediu de producție.
+      </p>
+
+      <p>
+        Conținutul aplicației este utilizat exclusiv în scop educațional și
+        demonstrativ.
+      </p>
+    </section>
+
+    <section>
+      <h2>11. Modificarea termenilor</h2>
+
+      <p>
+        Termenii și condițiile pot fi actualizați atunci când sunt adăugate
+        funcționalități noi sau sunt modificate serviciile existente.
+      </p>
+
+      <p>Data ultimei actualizări este afișată în partea de sus a paginii.</p>
+    </section>
+
+    <section>
+      <h2>12. Contact</h2>
+
+      <p>
+        Pentru întrebări referitoare la utilizarea aplicației BookLoop, poate fi
+        utilizată secțiunea de contact disponibilă în aplicație.
+      </p>
+
+      <div class="contact-box">
+        <div>
+          <mat-icon>location_on</mat-icon>
+          <span>Str. Matei Corvin nr. 46, Oradea, Bihor</span>
+        </div>
+
+        <div>
+          <mat-icon>email</mat-icon>
+          <span>contact@bookloop.ro</span>
+        </div>
+      </div>
+    </section>
+  </mat-card>
+</div>
