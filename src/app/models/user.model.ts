@@ -1,3 +1,5 @@
+import { UserRole } from '../enums/user-role.enum';
+
 export interface UserInterface {
   userId?: number;
   firstName?: string;
@@ -6,4 +8,5 @@ export interface UserInterface {
   password?: string;
   newPassword?: string;
   creationDate?: Date;
+  role?: UserRole;
 }

@@ -46,7 +46,7 @@
 
   &.selected {
     background: rgba(103, 58, 183, 0.035);
-    border-color: #673ab7;
+    border-color: var(--deep-purple);
   }
 }
 
@@ -67,7 +67,7 @@
     width: 22px;
     height: 22px;
 
-    color: #673ab7;
+    color: var(--deep-purple);
     font-size: 22px;
   }
 }

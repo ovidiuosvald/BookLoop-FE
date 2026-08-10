@@ -22,7 +22,11 @@
         [attr.aria-label]="'Vezi detalii pentru ' + book.bookName"
         (click)="goToSpecificBook(book.bookId)"
       >
-        <img [src]="book.promoImageUrl" [alt]="book.bookName" />
+        <img
+          *ngIf="book.promoImageUrl"
+          [src]="getImageUrl(book.promoImageUrl)"
+          [alt]="book.bookName"
+        />
       </button>
     </div>
   </div>

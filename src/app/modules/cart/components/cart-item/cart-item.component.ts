@@ -22,6 +22,10 @@ export class CartItemComponent {
 
   constructor(private readonly commonService: CommonService) {}
 
+  getImageUrl(imageUrl?: string): string {
+    return this.commonService.getImageUrl(imageUrl);
+  }
+
   onRemove(): void {
     this.remove.emit(this.item.bookId);
   }

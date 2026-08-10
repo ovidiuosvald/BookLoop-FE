@@ -1,0 +1,244 @@
+<div class="order-details-page">
+  <button mat-button type="button" class="back-button" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+    Înapoi la comenzi
+  </button>
+
+  <div *ngIf="isLoading" class="loading-container">
+    Se încarcă detaliile comenzii...
+  </div>
+
+  <ng-container *ngIf="!isLoading && order as currentOrder">
+    <header class="page-header">
+      <div class="header-main">
+        <div>
+          <span class="order-number">
+            <mat-icon>inventory_2</mat-icon>
+            Comanda #{{ currentOrder.orderId }}
+          </span>
+
+          <h1>Detalii comandă</h1>
+
+          <p>
+            {{ currentOrder.creationDate | date: "dd.MM.yyyy, HH:mm" }}
+            •
+            {{ getDeliveryLabel(currentOrder.deliveryMethod) }}
+          </p>
+        </div>
+
+        <span
+          class="status-badge"
+          [ngClass]="getStatusClass(currentOrder.status)"
+        >
+          {{ getStatusLabel(currentOrder.status) }}
+        </span>
+      </div>
+    </header>
+
+    <div class="details-layout">
+      <main class="details-main">
+        <section class="products-section">
+          <div class="section-title">
+            <div>
+              <h2>Produsele comandate</h2>
+
+              <p>
+                {{ currentOrder.items.length }}
+                {{ currentOrder.items.length === 1 ? "titlu" : "titluri" }}
+                în această comandă
+              </p>
+            </div>
+          </div>
+
+          <div class="products-list">
+            <article
+              class="product-card"
+              *ngFor="let item of currentOrder.items"
+            >
+              <div class="cover-wrapper">
+                <img
+                  *ngIf="item.coverUrl; else coverPlaceholder"
+                  class="book-cover"
+                  [src]="getImageUrl(item.coverUrl)"
+                  [alt]="item.bookName"
+                />
+
+                <ng-template #coverPlaceholder>
+                  <div class="book-cover cover-placeholder">
+                    <mat-icon>menu_book</mat-icon>
+                  </div>
+                </ng-template>
+              </div>
+
+              <div class="product-info">
+                <h3>{{ item.bookName }}</h3>
+
+                <p class="product-price">
+                  {{ item.unitPrice | currency: "RON" : "symbol" : "1.2-2" }}
+                  / exemplar
+                </p>
+
+                <span class="quantity-badge">
+                  {{ item.quantity }}
+                  {{ item.quantity === 1 ? "exemplar" : "exemplare" }}
+                </span>
+              </div>
+
+              <div class="product-total">
+                <span>Subtotal</span>
+
+                <strong>
+                  {{ item.subtotal | currency: "RON" : "symbol" : "1.2-2" }}
+                </strong>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="order-information">
+          <h2>Informații comandă</h2>
+
+          <div class="information-grid">
+            <article class="info-card">
+              <div class="info-icon">
+                <mat-icon>
+                  {{ getDeliveryIcon(currentOrder.deliveryMethod) }}
+                </mat-icon>
+              </div>
+
+              <div class="info-content">
+                <span class="info-label">Livrare</span>
+
+                <strong>
+                  {{ getDeliveryLabel(currentOrder.deliveryMethod) }}
+                </strong>
+
+                <p>
+                  {{ currentOrder.deliveryAddress.firstName }}
+                  {{ currentOrder.deliveryAddress.lastName }}
+                </p>
+
+                <p>
+                  {{ currentOrder.deliveryAddress.phoneNumber }}
+                </p>
+
+                <p>
+                  {{ currentOrder.deliveryAddress.addressLine }},
+                  {{ currentOrder.deliveryAddress.city }},
+                  {{ currentOrder.deliveryAddress.county }}
+                </p>
+              </div>
+            </article>
+
+            <article class="info-card">
+              <div class="info-icon">
+                <mat-icon>payments</mat-icon>
+              </div>
+
+              <div class="info-content">
+                <span class="info-label">Plată</span>
+
+                <strong>
+                  {{ getPaymentLabel(currentOrder.paymentMethod) }}
+                </strong>
+
+                <p>
+                  Status comandă:
+                  {{ getStatusLabel(currentOrder.status) }}
+                </p>
+              </div>
+            </article>
+
+            <article class="info-card">
+              <div class="info-icon">
+                <mat-icon>receipt_long</mat-icon>
+              </div>
+
+              <div class="info-content">
+                <span class="info-label">Facturare</span>
+
+                <strong>
+                  {{ getBillingLabel(currentOrder.billingType) }}
+                </strong>
+
+                <ng-container
+                  *ngIf="
+                    currentOrder.billingType === billingType.Company &&
+                    currentOrder.companyDetails as company
+                  "
+                >
+                  <p>{{ company.companyName }}</p>
+                  <p>CUI: {{ company.cui }}</p>
+
+                  <p *ngIf="company.registrationNumber">
+                    {{ company.registrationNumber }}
+                  </p>
+
+                  <p>
+                    {{ company.addressLine }}, {{ company.city }},
+                    {{ company.county }}
+                  </p>
+                </ng-container>
+
+                <p *ngIf="currentOrder.billingType === billingType.Individual">
+                  Aceleași date ca la livrare
+                </p>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <aside class="summary-sidebar">
+        <mat-card class="summary-card">
+          <h2>Sumar comandă</h2>
+
+          <div class="summary-row">
+            <span>Produse</span>
+
+            <strong>
+              {{ currentOrder.subtotal | currency: "RON" : "symbol" : "1.2-2" }}
+            </strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Transport</span>
+
+            <strong>
+              <ng-container
+                *ngIf="currentOrder.shippingCost > 0; else freeShipping"
+              >
+                {{
+                  currentOrder.shippingCost
+                    | currency: "RON" : "symbol" : "1.2-2"
+                }}
+              </ng-container>
+
+              <ng-template #freeShipping> Gratuit </ng-template>
+            </strong>
+          </div>
+
+          <mat-divider></mat-divider>
+
+          <div class="summary-row total">
+            <span>Total</span>
+
+            <strong>
+              {{
+                currentOrder.totalPrice | currency: "RON" : "symbol" : "1.2-2"
+              }}
+            </strong>
+          </div>
+
+          <div class="summary-status">
+            <mat-icon>check_circle</mat-icon>
+
+            <span>
+              {{ getStatusLabel(currentOrder.status) }}
+            </span>
+          </div>
+        </mat-card>
+      </aside>
+    </div>
+  </ng-container>
+</div>

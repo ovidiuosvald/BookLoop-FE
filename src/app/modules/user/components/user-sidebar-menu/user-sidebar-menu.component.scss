@@ -45,7 +45,7 @@
 
   &.active {
     background: #ede4ff;
-    color: #673ab7;
+    color: var(--deep-purple);
     font-weight: 600;
 
     &::before {
@@ -58,7 +58,7 @@
       width: 4px;
       height: 100%;
 
-      background: #673ab7;
+      background: var(--deep-purple);
     }
   }
 

@@ -27,7 +27,9 @@ export class CategoryService {
     );
   }
 
-  deleteCategory(categoryId: number): Observable<void> {
-    return this.httpClient.delete<void>(`${this.apiUrl}/${categoryId}`);
+  deleteCategory(categoryId: string): Observable<any> {
+    return this.httpClient.delete(`${this.apiUrl}/delete/${categoryId}`, {
+      responseType: 'text',
+    });
   }
 }

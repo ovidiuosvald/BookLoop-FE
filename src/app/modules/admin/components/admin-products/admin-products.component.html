@@ -1,0 +1,223 @@
+<div class="products-page">
+  <div class="page-header">
+    <div>
+      <h1>Produse</h1>
+
+      <p>Gestionează produsele disponibile în BookLoop.</p>
+    </div>
+
+    <button
+      mat-flat-button
+      type="button"
+      class="admin-primary-button"
+      routerLink="/admin/products/new"
+    >
+      <mat-icon>add</mat-icon>
+      Adaugă produs
+    </button>
+  </div>
+
+  <div class="toolbar">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Caută produse</mat-label>
+
+      <mat-icon matPrefix> search </mat-icon>
+
+      <input
+        matInput
+        type="text"
+        [formControl]="searchControl"
+        placeholder="Titlu sau autor"
+      />
+
+      <button
+        *ngIf="searchControl.value"
+        mat-icon-button
+        matSuffix
+        type="button"
+        aria-label="Șterge căutarea"
+        (click)="clearSearch()"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <span class="results-count">
+      {{ totalElements }}
+      {{ totalElements === 1 ? "produs" : "produse" }}
+    </span>
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+    <div class="products-card" *ngIf="products.length > 0; else emptyState">
+      <div
+        class="products-table"
+        matSort
+        [matSortActive]="sortBy"
+        [matSortDirection]="sortDirection"
+        (matSortChange)="onSortChange($event)"
+      >
+        <div class="table-header">
+          <div mat-sort-header="bookName">Carte</div>
+
+          <div mat-sort-header="category.categoryName">Categorie</div>
+
+          <div mat-sort-header="currentPrice">Preț</div>
+
+          <div mat-sort-header="quantity">Stoc</div>
+
+          <div>Status</div>
+
+          <div mat-sort-header="lastModifiedDate">Ultima modificare</div>
+
+          <div class="actions-header">Acțiuni</div>
+        </div>
+
+        <article
+          class="product-row"
+          *ngFor="let product of products; trackBy: trackByBookId"
+        >
+          <div class="book-cell">
+            <img
+              *ngIf="product.coverUrl; else coverPlaceholder"
+              [src]="getImageUrl(product.coverUrl)"
+              [alt]="product.bookName"
+            />
+
+            <ng-template #coverPlaceholder>
+              <div class="cover-placeholder">
+                <mat-icon>menu_book</mat-icon>
+              </div>
+            </ng-template>
+
+            <div class="book-info">
+              <strong>
+                {{ product.bookName }}
+              </strong>
+
+              <span>
+                {{ product.author }}
+              </span>
+
+              <div class="book-badges">
+                <span
+                  class="flag-badge bestseller"
+                  *ngIf="product.isBestseller"
+                >
+                  Bestseller
+                </span>
+
+                <span class="flag-badge new-book" *ngIf="product.isNew">
+                  Nou
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="category-cell" data-label="Categorie">
+            {{ getCategoryName(product) }}
+          </div>
+
+          <div class="price-cell" data-label="Preț">
+            {{ product.currentPrice | currency: "RON" : "symbol" : "1.2-2" }}
+          </div>
+
+          <div class="stock-cell" data-label="Stoc">
+            <strong>
+              {{ product.quantity }}
+            </strong>
+
+            <span>buc.</span>
+          </div>
+
+          <div class="status-cell" data-label="Status">
+            <span
+              class="stock-badge"
+              [ngClass]="getStockClass(product.quantity)"
+            >
+              {{ getStockLabel(product.quantity) }}
+            </span>
+          </div>
+
+          <div class="modified-cell" data-label="Ultima modificare">
+            <ng-container *ngIf="product.lastModifiedDate; else noModifiedDate">
+              {{ product.lastModifiedDate | date: "dd.MM.yyyy, HH:mm" }}
+            </ng-container>
+
+            <ng-template #noModifiedDate> - </ng-template>
+          </div>
+
+          <div class="actions-cell">
+            <button
+              mat-icon-button
+              type="button"
+              matTooltip="Editează produsul"
+              [routerLink]="['/admin/products', product.bookId, 'edit']"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button
+              mat-icon-button
+              type="button"
+              class="delete-button"
+              matTooltip="Șterge produsul"
+              (click)="openDeleteDialog(product)"
+            >
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </div>
+        </article>
+      </div>
+
+      <mat-paginator
+        [length]="totalElements"
+        [pageIndex]="pageIndex"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions"
+        [showFirstLastButtons]="true"
+        (page)="onPageChange($event)"
+      >
+      </mat-paginator>
+    </div>
+  </ng-container>
+
+  <ng-template #emptyState>
+    <div class="empty-state">
+      <mat-icon>
+        {{ searchControl.value ? "search_off" : "inventory_2" }}
+      </mat-icon>
+
+      <h2>
+        {{ searchControl.value ? "Nu am găsit produse" : "Nu există produse" }}
+      </h2>
+
+      <p *ngIf="searchControl.value">
+        Nu există produse pentru căutarea „{{ searchControl.value }}”.
+      </p>
+
+      <p *ngIf="!searchControl.value">Adaugă primul produs în BookLoop.</p>
+
+      <button
+        *ngIf="searchControl.value"
+        mat-stroked-button
+        type="button"
+        class="clear-button"
+        (click)="clearSearch()"
+      >
+        Șterge căutarea
+      </button>
+
+      <button
+        *ngIf="!searchControl.value"
+        mat-flat-button
+        type="button"
+        class="admin-primary-button"
+        routerLink="/admin/products/new"
+      >
+        <mat-icon>add</mat-icon>
+        Adaugă produs
+      </button>
+    </div>
+  </ng-template>
+</div>

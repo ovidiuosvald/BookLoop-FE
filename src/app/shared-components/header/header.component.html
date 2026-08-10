@@ -64,6 +64,18 @@
 
     <mat-menu #userMenu="matMenu">
       <ng-container *ngIf="isUserLoggedIn$ | async; else guestMenu">
+        <button
+          *ngIf="isAdmin"
+          mat-menu-item
+          class="admin-dashboard-menu-item"
+          (click)="goToAdminDashboard()"
+        >
+          <mat-icon>admin_panel_settings</mat-icon>
+          <span>Panou de administrare</span>
+        </button>
+
+        <mat-divider *ngIf="isAdmin"></mat-divider>
+
         <button mat-menu-item (click)="goToProfile()">
           <mat-icon>person_outline</mat-icon>
           <span>Datele mele</span>

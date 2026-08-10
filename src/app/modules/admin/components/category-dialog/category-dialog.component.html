@@ -1,0 +1,49 @@
+<div class="category-dialog">
+  <div class="dialog-header">
+    <div class="dialog-icon">
+      <mat-icon>
+        {{ isEditMode ? "edit" : "add" }}
+      </mat-icon>
+    </div>
+
+    <div>
+      <h2>
+        {{ isEditMode ? "Editează categoria" : "Categorie nouă" }}
+      </h2>
+
+      <p>
+        {{
+          isEditMode
+            ? "Modifică numele categoriei selectate."
+            : "Introdu numele noii categorii."
+        }}
+      </p>
+    </div>
+  </div>
+
+  <form [formGroup]="categoryForm" (ngSubmit)="save()">
+    <mat-form-field appearance="outline">
+      <mat-label>Nume categorie</mat-label>
+
+      <input matInput type="text" formControlName="categoryName" />
+
+      <mat-error *ngIf="categoryForm.get('categoryName')?.hasError('required')">
+        Numele categoriei este obligatoriu.
+      </mat-error>
+    </mat-form-field>
+
+    <div class="dialog-actions">
+      <button mat-stroked-button type="button" (click)="cancel()">
+        Anulează
+      </button>
+
+      <button mat-flat-button type="submit" class="primary-button">
+        <mat-icon>
+          {{ isEditMode ? "save" : "check" }}
+        </mat-icon>
+
+        {{ isEditMode ? "Salvează modificările" : "Creează categoria" }}
+      </button>
+    </div>
+  </form>
+</div>

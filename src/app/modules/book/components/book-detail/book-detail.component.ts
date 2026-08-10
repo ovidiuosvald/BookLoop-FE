@@ -59,6 +59,10 @@ export class BookDetailComponent implements OnInit {
     });
   }
 
+  public getImageUrl(imageUrl?: string): string {
+    return this.commonService.getImageUrl(imageUrl);
+  }
+
   public toggleFavorite(book: Book): void {
     const userId = this.userService.authenticatedUser.userId;
 

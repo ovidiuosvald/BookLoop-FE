@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TermsAndConditionsComponent } from './pages/terms-and-conditions/terms-and-conditions.component';
+import { AdminGuard } from './guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -8,6 +9,14 @@ const routes: Routes = [
     loadChildren: () =>
       import('./modules/authentication/authentication.module').then(
         (module) => module.AuthenticationModule,
+      ),
+  },
+  {
+    path: 'admin',
+    canActivate: [AdminGuard],
+    loadChildren: () =>
+      import('./modules/admin/admin.module').then(
+        (module) => module.AdminModule,
       ),
   },
   {

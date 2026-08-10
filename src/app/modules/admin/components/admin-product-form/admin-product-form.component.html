@@ -1,0 +1,401 @@
+<form class="product-form-page" [formGroup]="productForm" (ngSubmit)="save()">
+  <ng-container *ngIf="!isLoading">
+    <div class="main-layout">
+      <!-- LEFT COLUMN -->
+      <div class="left-column">
+        <!-- PRODUCT INFO -->
+        <section class="form-card product-info-card">
+          <div class="section-header">
+            <div class="section-icon">
+              <mat-icon>article</mat-icon>
+            </div>
+
+            <div>
+              <h2>Informații produs</h2>
+              <p>Datele principale ale cărții.</p>
+            </div>
+          </div>
+
+          <div class="product-info-fields">
+            <mat-form-field appearance="outline">
+              <mat-label>Titlu</mat-label>
+
+              <input matInput type="text" formControlName="bookName" />
+
+              <mat-error
+                *ngIf="productForm.get('bookName')?.hasError('required')"
+              >
+                Titlul este obligatoriu.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Autor</mat-label>
+
+              <input matInput type="text" formControlName="author" />
+
+              <mat-error
+                *ngIf="productForm.get('author')?.hasError('required')"
+              >
+                Autorul este obligatoriu.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Editura</mat-label>
+
+              <input matInput type="text" formControlName="publisher" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Categorie</mat-label>
+
+              <mat-select
+                formControlName="categoryId"
+                [disableOptionCentering]="true"
+                panelClass="category-select-panel"
+              >
+                <mat-option
+                  *ngFor="let category of categories"
+                  [value]="category.categoryId"
+                >
+                  {{ category.categoryName }}
+                </mat-option>
+              </mat-select>
+
+              <mat-error
+                *ngIf="productForm.get('categoryId')?.hasError('required')"
+              >
+                Categoria este obligatorie.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>An apariție</mat-label>
+
+              <input
+                matInput
+                type="number"
+                min="1"
+                formControlName="yearOfPublication"
+              />
+
+              <mat-error
+                *ngIf="productForm.get('yearOfPublication')?.hasError('min')"
+              >
+                Introdu un an valid.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Număr pagini</mat-label>
+
+              <input
+                matInput
+                type="number"
+                min="1"
+                formControlName="numberOfPages"
+              />
+
+              <mat-error
+                *ngIf="productForm.get('numberOfPages')?.hasError('min')"
+              >
+                Numărul de pagini trebuie să fie mai mare decât 0.
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </section>
+
+        <!-- PRICE + STOCK -->
+        <section class="form-card price-stock-card">
+          <div class="section-header compact-header">
+            <div class="section-icon">
+              <mat-icon>payments</mat-icon>
+            </div>
+
+            <div>
+              <h2>Preț și stoc</h2>
+              <p>Prețul și disponibilitatea produsului.</p>
+            </div>
+          </div>
+
+          <div class="price-stock-grid">
+            <mat-form-field appearance="outline">
+              <mat-label>Preț</mat-label>
+
+              <input
+                matInput
+                type="number"
+                min="0"
+                step="0.01"
+                formControlName="currentPrice"
+              />
+
+              <span matSuffix class="field-unit"> RON </span>
+
+              <mat-error
+                *ngIf="productForm.get('currentPrice')?.hasError('required')"
+              >
+                Prețul este obligatoriu.
+              </mat-error>
+
+              <mat-error
+                *ngIf="productForm.get('currentPrice')?.hasError('min')"
+              >
+                Prețul nu poate fi negativ.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Stoc</mat-label>
+
+              <input
+                matInput
+                type="number"
+                min="0"
+                formControlName="quantity"
+              />
+
+              <span matSuffix class="field-unit"> buc. </span>
+
+              <mat-error
+                *ngIf="productForm.get('quantity')?.hasError('required')"
+              >
+                Stocul este obligatoriu.
+              </mat-error>
+
+              <mat-error *ngIf="productForm.get('quantity')?.hasError('min')">
+                Stocul nu poate fi negativ.
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </section>
+
+        <!-- TAGS -->
+        <section class="form-card tags-card">
+          <div class="section-header compact-header">
+            <div class="section-icon">
+              <mat-icon>sell</mat-icon>
+            </div>
+
+            <div>
+              <h2>Etichete</h2>
+              <p>Evidențiere în catalog.</p>
+            </div>
+          </div>
+
+          <div class="tags-options">
+            <mat-checkbox formControlName="isNew"> Produs nou </mat-checkbox>
+
+            <mat-checkbox formControlName="isBestseller">
+              Bestseller
+            </mat-checkbox>
+          </div>
+        </section>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="right-column">
+        <!-- DESCRIPTION -->
+        <section class="form-card description-card">
+          <div class="section-header description-header">
+            <div class="section-heading">
+              <div class="section-icon">
+                <mat-icon>description</mat-icon>
+              </div>
+
+              <div>
+                <h2>Descriere</h2>
+                <p>Descrierea afișată pe pagina produsului.</p>
+              </div>
+            </div>
+
+            <button
+              mat-icon-button
+              type="button"
+              class="copy-button"
+              aria-label="Copiază descrierea"
+              matTooltip="Copiază descrierea"
+              (click)="copyDescription()"
+            >
+              <mat-icon>content_copy</mat-icon>
+            </button>
+          </div>
+
+          <mat-form-field appearance="outline" class="description-field">
+            <mat-label>Despre carte</mat-label>
+
+            <textarea
+              matInput
+              rows="12"
+              formControlName="description"
+            ></textarea>
+
+            <mat-error
+              *ngIf="productForm.get('description')?.hasError('required')"
+            >
+              Descrierea este obligatorie.
+            </mat-error>
+          </mat-form-field>
+        </section>
+
+        <!-- COVER -->
+        <section class="form-card cover-card">
+          <div class="section-header">
+            <div class="section-icon">
+              <mat-icon>image</mat-icon>
+            </div>
+
+            <div>
+              <h2>Copertă</h2>
+              <p>Imaginea principală a produsului.</p>
+            </div>
+          </div>
+
+          <div class="cover-content">
+            <div class="cover-preview">
+              <img
+                *ngIf="coverPreview; else noCover"
+                [src]="coverPreview"
+                alt="Previzualizare copertă"
+              />
+
+              <ng-template #noCover>
+                <div class="image-placeholder">
+                  <mat-icon>menu_book</mat-icon>
+                  <span>Nicio copertă selectată</span>
+                </div>
+              </ng-template>
+            </div>
+
+            <div class="cover-controls">
+              <mat-icon>upload_file</mat-icon>
+
+              <strong>
+                {{ coverPreview ? "Înlocuiește coperta" : "Adaugă o copertă" }}
+              </strong>
+
+              <span class="upload-hint">
+                JPG, JPEG sau PNG · maximum 5 MB
+              </span>
+
+              <div class="cover-actions">
+                <label
+                  class="upload-button compact-upload-button cover-upload-button"
+                >
+                  <mat-icon>upload</mat-icon>
+
+                  {{ coverPreview ? "Schimbă coperta" : "Alege imaginea" }}
+
+                  <input
+                    type="file"
+                    accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                    (change)="onCoverSelected($event)"
+                  />
+                </label>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- PROMO -->
+    <section class="form-card promo-card">
+      <div class="section-header">
+        <div class="section-icon">
+          <mat-icon>campaign</mat-icon>
+        </div>
+
+        <div>
+          <h2>Imagine promoțională</h2>
+          <p>Banner opțional afișat în zona promoțională a aplicației.</p>
+        </div>
+      </div>
+
+      <div class="promo-layout">
+        <div class="promo-preview">
+          <img
+            *ngIf="promoPreview; else noPromo"
+            [src]="promoPreview"
+            alt="Previzualizare imagine promoțională"
+          />
+
+          <ng-template #noPromo>
+            <div class="image-placeholder">
+              <mat-icon>panorama</mat-icon>
+              <span>Nicio imagine promoțională</span>
+            </div>
+          </ng-template>
+        </div>
+
+        <div class="promo-controls">
+          <mat-icon>upload_file</mat-icon>
+
+          <strong>
+            {{ promoPreview ? "Înlocuiește bannerul" : "Adaugă un banner" }}
+          </strong>
+
+          <span class="upload-hint"> JPG, JPEG sau PNG · maximum 5 MB </span>
+
+          <div class="promo-actions">
+            <label class="upload-button compact-upload-button">
+              <mat-icon>upload</mat-icon>
+
+              {{ promoPreview ? "Schimbă" : "Alege imaginea" }}
+
+              <input
+                type="file"
+                accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                (change)="onPromoSelected($event)"
+              />
+            </label>
+
+            <button
+              *ngIf="promoPreview"
+              mat-stroked-button
+              type="button"
+              class="remove-image-button"
+              (click)="removePromoImage()"
+            >
+              <mat-icon>delete_outline</mat-icon>
+              Elimină
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACTIONS -->
+    <div class="form-actions">
+      <button
+        mat-stroked-button
+        type="button"
+        class="cancel-button"
+        [disabled]="isSaving"
+        (click)="cancel()"
+      >
+        Anulează
+      </button>
+
+      <button
+        mat-flat-button
+        type="submit"
+        class="save-button"
+        [disabled]="isSaving"
+      >
+        <mat-icon>
+          {{ isEditMode ? "save" : "check" }}
+        </mat-icon>
+
+        {{
+          isSaving
+            ? "Se salvează..."
+            : isEditMode
+              ? "Salvează modificările"
+              : "Creează produsul"
+        }}
+      </button>
+    </div>
+  </ng-container>
+</form>

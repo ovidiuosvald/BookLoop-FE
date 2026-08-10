@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { CredentialsInterface } from '../models/credentials.model';
 import { UserInterface } from '../models/user.model';
 import { CommonService } from './common.service';
+import { UserRole } from '../enums/user-role.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +30,10 @@ export class UserService {
 
   get authenticatedUser(): UserInterface {
     return this.authenticatedUserSubject.value;
+  }
+
+  get isAdmin(): boolean {
+    return this.authenticatedUser.role === UserRole.Admin;
   }
 
   constructor(
@@ -127,6 +132,12 @@ export class UserService {
     this.getUserByEmail(email).subscribe({
       next: (user: UserInterface) => {
         this.setAuthenticatedUser(user);
+
+        if (user.role === UserRole.Admin) {
+          this.commonService.goToAdminPage();
+          return;
+        }
+
         this.commonService.goToHomePage();
       },
       error: () => {

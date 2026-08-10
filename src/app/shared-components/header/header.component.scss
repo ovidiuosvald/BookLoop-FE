@@ -64,7 +64,7 @@ mat-toolbar {
         box-shadow 0.2s ease;
 
       &:focus-within {
-        border-color: #673ab7;
+        border-color: var(--deep-purple);
         box-shadow: 0 0 0 3px rgba(103, 58, 183, 0.15);
       }
 
@@ -108,7 +108,7 @@ mat-toolbar {
           color 0.2s ease;
 
         &:hover {
-          color: #673ab7;
+          color: var(--deep-purple);
           background: #f5f0fc;
         }
       }
@@ -230,5 +230,13 @@ button:focus-visible {
         height: 23px;
       }
     }
+  }
+}
+
+.admin-dashboard-menu-item {
+  color: var(--deep-purple);
+
+  mat-icon {
+    color: var(--deep-purple);
   }
 }

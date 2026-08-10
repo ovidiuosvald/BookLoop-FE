@@ -1,0 +1,367 @@
+:host {
+  display: block;
+}
+
+.admin-shell {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+
+  min-height: 100vh;
+
+  background: #f7f5fa;
+
+  transition: grid-template-columns 0.25s ease;
+
+  &.sidebar-collapsed {
+    grid-template-columns: 76px minmax(0, 1fr);
+  }
+}
+
+.admin-sidebar {
+  position: sticky;
+  top: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  height: 100vh;
+  padding: 24px 18px;
+
+  box-sizing: border-box;
+
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border-right: 1px solid #ece7f5;
+
+  transition: padding 0.25s ease;
+
+  &.collapsed {
+    padding: 24px 10px;
+  }
+}
+
+/* HEADER */
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  min-height: 42px;
+
+  padding: 0 8px 22px;
+
+  border-bottom: 1px solid #f0ecf5;
+}
+
+.brand-icon {
+  display: flex;
+  flex: 0 0 auto;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
+  color: #ffffff;
+  background: #673ab7;
+
+  border-radius: 12px;
+
+  mat-icon {
+    width: 24px;
+    height: 24px;
+
+    font-size: 24px;
+  }
+}
+
+.brand-text {
+  min-width: 0;
+
+  white-space: nowrap;
+
+  transition:
+    opacity 0.15s ease,
+    width 0.25s ease;
+
+  h2 {
+    margin: 0 0 3px;
+
+    color: #2d2456;
+
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 0;
+
+    color: #80798b;
+
+    font-size: 12px;
+  }
+}
+
+/* NAV */
+
+.admin-nav {
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+
+  margin-top: 24px;
+
+  a {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    width: 100%;
+    min-height: 44px;
+
+    padding: 0 14px;
+
+    box-sizing: border-box;
+
+    color: #625a70;
+
+    border-radius: 10px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    text-decoration: none;
+    white-space: nowrap;
+
+    transition:
+      color 0.2s ease,
+      background-color 0.2s ease;
+
+    mat-icon {
+      flex: 0 0 auto;
+
+      width: 21px;
+      height: 21px;
+
+      font-size: 21px;
+    }
+
+    span {
+      overflow: hidden;
+    }
+
+    &:hover {
+      color: #673ab7;
+
+      background: #f6f1fb;
+    }
+
+    &.active {
+      color: #673ab7;
+
+      background: #f0eafa;
+    }
+  }
+}
+
+/* SPACE BETWEEN NAV + FOOTER */
+
+.sidebar-spacer {
+  flex: 1;
+}
+
+/* COLLAPSE BUTTON */
+
+.collapse-button {
+  align-self: center;
+
+  margin-bottom: 14px;
+
+  color: #673ab7;
+  background: #f4eefb;
+
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: #ebe1f7;
+  }
+}
+
+/* FOOTER */
+
+.sidebar-footer {
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+
+  padding-top: 16px;
+
+  border-top: 1px solid #f0ecf5;
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100%;
+    min-height: 42px;
+
+    padding: 0 14px;
+
+    box-sizing: border-box;
+
+    color: #625a70;
+
+    white-space: nowrap;
+
+    mat-icon {
+      flex: 0 0 auto;
+
+      margin-right: 8px;
+    }
+
+    span {
+      overflow: hidden;
+    }
+  }
+}
+
+.store-button {
+  &:hover {
+    color: #673ab7;
+
+    background: #f6f1fb;
+  }
+}
+
+.logout-button {
+  &:hover {
+    color: #b3261e;
+
+    background: #fff2f1;
+  }
+}
+
+/* COLLAPSED */
+
+.admin-sidebar.collapsed {
+  .sidebar-header {
+    justify-content: center;
+
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .brand-text {
+    width: 0;
+
+    overflow: hidden;
+
+    opacity: 0;
+  }
+
+  .admin-nav {
+    a {
+      justify-content: center;
+
+      padding: 0;
+
+      span {
+        display: none;
+      }
+    }
+  }
+
+  .sidebar-footer {
+    button {
+      justify-content: center;
+
+      padding: 0;
+
+      mat-icon {
+        margin: 0;
+      }
+
+      span {
+        display: none;
+      }
+    }
+  }
+}
+
+/* MAIN CONTENT */
+
+.admin-content {
+  min-width: 0;
+
+  padding: 34px;
+
+  box-sizing: border-box;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 850px) {
+  .admin-shell {
+    grid-template-columns: 76px minmax(0, 1fr);
+  }
+
+  .admin-sidebar {
+    padding: 20px 10px;
+  }
+
+  .sidebar-header {
+    justify-content: center;
+
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .brand-text {
+    display: none;
+  }
+
+  .admin-nav {
+    a {
+      justify-content: center;
+
+      padding: 0;
+
+      span {
+        display: none;
+      }
+    }
+  }
+
+  .sidebar-footer {
+    button {
+      justify-content: center;
+
+      padding: 0;
+
+      mat-icon {
+        margin: 0;
+      }
+
+      span {
+        display: none;
+      }
+    }
+  }
+
+  .collapse-button {
+    display: none;
+  }
+
+  .admin-content {
+    padding: 24px;
+  }
+}

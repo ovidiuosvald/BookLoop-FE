@@ -14,6 +14,10 @@ export class PromoBookCarouselComponent {
 
   constructor(private readonly commonService: CommonService) {}
 
+  getImageUrl(imageUrl?: string): string {
+    return this.commonService.getImageUrl(imageUrl);
+  }
+
   nextSlide(): void {
     if (this.currentSlide < this.books.length - 1) {
       this.currentSlide++;

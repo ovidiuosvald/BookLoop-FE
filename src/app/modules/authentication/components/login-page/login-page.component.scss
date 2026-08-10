@@ -24,7 +24,7 @@
   padding: 36px 40px 32px;
   text-align: center;
   color: white;
-  background: #673ab7;
+  background: var(--deep-purple);
 
   .logo {
     width: 135px;
@@ -76,7 +76,7 @@ mat-form-field {
   border-top: 1px solid #e7e1ee;
 
   a {
-    color: #673ab7;
+    color: var(--deep-purple);
     font-weight: 600;
     text-decoration: none;
 
@@ -103,7 +103,7 @@ mat-form-field {
   }
 
   &:hover {
-    color: #673ab7;
+    color: var(--deep-purple);
   }
 }
 
@@ -136,7 +136,7 @@ mat-form-field {
   margin-top: -6px;
   margin-bottom: 20px;
 
-  color: #673ab7;
+  color: var(--deep-purple);
   font-size: 14px;
   text-decoration: none;
 

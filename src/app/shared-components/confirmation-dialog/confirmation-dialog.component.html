@@ -1,0 +1,38 @@
+<div class="confirmation-dialog">
+  <div class="dialog-icon" [class.danger]="isDanger">
+    <mat-icon>
+      {{ data.confirmIcon || (isDanger ? "warning_amber" : "help_outline") }}
+    </mat-icon>
+  </div>
+
+  <div class="dialog-content">
+    <h2>{{ data.title }}</h2>
+
+    <p>{{ data.message }}</p>
+  </div>
+
+  <div class="dialog-actions">
+    <button
+      mat-stroked-button
+      type="button"
+      class="cancel-button"
+      (click)="cancel()"
+    >
+      {{ data.cancelText || "Anulează" }}
+    </button>
+
+    <button
+      mat-flat-button
+      type="button"
+      class="confirm-button"
+      [class.danger]="isDanger"
+      (click)="confirm()"
+    >
+      <mat-icon *ngIf="data.confirmIcon">
+        {{ data.confirmIcon }}
+      </mat-icon>
+
+      {{ data.confirmText || "Confirmă" }}
+    </button>
+  </div>
+</div>

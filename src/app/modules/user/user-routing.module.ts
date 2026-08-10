@@ -5,6 +5,7 @@ import { UserOrdersComponent } from './components/user-orders/user-orders.compon
 import { UserFavoritesComponent } from './components/user-favorites/user-favorites.component';
 import { UserLayoutComponent } from './components/user-layout/user-layout.component';
 import { UserReviewsComponent } from './components/user-reviews/user-reviews.component';
+import { OrderDetailsComponent } from './components/order-details/order-details.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,10 @@ const routes: Routes = [
       {
         path: 'orders',
         component: UserOrdersComponent,
+      },
+      {
+        path: 'orders/:orderId',
+        component: OrderDetailsComponent,
       },
       {
         path: 'favorites',

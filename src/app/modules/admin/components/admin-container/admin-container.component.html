@@ -1,0 +1,115 @@
+<div class="admin-shell" [class.sidebar-collapsed]="isSidebarCollapsed">
+  <aside class="admin-sidebar" [class.collapsed]="isSidebarCollapsed">
+    <div class="sidebar-header">
+      <div class="brand-icon">
+        <mat-icon>admin_panel_settings</mat-icon>
+      </div>
+
+      <div class="brand-text">
+        <h2>BookLoop Admin</h2>
+        <p>Panou de administrare</p>
+      </div>
+    </div>
+
+    <nav class="admin-nav">
+      <a
+        routerLink="/admin/dashboard"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        [matTooltip]="isSidebarCollapsed ? 'Dashboard' : ''"
+        matTooltipPosition="right"
+      >
+        <mat-icon>dashboard</mat-icon>
+        <span>Dashboard</span>
+      </a>
+
+      <a
+        routerLink="/admin/products"
+        routerLinkActive="active"
+        [matTooltip]="isSidebarCollapsed ? 'Produse' : ''"
+        matTooltipPosition="right"
+      >
+        <mat-icon>menu_book</mat-icon>
+        <span>Produse</span>
+      </a>
+
+      <a
+        routerLink="/admin/categories"
+        routerLinkActive="active"
+        [matTooltip]="isSidebarCollapsed ? 'Categorii' : ''"
+        matTooltipPosition="right"
+      >
+        <mat-icon>category</mat-icon>
+        <span>Categorii</span>
+      </a>
+
+      <a
+        routerLink="/admin/orders"
+        routerLinkActive="active"
+        [matTooltip]="isSidebarCollapsed ? 'Comenzi' : ''"
+        matTooltipPosition="right"
+      >
+        <mat-icon>receipt_long</mat-icon>
+        <span>Comenzi</span>
+      </a>
+
+      <a
+        routerLink="/admin/users"
+        routerLinkActive="active"
+        [matTooltip]="isSidebarCollapsed ? 'Utilizatori' : ''"
+        matTooltipPosition="right"
+      >
+        <mat-icon>group</mat-icon>
+        <span>Utilizatori</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-spacer"></div>
+
+    <button
+      mat-icon-button
+      type="button"
+      class="collapse-button"
+      [attr.aria-label]="
+        isSidebarCollapsed ? 'Extinde meniul' : 'Restrânge meniul'
+      "
+      [matTooltip]="isSidebarCollapsed ? 'Extinde meniul' : 'Restrânge meniul'"
+      matTooltipPosition="right"
+      (click)="toggleSidebar()"
+    >
+      <mat-icon>
+        {{ isSidebarCollapsed ? "chevron_right" : "chevron_left" }}
+      </mat-icon>
+    </button>
+
+    <div class="sidebar-footer">
+      <button
+        mat-button
+        type="button"
+        class="store-button"
+        [matTooltip]="isSidebarCollapsed ? 'Vezi magazinul' : ''"
+        matTooltipPosition="right"
+        (click)="goToStore()"
+      >
+        <mat-icon>storefront</mat-icon>
+        <span>Vezi magazinul</span>
+      </button>
+
+      <button
+        mat-button
+        type="button"
+        class="logout-button"
+        [matTooltip]="isSidebarCollapsed ? 'Logout' : ''"
+        matTooltipPosition="right"
+        (click)="openLogoutDialog()"
+      >
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <main class="admin-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

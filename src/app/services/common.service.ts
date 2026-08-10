@@ -14,6 +14,8 @@ import { NotificationComponent } from '../shared-components/notification/notific
   providedIn: 'root',
 })
 export class CommonService {
+  private readonly backendUrl = 'http://localhost:8080';
+
   constructor(
     private readonly snackBar: MatSnackBar,
     private readonly router: Router,
@@ -61,6 +63,10 @@ export class CommonService {
   // navigation methods
   goToHomePage(): void {
     this.router.navigate(['/']);
+  }
+
+  goToAdminPage(): void {
+    this.router.navigate(['/admin']);
   }
 
   goToBooks(category: Category): void {
@@ -117,5 +123,34 @@ export class CommonService {
 
   goToCheckout(): void {
     this.router.navigate(['/checkout']);
+  }
+
+  goToAdminDashboard(): void {
+    this.router.navigate(['/admin/dashboard']);
+  }
+
+  goToAdminProducts(): void {
+    this.router.navigate(['/admin/products']);
+  }
+
+  // image methods
+  getImageUrl(imageUrl?: string): string {
+    if (!imageUrl) {
+      return '';
+    }
+
+    if (
+      imageUrl.startsWith('http://') ||
+      imageUrl.startsWith('https://') ||
+      imageUrl.startsWith('data:')
+    ) {
+      return imageUrl;
+    }
+
+    if (imageUrl.startsWith('/uploads/')) {
+      return `${this.backendUrl}${imageUrl}`;
+    }
+
+    return imageUrl;
   }
 }

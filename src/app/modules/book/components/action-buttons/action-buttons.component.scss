@@ -35,7 +35,7 @@
 }
 
 .cart-button {
-  background-color: #673ab7 !important;
+  background-color: var(--deep-purple) !important;
   color: #ffffff !important;
 
   mat-icon {
@@ -71,18 +71,18 @@
 
 .favorite-button {
   background-color: #ffffff !important;
-  color: #673ab7 !important;
+  color: var(--deep-purple) !important;
   border-color: #d8cdea !important;
 
   mat-icon {
-    color: #673ab7;
+    color: var(--deep-purple);
   }
 
   &:hover:not(:disabled) {
     background-color: #faf8fd !important;
 
     mat-icon {
-      color: #673ab7;
+      color: var(--deep-purple);
     }
   }
 }

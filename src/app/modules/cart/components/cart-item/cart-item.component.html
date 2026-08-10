@@ -1,5 +1,9 @@
 <div class="cart-item">
-  <img class="book-cover" [src]="item.coverUrl" [alt]="item.bookName" />
+  <img
+    class="book-cover"
+    [src]="getImageUrl(item.coverUrl)"
+    [alt]="item.bookName"
+  />
 
   <div class="book-info">
     <h3 class="title">{{ item.bookName }}</h3>

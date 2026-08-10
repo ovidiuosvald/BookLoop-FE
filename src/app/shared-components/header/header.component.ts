@@ -7,9 +7,9 @@ import { CommonService } from 'src/app/services/common.service';
 import { UserService } from 'src/app/services/user.service';
 
 import { AuthenticationRequiredDialogComponent } from '../authentication-required-dialog/authentication-required-dialog.component';
-import { LogoutDialogComponent } from '../logout-dialog/logout-dialog.component';
 import { CategoryService } from 'src/app/services/category.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-header',
@@ -21,6 +21,10 @@ export class HeaderComponent {
 
   searchTerm = '';
   categories: Category[] = [];
+
+  get isAdmin(): boolean {
+    return this.userService.authenticatedUser?.role === 'ADMIN';
+  }
 
   constructor(
     private readonly dialog: MatDialog,
@@ -41,6 +45,10 @@ export class HeaderComponent {
         console.error('Eroare la obținerea categoriilor:', error);
       },
     });
+  }
+
+  goToAdminDashboard(): void {
+    this.commonService.goToAdminDashboard();
   }
 
   goToHomePage(): void {
@@ -117,10 +125,19 @@ export class HeaderComponent {
   }
 
   openLogoutDialog(): void {
-    const dialogRef = this.dialog.open(LogoutDialogComponent, {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '420px',
       maxWidth: 'calc(100vw - 32px)',
       autoFocus: false,
+      panelClass: 'confirmation-dialog-panel',
+      data: {
+        title: 'Delogare',
+        message: 'Sigur dorești să te deloghezi din cont?',
+        confirmText: 'Delogare',
+        cancelText: 'Anulează',
+        confirmIcon: 'logout',
+        type: 'danger',
+      },
     });
 
     dialogRef

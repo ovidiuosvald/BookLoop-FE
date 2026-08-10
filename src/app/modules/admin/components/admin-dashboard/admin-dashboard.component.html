@@ -1,0 +1,148 @@
+<div class="dashboard-page">
+  <header class="page-header">
+    <div>
+      <h1>Dashboard</h1>
+      <p>Prezentare generală a activității BookLoop.</p>
+    </div>
+  </header>
+
+  <div *ngIf="isLoading" class="loading-container">
+    Se încarcă dashboard-ul...
+  </div>
+
+  <ng-container *ngIf="!isLoading && dashboard as data">
+    <section class="stats-grid">
+      <article class="stat-card clickable" routerLink="/admin/products">
+        <div class="stat-icon">
+          <mat-icon>menu_book</mat-icon>
+        </div>
+
+        <div class="stat-content">
+          <span class="stat-label">Produse</span>
+          <strong>{{ data.totalProducts }}</strong>
+          <span class="stat-link">Vezi produsele</span>
+        </div>
+      </article>
+
+      <article class="stat-card clickable" routerLink="/admin/users">
+        <div class="stat-icon">
+          <mat-icon>group</mat-icon>
+        </div>
+
+        <div class="stat-content">
+          <span class="stat-label">Utilizatori</span>
+          <strong>{{ data.totalUsers }}</strong>
+          <span class="stat-link">Vezi utilizatorii</span>
+        </div>
+      </article>
+
+      <article class="stat-card clickable" routerLink="/admin/orders">
+        <div class="stat-icon">
+          <mat-icon>receipt_long</mat-icon>
+        </div>
+
+        <div class="stat-content">
+          <span class="stat-label">Comenzi</span>
+          <strong>{{ data.totalOrders }}</strong>
+          <span class="stat-link">Vezi comenzile</span>
+        </div>
+      </article>
+
+      <article class="stat-card clickable" routerLink="/admin/orders">
+        <div class="stat-icon attention">
+          <mat-icon>pending_actions</mat-icon>
+        </div>
+
+        <div class="stat-content">
+          <span class="stat-label">Comenzi noi</span>
+          <strong>{{ data.placedOrders }}</strong>
+          <span class="stat-link">Necesită procesare</span>
+        </div>
+      </article>
+
+      <article class="stat-card clickable" routerLink="/admin/products">
+        <div class="stat-icon warning">
+          <mat-icon>inventory_2</mat-icon>
+        </div>
+
+        <div class="stat-content">
+          <span class="stat-label">Stoc redus</span>
+          <strong>{{ data.lowStockProducts }}</strong>
+          <span class="stat-link">5 sau mai puține bucăți</span>
+        </div>
+      </article>
+    </section>
+
+    <section class="recent-section">
+      <div class="section-header">
+        <div>
+          <h2>Comenzi recente</h2>
+          <p>Ultimele comenzi plasate în BookLoop.</p>
+        </div>
+
+        <a mat-button routerLink="/admin/orders" class="view-all-button">
+          Vezi toate
+          <mat-icon>arrow_forward</mat-icon>
+        </a>
+      </div>
+
+      <div
+        class="recent-orders"
+        *ngIf="data.recentOrders.length > 0; else noRecentOrders"
+      >
+        <article
+          class="order-row"
+          *ngFor="let order of data.recentOrders"
+          [routerLink]="['/admin/orders', order.orderId]"
+        >
+          <div class="order-main">
+            <div class="order-icon">
+              <mat-icon>inventory_2</mat-icon>
+            </div>
+
+            <div>
+              <strong>Comanda #{{ order.orderId }}</strong>
+
+              <span>
+                {{ order.creationDate | date: "dd.MM.yyyy, HH:mm" }}
+              </span>
+            </div>
+          </div>
+
+          <div class="order-products">
+            <mat-icon>menu_book</mat-icon>
+
+            <span>
+              {{ order.items.length }}
+              {{ order.items.length === 1 ? "titlu" : "titluri" }}
+            </span>
+          </div>
+
+          <div class="order-total">
+            <span>Total</span>
+
+            <strong>
+              {{ order.totalPrice | currency: "RON" : "symbol" : "1.2-2" }}
+            </strong>
+          </div>
+
+          <span class="status-badge" [ngClass]="getStatusClass(order.status)">
+            {{ getStatusLabel(order.status) }}
+          </span>
+
+          <mat-icon class="row-arrow"> chevron_right </mat-icon>
+        </article>
+      </div>
+
+      <ng-template #noRecentOrders>
+        <div class="empty-state">
+          <mat-icon>receipt_long</mat-icon>
+
+          <h3>Nu există comenzi recente</h3>
+
+          <p>Comenzile noi vor apărea aici.</p>
+        </div>
+      </ng-template>
+    </section>
+  </ng-container>
+</div>

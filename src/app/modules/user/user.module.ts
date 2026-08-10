@@ -8,6 +8,7 @@ import { UserLayoutComponent } from './components/user-layout/user-layout.compon
 import { SharedModule } from 'src/app/shared-components/shared.module';
 import { BookModule } from '../book/book.module';
 import { UserReviewsComponent } from './components/user-reviews/user-reviews.component';
+import { OrderDetailsComponent } from './components/order-details/order-details.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { UserReviewsComponent } from './components/user-reviews/user-reviews.com
     UserFavoritesComponent,
     UserLayoutComponent,
     UserReviewsComponent,
+    OrderDetailsComponent,
   ],
   imports: [UserRoutingModule, SharedModule, BookModule],
 })

@@ -12,7 +12,7 @@
   margin-bottom: 22px;
   padding-left: 0;
 
-  color: #673ab7;
+  color: var(--deep-purple);
   font-weight: 600;
 
   mat-icon {
@@ -43,7 +43,7 @@
   height: 58px;
 
   color: #ffffff;
-  background: #673ab7;
+  background: var(--deep-purple);
   border-radius: 16px;
   box-shadow: 0 8px 20px rgba(103, 58, 183, 0.22);
 
@@ -98,7 +98,7 @@
   mat-icon {
     flex-shrink: 0;
 
-    color: #673ab7;
+    color: var(--deep-purple);
   }
 
   p {
@@ -183,7 +183,7 @@ section {
     width: 20px;
     height: 20px;
 
-    color: #673ab7;
+    color: var(--deep-purple);
     font-size: 20px;
   }
 }

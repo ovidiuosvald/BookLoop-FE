@@ -14,6 +14,10 @@ export class BookCarouselComponent {
 
   constructor(private commonService: CommonService) {}
 
+  getImageUrl(imageUrl?: string): string {
+    return this.commonService.getImageUrl(imageUrl);
+  }
+
   nextSlide(): void {
     const maxIndex =
       this.mode === 'multi' ? this.books.length - 5 : this.books.length - 1;

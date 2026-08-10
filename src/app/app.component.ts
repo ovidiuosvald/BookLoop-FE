@@ -17,7 +17,9 @@ export class AppComponent {
         ),
       )
       .subscribe((event) => {
-        this.showHeader = !event.urlAfterRedirects.startsWith('/auth');
+        const url = event.urlAfterRedirects;
+
+        this.showHeader = !url.startsWith('/auth') && !url.startsWith('/admin');
       });
   }
 }

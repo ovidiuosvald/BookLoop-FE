@@ -36,7 +36,7 @@
 
   &.selected {
     background: rgba(103, 58, 183, 0.035);
-    border-color: #673ab7;
+    border-color: var(--deep-purple);
   }
 
   h3 {
@@ -62,14 +62,14 @@
   justify-content: space-between;
 
   mat-icon {
-    color: #673ab7;
+    color: var(--deep-purple);
   }
 }
 
 .default-badge {
   padding: 4px 10px;
 
-  color: #673ab7;
+  color: var(--deep-purple);
   background: rgba(103, 58, 183, 0.1);
   border-radius: 999px;
 
@@ -88,7 +88,7 @@
   width: 100%;
   margin-top: 8px;
 
-  color: #673ab7 !important;
+  color: var(--deep-purple) !important;
   border-color: #d8cdea !important;
 
   mat-icon {
@@ -98,7 +98,7 @@
 
 .add-first-address-button {
   color: #ffffff !important;
-  background: #673ab7 !important;
+  background: var(--deep-purple) !important;
 }
 
 .empty-addresses {

@@ -27,10 +27,7 @@
             type="button"
             (click)="goToSpecificBook(book.bookId)"
           >
-            <img
-              [src]="mode === 'single' ? book.promoImageUrl : book.coverUrl"
-              [alt]="book.bookName"
-            />
+            <img [src]="getImageUrl(book.coverUrl)" [alt]="book.bookName" />
 
             <div class="book-card-content" *ngIf="mode === 'multi'">
               <h4>{{ book.bookName }}</h4>

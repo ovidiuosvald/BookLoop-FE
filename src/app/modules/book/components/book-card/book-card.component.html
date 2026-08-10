@@ -5,8 +5,12 @@
     [attr.aria-label]="'Vezi detalii pentru ' + book.bookName"
     (click)="onOpenBook()"
   >
-    <img class="book-cover" [src]="book.coverUrl" [alt]="book.bookName" />
-
+    <img
+      class="book-cover"
+      [src]="getImageUrl(book.coverUrl)"
+      [alt]="book.bookName"
+      (click)="onOpenBook()"
+    />
     <div class="badges">
       <span class="book-badge bestseller" *ngIf="book.isBestseller">
         Bestseller

@@ -14,7 +14,7 @@
       <article class="favorite-card" *ngFor="let book of favoriteBooks">
         <img
           class="book-cover"
-          [src]="book.coverUrl"
+          [src]="getImageUrl(book.coverUrl)"
           [alt]="book.bookName"
           (click)="goToSpecificBook(book.bookId)"
         />

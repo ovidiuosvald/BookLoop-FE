@@ -4,14 +4,17 @@ export interface Book {
   bookId: number;
   bookName: string;
   author: string;
+  publisher?: string;
+  numberOfPages?: number;
+  yearOfPublication?: number;
   currentPrice: number;
   coverUrl: string;
-  category: string | Category;
+  promoImageUrl?: string;
   quantity: number;
   description: string;
+  category: string | Category;
   isNew: boolean;
   isBestseller: boolean;
   isFavorite: boolean;
-  giftWrap?: boolean;
-  promoImageUrl?: string;
+  lastModifiedDate?: string;
 }

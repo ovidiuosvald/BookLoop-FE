@@ -1,0 +1,93 @@
+<div class="categories-page">
+  <div class="page-header">
+    <div>
+      <h1>Categorii</h1>
+
+      <p>Gestionează categoriile disponibile pentru cărțile din BookLoop.</p>
+    </div>
+
+    <button
+      mat-flat-button
+      type="button"
+      class="admin-primary-button"
+      (click)="openCreateDialog()"
+    >
+      <mat-icon>add</mat-icon>
+      Adaugă categorie
+    </button>
+  </div>
+
+  <section class="categories-content">
+    <div class="categories-summary">
+      <div>
+        <h2>Categorii existente</h2>
+
+        <p>
+          {{ categories.length }}
+          {{
+            categories.length === 1
+              ? "categorie disponibilă"
+              : "categorii disponibile"
+          }}
+        </p>
+      </div>
+    </div>
+
+    <ng-container *ngIf="!isLoading">
+      <div
+        class="categories-grid"
+        *ngIf="categories.length > 0; else emptyState"
+      >
+        <div
+          class="category-item"
+          *ngFor="let category of categories; trackBy: trackByCategoryId"
+        >
+          <span class="category-name">
+            {{ category.categoryName }}
+          </span>
+
+          <div class="category-actions">
+            <button
+              mat-icon-button
+              type="button"
+              matTooltip="Editează categoria"
+              (click)="openEditDialog(category)"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button
+              mat-icon-button
+              type="button"
+              class="delete-button"
+              matTooltip="Șterge categoria"
+              (click)="openDeleteDialog(category)"
+            >
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #emptyState>
+      <div class="empty-state">
+        <mat-icon>category</mat-icon>
+
+        <h2>Nu există categorii</h2>
+
+        <p>Adaugă prima categorie pentru cărțile din BookLoop.</p>
+
+        <button
+          mat-flat-button
+          type="button"
+          class="admin-primary-button"
+          (click)="openCreateDialog()"
+        >
+          <mat-icon>add</mat-icon>
+          Adaugă categorie
+        </button>
+      </div>
+    </ng-template>
+  </section>
+</div>

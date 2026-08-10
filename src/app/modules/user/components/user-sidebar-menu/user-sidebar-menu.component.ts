@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { take } from 'rxjs';
 
 import { UserService } from 'src/app/services/user.service';
-import { LogoutDialogComponent } from 'src/app/shared-components/logout-dialog/logout-dialog.component';
+import { ConfirmationDialogComponent } from 'src/app/shared-components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-user-sidebar-menu',
@@ -17,10 +17,19 @@ export class UserSidebarMenuComponent {
   ) {}
 
   openLogoutDialog(): void {
-    const dialogRef = this.dialog.open(LogoutDialogComponent, {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '420px',
       maxWidth: 'calc(100vw - 32px)',
       autoFocus: false,
+      panelClass: 'confirmation-dialog-panel',
+      data: {
+        title: 'Delogare',
+        message: 'Sigur dorești să te deloghezi din cont?',
+        confirmText: 'Delogare',
+        cancelText: 'Anulează',
+        confirmIcon: 'logout',
+        type: 'danger',
+      },
     });
 
     dialogRef

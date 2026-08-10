@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { OrderStatus } from '../enums/order.enums';
 import { Order } from '../models/order.model';
 import { PlaceOrderRequest } from '../models/place-order-request.model';
 
@@ -32,6 +33,16 @@ export class OrderService {
   getOrderDetails(userId: number, orderId: number): Observable<Order> {
     return this.httpClient.get<Order>(
       `${this.apiUrl}/user/${userId}/${orderId}`,
+      {
+        withCredentials: true,
+      },
+    );
+  }
+
+  updateOrderStatus(orderId: number, status: OrderStatus): Observable<Order> {
+    return this.httpClient.put<Order>(
+      `${this.apiUrl}/${orderId}/status`,
+      { status },
       {
         withCredentials: true,
       },

@@ -9,7 +9,6 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Book } from 'src/app/models/book.model';
-import { Category } from 'src/app/models/category.model';
 import { BookService } from 'src/app/services/book.service';
 import { CartService } from 'src/app/services/cart.service';
 import { CommonService } from 'src/app/services/common.service';
@@ -22,9 +21,10 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./book-list.component.scss'],
 })
 export class BookListComponent implements OnInit, OnChanges {
-  @Input() booksInput: Book[] = [];
+  @Input() booksInput?: Book[];
 
-  categoryCode!: string;
+  categoryCode?: string;
+
   books: Book[] = [];
 
   constructor(
@@ -38,7 +38,7 @@ export class BookListComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
-    if (this.booksInput.length > 0) {
+    if (this.booksInput !== undefined) {
       this.books = this.booksInput;
       return;
     }
@@ -64,35 +64,9 @@ export class BookListComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['booksInput']) {
+    if (changes['booksInput'] && this.booksInput !== undefined) {
       this.books = this.booksInput;
     }
-  }
-
-  loadBestsellers(): void {
-    this.bookService.getBestsellers().subscribe({
-      next: (books: Book[]) => {
-        this.books = books;
-      },
-      error: () => {
-        this.commonService.showSnackBarError(
-          'Bestsellerele nu au putut fi încărcate.',
-        );
-      },
-    });
-  }
-
-  loadBooksByCategoryCode(categoryCode: string): void {
-    this.bookService.getBooksByCategory(categoryCode).subscribe({
-      next: (books: Book[]) => {
-        this.books = books;
-      },
-      error: () => {
-        this.commonService.showSnackBarError(
-          'Cărțile nu au putut fi încărcate.',
-        );
-      },
-    });
   }
 
   addToCart(book: Book): void {
@@ -102,6 +76,7 @@ export class BookListComponent implements OnInit, OnChanges {
       this.commonService.showSnackBarError(
         'Trebuie să fii autentificat pentru a adăuga cărți în coș.',
       );
+
       return;
     }
 
@@ -131,6 +106,7 @@ export class BookListComponent implements OnInit, OnChanges {
       this.commonService.showSnackBarError(
         'Trebuie să fii autentificat pentru a salva cărți la favorite.',
       );
+
       return;
     }
 
@@ -152,7 +128,29 @@ export class BookListComponent implements OnInit, OnChanges {
     });
   }
 
-  getCategoryName(category: string | Category): string {
-    return typeof category === 'string' ? category : category.categoryName;
+  private loadBestsellers(): void {
+    this.bookService.getBestsellers().subscribe({
+      next: (books: Book[]) => {
+        this.books = books;
+      },
+      error: () => {
+        this.commonService.showSnackBarError(
+          'Bestsellerele nu au putut fi încărcate.',
+        );
+      },
+    });
+  }
+
+  private loadBooksByCategoryCode(categoryCode: string): void {
+    this.bookService.getBooksByCategory(categoryCode).subscribe({
+      next: (books: Book[]) => {
+        this.books = books;
+      },
+      error: () => {
+        this.commonService.showSnackBarError(
+          'Cărțile nu au putut fi încărcate.',
+        );
+      },
+    });
   }
 }

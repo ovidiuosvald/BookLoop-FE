@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-
+import { CommonService } from 'src/app/services/common.service';
 import { Book } from 'src/app/models/book.model';
 import { Category } from 'src/app/models/category.model';
 
@@ -16,6 +16,12 @@ export class BookCardComponent {
   @Output() openBook = new EventEmitter<number>();
   @Output() addToCart = new EventEmitter<Book>();
   @Output() toggleFavorite = new EventEmitter<Book>();
+
+  constructor(private readonly commonService: CommonService) {}
+
+  getImageUrl(imageUrl?: string): string {
+    return this.commonService.getImageUrl(imageUrl);
+  }
 
   onOpenBook(): void {
     this.openBook.emit(this.book.bookId);

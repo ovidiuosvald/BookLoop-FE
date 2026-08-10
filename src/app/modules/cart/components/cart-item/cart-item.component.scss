@@ -101,10 +101,10 @@ button.text-action {
 }
 
 .favorite-action {
-  color: #673ab7;
+  color: var(--deep-purple);
 
   mat-icon {
-    color: #673ab7;
+    color: var(--deep-purple);
   }
 
   &:hover {

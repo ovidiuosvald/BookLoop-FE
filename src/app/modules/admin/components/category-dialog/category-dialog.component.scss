@@ -1,0 +1,99 @@
+:host {
+  display: block;
+}
+
+.category-dialog {
+  padding: 26px;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 14px;
+
+  margin-bottom: 24px;
+
+  h2 {
+    margin: 0 0 5px;
+
+    color: #2d2456;
+
+    font-size: 21px;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 0;
+
+    color: #77717f;
+
+    font-size: 13px;
+  }
+}
+
+.dialog-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 42px;
+
+  width: 42px;
+  height: 42px;
+
+  color: #673ab7;
+  background: #f1e8fb;
+
+  border-radius: 10px;
+
+  mat-icon {
+    width: 22px;
+    height: 22px;
+
+    font-size: 22px;
+  }
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.dialog-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  margin-top: 8px;
+}
+
+.primary-button {
+  color: #ffffff !important;
+  background: #673ab7 !important;
+
+  border-radius: 8px !important;
+
+  mat-icon {
+    margin-right: 6px;
+  }
+
+  &:not(:disabled):hover {
+    background: #5c32a4 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .category-dialog {
+    padding: 20px;
+  }
+
+  .dialog-actions {
+    flex-direction: column-reverse;
+
+    button {
+      width: 100%;
+    }
+  }
+}

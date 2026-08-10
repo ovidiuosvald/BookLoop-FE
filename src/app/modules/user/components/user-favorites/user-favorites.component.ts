@@ -26,6 +26,10 @@ export class UserFavoritesComponent implements OnInit {
     this.loadFavoriteBooks();
   }
 
+  public getImageUrl(imageUrl?: string): string {
+    return this.commonService.getImageUrl(imageUrl);
+  }
+
   private loadFavoriteBooks(): void {
     const userId = this.userService.authenticatedUser.userId;
 
@@ -49,11 +53,9 @@ export class UserFavoritesComponent implements OnInit {
 
         this.isLoading = false;
 
-        const message =
-          typeof error.error === 'string' ? error.error : error.error?.message;
-
-        this.commonService.showSnackBarError(
-          message || 'Cărțile favorite nu au putut fi încărcate.',
+        this.commonService.showHttpError(
+          error,
+          'Cărțile favorite nu au putut fi încărcate.',
         );
       },
     });

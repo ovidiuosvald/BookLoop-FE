@@ -7,16 +7,16 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthenticationRequiredDialogComponent } from './authentication-required-dialog/authentication-required-dialog.component';
-import { LogoutDialogComponent } from './logout-dialog/logout-dialog.component';
 import { NotificationComponent } from './notification/notification.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
     NavButtonComponent,
     HeaderComponent,
     AuthenticationRequiredDialogComponent,
-    LogoutDialogComponent,
     NotificationComponent,
+    ConfirmationDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -40,7 +40,7 @@ import { NotificationComponent } from './notification/notification.component';
     NavButtonComponent,
     HeaderComponent,
     AuthenticationRequiredDialogComponent,
-    LogoutDialogComponent,
+    ConfirmationDialogComponent,
   ],
 })
 export class SharedModule {}
