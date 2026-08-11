@@ -13,6 +13,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
   private subscriptionList: Subscription[] = [];
   promoBooks: Book[] = [];
   newBooks: Book[] = [];
+  bestsellerBooks: Book[] = [];
 
   constructor(
     private commonService: CommonService,
@@ -22,8 +23,11 @@ export class HomePageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const sub = this.bookService.getBooks().subscribe({
       next: (books: Book[]) => {
-        this.promoBooks = books.filter((b) => !!b.promoImageUrl);
-        this.newBooks = books.filter((b) => b.isNew);
+        this.promoBooks = books.filter((book) => !!book.promoImageUrl);
+
+        this.newBooks = books.filter((book) => book.isNew);
+
+        this.bestsellerBooks = books.filter((book) => book.isBestseller);
       },
       error: () =>
         this.commonService.showSnackBarError('Nu s-au putut încărca cărțile!'),
@@ -33,5 +37,13 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptionList.forEach((sub: Subscription) => sub.unsubscribe());
+  }
+
+  goToAllBooks(): void {
+    this.commonService.goToAllBooks();
+  }
+
+  goToBestsellers(): void {
+    this.commonService.goToBestsellers();
   }
 }

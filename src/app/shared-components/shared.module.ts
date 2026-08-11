@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthenticationRequiredDialogComponent } from './authentication-required-dialog/authentication-required-dialog.component';
 import { NotificationComponent } from './notification/notification.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     AuthenticationRequiredDialogComponent,
     NotificationComponent,
     ConfirmationDialogComponent,
+    FooterComponent,
   ],
   imports: [
     CommonModule,
@@ -39,6 +41,7 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     // components
     NavButtonComponent,
     HeaderComponent,
+    FooterComponent,
     AuthenticationRequiredDialogComponent,
     ConfirmationDialogComponent,
   ],

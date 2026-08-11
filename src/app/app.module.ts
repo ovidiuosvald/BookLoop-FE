@@ -9,12 +9,11 @@ import { LOCALE_ID } from '@angular/core';
 import { SharedModule } from './shared-components/shared.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TermsAndConditionsComponent } from './pages/terms-and-conditions/terms-and-conditions.component';
 
 registerLocaleData(localeRo);
 
 @NgModule({
-  declarations: [AppComponent, TermsAndConditionsComponent],
+  declarations: [AppComponent],
   imports: [
     AppRoutingModule,
     BrowserModule,

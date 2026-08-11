@@ -1,9 +1,62 @@
-<div class="book-grid">
-  <app-book-card
-    *ngFor="let book of books"
-    [book]="book"
-    (openBook)="goToSpecificBook($event)"
-    (addToCart)="addToCart($event)"
-    (toggleFavorite)="toggleFavorite($event)"
-  ></app-book-card>
+<div class="catalog-page">
+  <header class="catalog-header">
+    <div>
+      <span class="catalog-eyebrow"> Catalog BookLoop </span>
+
+      <h1>
+        {{ pageTitle }}
+      </h1>
+
+      <p>
+        {{ pageDescription }}
+      </p>
+    </div>
+  </header>
+
+  <div class="catalog-toolbar">
+    <span class="results-count">
+      {{ books.length }}
+      {{ books.length === 1 ? "carte" : "cărți" }}
+    </span>
+
+    <mat-form-field appearance="outline" class="sort-field">
+      <mat-label> Sortează după </mat-label>
+
+      <mat-select [(value)]="selectedSort" (selectionChange)="onSortChange()">
+        <mat-option *ngFor="let option of sortOptions" [value]="option.value">
+          {{ option.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="book-grid" *ngIf="books.length > 0; else emptyState">
+    <app-book-card
+      *ngFor="let book of books; trackBy: trackByBookId"
+      [book]="book"
+      (openBook)="goToSpecificBook($event)"
+      (addToCart)="addToCart($event)"
+      (toggleFavorite)="toggleFavorite($event)"
+    >
+    </app-book-card>
+  </div>
+
+  <ng-template #emptyState>
+    <div class="empty-state">
+      <mat-icon>menu_book</mat-icon>
+
+      <h2>Nu există cărți disponibile</h2>
+
+      <p>Momentan nu există cărți pentru această selecție.</p>
+
+      <button
+        mat-stroked-button
+        type="button"
+        class="back-button"
+        (click)="goToAllBooks()"
+      >
+        Vezi toate cărțile
+      </button>
+    </div>
+  </ng-template>
 </div>

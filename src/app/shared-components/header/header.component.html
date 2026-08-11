@@ -1,22 +1,40 @@
-<mat-toolbar color="primary">
-  <div class="logo">
-    <img
-      src="assets/bookloop-logo.svg"
-      alt="Logo BookLoop"
+<header class="store-header">
+  <div class="header-inner">
+    <!-- LOGO -->
+    <div
+      class="logo"
+      role="button"
+      tabindex="0"
+      aria-label="Mergi la pagina principală"
       (click)="goToHomePage()"
-    />
-  </div>
+      (keyup.enter)="goToHomePage()"
+    >
+      <img src="assets/bookloop-logo.svg" alt="Logo BookLoop" />
+    </div>
 
-  <div class="bookloop-content">
-    <div class="books">
-      <button mat-button [matMenuTriggerFor]="booksMenu" class="books-button">
+    <!-- NAVIGATION -->
+    <nav class="main-nav">
+      <button
+        mat-button
+        type="button"
+        class="nav-button"
+        [matMenuTriggerFor]="booksMenu"
+      >
         Cărți
         <mat-icon>keyboard_arrow_down</mat-icon>
       </button>
 
       <mat-menu #booksMenu="matMenu">
+        <button mat-menu-item type="button" (click)="goToAllBooks()">
+          <mat-icon>menu_book</mat-icon>
+          <span>Toate cărțile</span>
+        </button>
+
+        <mat-divider></mat-divider>
+
         <button
           mat-menu-item
+          type="button"
           *ngFor="let category of categories"
           (click)="goToBooks(category)"
         >
@@ -24,121 +42,141 @@
         </button>
       </mat-menu>
 
-      <button mat-button class="books-button" (click)="goToBestsellers()">
+      <button
+        mat-button
+        type="button"
+        class="nav-button"
+        (click)="goToBestsellers()"
+      >
         Bestsellere
       </button>
+    </nav>
 
-      <button mat-button class="books-button" (click)="goToOffers()">
-        Oferte
-      </button>
+    <!-- SEARCH -->
+    <div class="search-wrapper">
+      <div class="custom-search-bar">
+        <mat-icon class="search-prefix"> search </mat-icon>
+
+        <input
+          type="text"
+          placeholder="Caută după titlu sau autor..."
+          [(ngModel)]="searchTerm"
+          (keyup.enter)="onSearch()"
+        />
+
+        <button
+          *ngIf="searchTerm.trim()"
+          type="button"
+          class="clear-search-button"
+          aria-label="Șterge căutarea"
+          (click)="clearSearch()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
     </div>
 
-    <div class="custom-search-bar">
-      <input
-        type="text"
-        placeholder="Caută după titlu sau autor..."
-        [(ngModel)]="searchTerm"
-        (keyup.enter)="onSearch()"
-      />
+    <!-- ACTIONS -->
+    <div class="right-menu">
+      <button
+        mat-icon-button
+        type="button"
+        class="header-icon-button"
+        [matMenuTriggerFor]="userMenu"
+        matTooltip="Contul meu"
+        aria-label="Deschide meniul utilizatorului"
+      >
+        <mat-icon>person_outline</mat-icon>
+      </button>
+
+      <mat-menu #userMenu="matMenu">
+        <ng-container *ngIf="isUserLoggedIn$ | async; else guestMenu">
+          <button
+            *ngIf="isAdmin"
+            mat-menu-item
+            class="admin-dashboard-menu-item"
+            (click)="goToAdminDashboard()"
+          >
+            <mat-icon>admin_panel_settings</mat-icon>
+            <span>Panou de administrare</span>
+          </button>
+
+          <mat-divider *ngIf="isAdmin"></mat-divider>
+
+          <button mat-menu-item (click)="goToProfile()">
+            <mat-icon>person_outline</mat-icon>
+            <span>Datele mele</span>
+          </button>
+
+          <button mat-menu-item (click)="goToAddresses()">
+            <mat-icon>location_on</mat-icon>
+            <span>Adresele mele</span>
+          </button>
+
+          <mat-divider></mat-divider>
+
+          <button mat-menu-item (click)="goToOrders()">
+            <mat-icon>receipt_long</mat-icon>
+            <span>Comenzile mele</span>
+          </button>
+
+          <button mat-menu-item (click)="goToFavorites()">
+            <mat-icon>favorite_border</mat-icon>
+            <span>Favorite</span>
+          </button>
+
+          <mat-divider></mat-divider>
+
+          <button
+            mat-menu-item
+            class="logout-menu-item"
+            (click)="openLogoutDialog()"
+          >
+            <mat-icon>logout</mat-icon>
+            <span>Delogare</span>
+          </button>
+        </ng-container>
+
+        <ng-template #guestMenu>
+          <button mat-menu-item (click)="goToLogin()">
+            <mat-icon>login</mat-icon>
+            <span>Autentificare</span>
+          </button>
+
+          <button mat-menu-item (click)="goToRegister()">
+            <mat-icon>person_add</mat-icon>
+            <span>Creează un cont nou</span>
+          </button>
+        </ng-template>
+      </mat-menu>
 
       <button
+        mat-icon-button
         type="button"
-        (click)="searchTerm.trim() ? clearSearch() : onSearch()"
-        [attr.aria-label]="searchTerm.trim() ? 'Șterge căutarea' : 'Caută'"
+        class="header-icon-button"
+        matTooltip="Favorite"
+        aria-label="Favorite"
+        (click)="onFavoritesClick()"
       >
-        <mat-icon class="search">
-          {{ searchTerm.trim() ? "close" : "search" }}
-        </mat-icon>
+        <mat-icon>favorite_border</mat-icon>
+      </button>
+
+      <button
+        mat-icon-button
+        type="button"
+        class="header-icon-button cart-button"
+        matTooltip="Coșul de cumpărături"
+        aria-label="Coșul de cumpărături"
+        (click)="goToCart()"
+      >
+        <mat-icon>shopping_bag</mat-icon>
+
+        <ng-container *ngIf="cartItemCount$ | async as cartItemCount">
+          <span class="cart-badge" *ngIf="cartItemCount > 0">
+            {{ cartItemCount > 99 ? "99+" : cartItemCount }}
+          </span>
+        </ng-container>
       </button>
     </div>
   </div>
-
-  <div class="right-menu">
-    <button
-      mat-button
-      [matMenuTriggerFor]="userMenu"
-      aria-label="Deschide meniul utilizatorului"
-    >
-      <mat-icon>perm_identity</mat-icon>
-    </button>
-
-    <mat-menu #userMenu="matMenu">
-      <ng-container *ngIf="isUserLoggedIn$ | async; else guestMenu">
-        <button
-          *ngIf="isAdmin"
-          mat-menu-item
-          class="admin-dashboard-menu-item"
-          (click)="goToAdminDashboard()"
-        >
-          <mat-icon>admin_panel_settings</mat-icon>
-          <span>Panou de administrare</span>
-        </button>
-
-        <mat-divider *ngIf="isAdmin"></mat-divider>
-
-        <button mat-menu-item (click)="goToProfile()">
-          <mat-icon>person_outline</mat-icon>
-          <span>Datele mele</span>
-        </button>
-
-        <mat-divider></mat-divider>
-
-        <button mat-menu-item (click)="goToOrders()">
-          <mat-icon>receipt_long</mat-icon>
-          <span>Comenzile mele</span>
-        </button>
-
-        <button mat-menu-item (click)="goToFavorites()">
-          <mat-icon>favorite_border</mat-icon>
-          <span>Favorite</span>
-        </button>
-
-        <button mat-menu-item (click)="goToReviews()">
-          <mat-icon>rate_review</mat-icon>
-          <span>Recenziile mele</span>
-        </button>
-
-        <mat-divider></mat-divider>
-
-        <button
-          mat-menu-item
-          class="logout-menu-item"
-          (click)="openLogoutDialog()"
-        >
-          <mat-icon>logout</mat-icon>
-          <span>Delogare</span>
-        </button>
-      </ng-container>
-
-      <ng-template #guestMenu>
-        <button mat-menu-item (click)="goToLogin()">
-          <mat-icon>login</mat-icon>
-          <span>Autentificare</span>
-        </button>
-
-        <button mat-menu-item (click)="goToRegister()">
-          <mat-icon>person_add</mat-icon>
-          <span>Creează un cont nou</span>
-        </button>
-      </ng-template>
-    </mat-menu>
-
-    <button
-      mat-button
-      type="button"
-      aria-label="Favorite"
-      (click)="onFavoritesClick()"
-    >
-      <mat-icon>favorite</mat-icon>
-    </button>
-
-    <button
-      mat-button
-      type="button"
-      aria-label="Coșul de cumpărături"
-      (click)="goToCart()"
-    >
-      <mat-icon>shopping_cart</mat-icon>
-    </button>
-  </div>
-</mat-toolbar>
+</header>

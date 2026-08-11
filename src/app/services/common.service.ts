@@ -21,7 +21,10 @@ export class CommonService {
     private readonly router: Router,
   ) {}
 
-  // notification methods
+  // =========================
+  // NOTIFICATIONS
+  // =========================
+
   showSnackBarSuccess(message: string): void {
     this.showNotification(message, 'success');
   }
@@ -45,28 +48,16 @@ export class CommonService {
     this.showSnackBarError(message || fallbackMessage);
   }
 
-  private showNotification(message: string, type: NotificationType): void {
-    const data: NotificationData = {
-      message,
-      type,
-    };
+  // =========================
+  // STORE NAVIGATION
+  // =========================
 
-    this.snackBar.openFromComponent(NotificationComponent, {
-      data,
-      duration: type === 'error' ? 6000 : 4500,
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-      panelClass: ['bookloop-notification-panel'],
-    });
-  }
-
-  // navigation methods
   goToHomePage(): void {
     this.router.navigate(['/']);
   }
 
-  goToAdminPage(): void {
-    this.router.navigate(['/admin']);
+  goToAllBooks(): void {
+    this.router.navigate(['/books']);
   }
 
   goToBooks(category: Category): void {
@@ -75,18 +66,6 @@ export class CommonService {
 
   goToSpecificBook(bookId: number): void {
     this.router.navigate(['/book', bookId]);
-  }
-
-  goToCart(): void {
-    this.router.navigate(['/cart']);
-  }
-
-  goToLoginPage(): void {
-    this.router.navigate(['/auth/login']);
-  }
-
-  goToRegisterPage(): void {
-    this.router.navigate(['/auth/register']);
   }
 
   goToBestsellers(): void {
@@ -105,8 +84,36 @@ export class CommonService {
     });
   }
 
+  goToCart(): void {
+    this.router.navigate(['/cart']);
+  }
+
+  goToCheckout(): void {
+    this.router.navigate(['/checkout']);
+  }
+
+  // =========================
+  // AUTH NAVIGATION
+  // =========================
+
+  goToLoginPage(): void {
+    this.router.navigate(['/auth/login']);
+  }
+
+  goToRegisterPage(): void {
+    this.router.navigate(['/auth/register']);
+  }
+
+  // =========================
+  // ACCOUNT NAVIGATION
+  // =========================
+
   goToProfile(): void {
     this.router.navigate(['/account/profile']);
+  }
+
+  goToAddresses(): void {
+    this.router.navigate(['/account/addresses']);
   }
 
   goToOrders(): void {
@@ -117,12 +124,12 @@ export class CommonService {
     this.router.navigate(['/account/favorites']);
   }
 
-  goToReviews(): void {
-    this.router.navigate(['/account/reviews']);
-  }
+  // =========================
+  // ADMIN NAVIGATION
+  // =========================
 
-  goToCheckout(): void {
-    this.router.navigate(['/checkout']);
+  goToAdminPage(): void {
+    this.router.navigate(['/admin']);
   }
 
   goToAdminDashboard(): void {
@@ -133,7 +140,26 @@ export class CommonService {
     this.router.navigate(['/admin/products']);
   }
 
-  // image methods
+  // =========================
+  // INFORMATION PAGES
+  // =========================
+
+  goToTermsAndConditions(): void {
+    this.router.navigate(['/info/terms-and-conditions']);
+  }
+
+  goToPrivacyPolicy(): void {
+    this.router.navigate(['/info/privacy-policy']);
+  }
+
+  goToDeliveryAndReturns(): void {
+    this.router.navigate(['/info/delivery-and-returns']);
+  }
+
+  // =========================
+  // IMAGE HELPERS
+  // =========================
+
   getImageUrl(imageUrl?: string): string {
     if (!imageUrl) {
       return '';
@@ -152,5 +178,24 @@ export class CommonService {
     }
 
     return imageUrl;
+  }
+
+  // =========================
+  // PRIVATE HELPERS
+  // =========================
+
+  private showNotification(message: string, type: NotificationType): void {
+    const data: NotificationData = {
+      message,
+      type,
+    };
+
+    this.snackBar.openFromComponent(NotificationComponent, {
+      data,
+      duration: type === 'error' ? 6000 : 4500,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: ['bookloop-notification-panel'],
+    });
   }
 }

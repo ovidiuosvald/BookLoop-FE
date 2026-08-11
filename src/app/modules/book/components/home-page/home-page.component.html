@@ -1,19 +1,65 @@
 <div class="main-area">
-  <app-promo-book-carousel [books]="promoBooks"></app-promo-book-carousel>
+  <section class="promo-section">
+    <app-promo-book-carousel [books]="promoBooks"></app-promo-book-carousel>
+  </section>
 
-  <div class="shipping-info-container">
-    <div class="shipping-box">
-      <mat-icon class="shipping-icon">local_shipping</mat-icon>
+  <section class="home-content">
+    <div class="shipping-info-container">
+      <div class="shipping-box">
+        <mat-icon class="shipping-icon"> local_shipping </mat-icon>
 
-      <div class="shipping-text">Ridicare gratuită din librărie</div>
+        <div class="shipping-text">Ridicare gratuită din librărie</div>
+      </div>
+
+      <div class="shipping-box">
+        <mat-icon class="shipping-icon"> shopping_cart </mat-icon>
+
+        <div class="shipping-text">Livrare gratuită peste 200 lei</div>
+      </div>
     </div>
 
-    <div class="shipping-box">
-      <mat-icon class="shipping-icon">shopping_cart</mat-icon>
+    <section class="books-section">
+      <div class="section-header">
+        <div>
+          <span class="section-eyebrow">Descoperă</span>
+          <h2>Noutăți</h2>
+        </div>
 
-      <div class="shipping-text">Livrare gratuită peste 200 lei</div>
-    </div>
-  </div>
+        <button
+          mat-button
+          type="button"
+          class="section-link"
+          (click)="goToAllBooks()"
+        >
+          Vezi toate
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
 
-  <app-multi-book-carousel [books]="newBooks"></app-multi-book-carousel>
+      <app-multi-book-carousel [books]="newBooks"></app-multi-book-carousel>
+    </section>
+
+    <section class="books-section">
+      <div class="section-header">
+        <div>
+          <span class="section-eyebrow">Cele mai apreciate</span>
+          <h2>Bestsellere</h2>
+        </div>
+
+        <button
+          mat-button
+          type="button"
+          class="section-link"
+          (click)="goToBestsellers()"
+        >
+          Vezi toate
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+
+      <app-multi-book-carousel
+        [books]="bestsellerBooks"
+      ></app-multi-book-carousel>
+    </section>
+  </section>
 </div>

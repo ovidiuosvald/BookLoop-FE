@@ -10,10 +10,26 @@ const routes: Routes = [
     path: '',
     component: HomePageComponent,
   },
-  { path: 'books/bestsellere', component: BookListComponent },
-  { path: 'books/:categoryCode', component: BookListComponent },
-  { path: 'book/:id', component: BookDetailComponent },
-  { path: 'search', component: SearchBookResultComponent },
+  {
+    path: 'books',
+    component: BookListComponent,
+  },
+  {
+    path: 'books/bestsellere',
+    component: BookListComponent,
+  },
+  {
+    path: 'books/:categoryCode',
+    component: BookListComponent,
+  },
+  {
+    path: 'book/:id',
+    component: BookDetailComponent,
+  },
+  {
+    path: 'search',
+    component: SearchBookResultComponent,
+  },
 ];
 
 @NgModule({

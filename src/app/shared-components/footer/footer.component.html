@@ -1,0 +1,77 @@
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-brand">
+      <h2>BookLoop</h2>
+
+      <p>
+        Descoperă cărți pentru toate gusturile și comandă simplu, direct din
+        BookLoop.
+      </p>
+    </div>
+
+    <div class="footer-column">
+      <h3>Magazin</h3>
+
+      <button type="button" (click)="goToHomePage()">Acasă</button>
+
+      <button type="button" (click)="goToAllBooks()">Toate cărțile</button>
+
+      <button type="button" (click)="goToBestsellers()">Bestsellere</button>
+    </div>
+
+    <div class="footer-column">
+      <h3>Contul meu</h3>
+
+      <button type="button" (click)="goToProfile()">Datele mele</button>
+
+      <button type="button" (click)="goToAddresses()">Adresele mele</button>
+
+      <button type="button" (click)="goToOrders()">Comenzile mele</button>
+
+      <button type="button" (click)="goToFavorites()">Favorite</button>
+    </div>
+
+    <div class="footer-column">
+      <h3>Informații</h3>
+
+      <button type="button" (click)="goToTerms()">Termeni și condiții</button>
+
+      <button type="button" (click)="goToPrivacy()">
+        Politica de confidențialitate
+      </button>
+
+      <button type="button" (click)="goToDelivery()">Livrare și retur</button>
+    </div>
+
+    <div class="footer-column contact-column">
+      <h3>Contact</h3>
+
+      <div class="contact-item">
+        <mat-icon>location_on</mat-icon>
+
+        <span> Str. Matei Corvin nr. 46, Oradea </span>
+      </div>
+
+      <div class="contact-item">
+        <mat-icon>email</mat-icon>
+
+        <a href="mailto:contact@bookloop.ro"> contact@bookloop.ro </a>
+      </div>
+
+      <div class="contact-item">
+        <mat-icon>phone</mat-icon>
+
+        <a href="tel:+40700000000"> 0700 000 000 </a>
+      </div>
+
+      <button type="button" class="map-link" (click)="openMap()">
+        Vezi locația pe hartă
+        <mat-icon>open_in_new</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span> © {{ currentYear }} BookLoop. Toate drepturile rezervate. </span>
+  </div>
+</footer>

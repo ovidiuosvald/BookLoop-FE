@@ -1,14 +1,19 @@
-import { Component } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable, take } from 'rxjs';
+import { Observable, Subject, take, takeUntil } from 'rxjs';
 
+// Models
 import { Category } from 'src/app/models/category.model';
+
+// Services
+import { CartService } from 'src/app/services/cart.service';
+import { CategoryService } from 'src/app/services/category.service';
 import { CommonService } from 'src/app/services/common.service';
 import { UserService } from 'src/app/services/user.service';
 
+// Components
 import { AuthenticationRequiredDialogComponent } from '../authentication-required-dialog/authentication-required-dialog.component';
-import { CategoryService } from 'src/app/services/category.service';
-import { HttpErrorResponse } from '@angular/common/http';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
@@ -16,11 +21,14 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit, OnDestroy {
   readonly isUserLoggedIn$: Observable<boolean>;
+  readonly cartItemCount$: Observable<number>;
 
   searchTerm = '';
   categories: Category[] = [];
+
+  private readonly destroy$ = new Subject<void>();
 
   get isAdmin(): boolean {
     return this.userService.authenticatedUser?.role === 'ADMIN';
@@ -29,30 +37,35 @@ export class HeaderComponent {
   constructor(
     private readonly dialog: MatDialog,
     private readonly userService: UserService,
+    private readonly cartService: CartService,
+    private readonly categoryService: CategoryService,
     private readonly commonService: CommonService,
-    private categoryService: CategoryService,
   ) {
     this.isUserLoggedIn$ = this.userService.isUserLoggedIn$;
-    this.getAllCategories();
+
+    this.cartItemCount$ = this.cartService.cartItemCount$;
   }
 
-  getAllCategories(): void {
-    this.categoryService.getCategories().subscribe({
-      next: (categories: Category[]) => {
-        this.categories = categories;
-      },
-      error: (error: HttpErrorResponse) => {
-        console.error('Eroare la obținerea categoriilor:', error);
-      },
-    });
+  ngOnInit(): void {
+    this.loadCategories();
+    this.listenToAuthenticationChanges();
   }
 
-  goToAdminDashboard(): void {
-    this.commonService.goToAdminDashboard();
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
+
+  // =========================
+  // STORE NAVIGATION
+  // =========================
 
   goToHomePage(): void {
     this.commonService.goToHomePage();
+  }
+
+  goToAllBooks(): void {
+    this.commonService.goToAllBooks();
   }
 
   goToBooks(category: Category): void {
@@ -63,12 +76,13 @@ export class HeaderComponent {
     this.commonService.goToBestsellers();
   }
 
-  goToOffers(): void {
-    // Temporar, până ai o rută sau o metodă dedicată pentru oferte.
-    this.commonService.showSnackBarError(
-      'Pagina de oferte nu este disponibilă momentan.',
-    );
+  goToCart(): void {
+    this.commonService.goToCart();
   }
+
+  // =========================
+  // SEARCH
+  // =========================
 
   onSearch(): void {
     const query = this.searchTerm.trim();
@@ -82,8 +96,13 @@ export class HeaderComponent {
 
   clearSearch(): void {
     this.searchTerm = '';
+
     this.commonService.goToHomePage();
   }
+
+  // =========================
+  // AUTH / ACCOUNT
+  // =========================
 
   goToLogin(): void {
     this.commonService.goToLoginPage();
@@ -97,20 +116,16 @@ export class HeaderComponent {
     this.commonService.goToProfile();
   }
 
+  goToAddresses(): void {
+    this.commonService.goToAddresses();
+  }
+
   goToOrders(): void {
     this.commonService.goToOrders();
   }
 
   goToFavorites(): void {
     this.commonService.goToFavorites();
-  }
-
-  goToReviews(): void {
-    this.commonService.goToReviews();
-  }
-
-  goToCart(): void {
-    this.commonService.goToCart();
   }
 
   onFavoritesClick(): void {
@@ -123,6 +138,18 @@ export class HeaderComponent {
       this.openAuthenticationRequiredDialog();
     });
   }
+
+  // =========================
+  // ADMIN
+  // =========================
+
+  goToAdminDashboard(): void {
+    this.commonService.goToAdminDashboard();
+  }
+
+  // =========================
+  // LOGOUT
+  // =========================
 
   openLogoutDialog(): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -145,11 +172,62 @@ export class HeaderComponent {
       .afterClosed()
       .pipe(take(1))
       .subscribe((confirmed: boolean | undefined) => {
-        if (confirmed) {
-          this.userService.logout();
+        if (!confirmed) {
+          return;
         }
+
+        this.cartService.resetCartCount();
+        this.userService.logout();
       });
   }
+
+  // =========================
+  // DATA
+  // =========================
+
+  private loadCategories(): void {
+    this.categoryService.getCategories().subscribe({
+      next: (categories: Category[]) => {
+        this.categories = categories;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.commonService.showHttpError(
+          error,
+          'Categoriile nu au putut fi încărcate.',
+        );
+      },
+    });
+  }
+
+  private listenToAuthenticationChanges(): void {
+    this.isUserLoggedIn$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isUserLoggedIn: boolean) => {
+        if (!isUserLoggedIn) {
+          this.cartService.resetCartCount();
+          return;
+        }
+
+        const userId = this.userService.authenticatedUser?.userId;
+
+        if (!userId) {
+          return;
+        }
+
+        this.cartService
+          .getCart(userId)
+          .pipe(take(1))
+          .subscribe({
+            error: () => {
+              this.cartService.resetCartCount();
+            },
+          });
+      });
+  }
+
+  // =========================
+  // DIALOGS
+  // =========================
 
   private openAuthenticationRequiredDialog(): void {
     this.dialog.open(AuthenticationRequiredDialogComponent, {

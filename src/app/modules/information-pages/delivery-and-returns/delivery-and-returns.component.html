@@ -1,0 +1,165 @@
+<div class="info-page">
+  <button mat-button type="button" class="back-button" routerLink="/">
+    <mat-icon>arrow_back</mat-icon>
+    Înapoi la magazin
+  </button>
+
+  <header class="page-header">
+    <div class="header-icon">
+      <mat-icon>local_shipping</mat-icon>
+    </div>
+
+    <div>
+      <h1>Livrare și retur</h1>
+
+      <p>Ultima actualizare: {{ lastUpdated }}</p>
+    </div>
+  </header>
+
+  <mat-card class="info-card">
+    <div class="notice">
+      <mat-icon>info</mat-icon>
+
+      <p>
+        Informațiile prezentate descriu fluxurile disponibile în versiunea
+        demonstrativă a aplicației BookLoop.
+      </p>
+    </div>
+
+    <section>
+      <h2>1. Metode de livrare</h2>
+
+      <p>
+        La plasarea unei comenzi, utilizatorul poate selecta una dintre metodele
+        de livrare disponibile în BookLoop.
+      </p>
+
+      <ul>
+        <li>livrare prin curier la adresa indicată;</li>
+        <li>ridicare personală din locația BookLoop din Oradea.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>2. Livrarea prin curier</h2>
+
+      <p>
+        Pentru livrarea prin curier, utilizatorul trebuie să furnizeze o adresă
+        completă și datele de contact necesare livrării.
+      </p>
+
+      <p>
+        Adresele pot fi gestionate în contul utilizatorului și pot fi
+        reutilizate pentru comenzile viitoare.
+      </p>
+    </section>
+
+    <section>
+      <h2>3. Costul livrării</h2>
+
+      <p>
+        Pentru comenzile livrate prin curier poate fi aplicat un cost de
+        transport.
+      </p>
+
+      <p>
+        Comenzile cu valoarea de cel puțin 200 lei beneficiază de livrare
+        gratuită.
+      </p>
+
+      <p>
+        Costul final al transportului este afișat în sumarul comenzii înainte de
+        plasarea acesteia.
+      </p>
+    </section>
+
+    <section>
+      <h2>4. Ridicarea din librărie</h2>
+
+      <p>
+        Ridicarea personală este gratuită și se realizează din locația BookLoop:
+      </p>
+
+      <div class="contact-box">
+        <div>
+          <mat-icon>location_on</mat-icon>
+
+          <span> Str. Matei Corvin nr. 46, Oradea, Bihor </span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>5. Procesarea comenzilor</h2>
+
+      <p>
+        După plasare, comanda este înregistrată cu statusul „Plasată” și poate
+        trece ulterior prin etapele de procesare și expediere.
+      </p>
+
+      <p>
+        Utilizatorul poate urmări statusul comenzii în secțiunea „Comenzile
+        mele”.
+      </p>
+    </section>
+
+    <section>
+      <h2>6. Disponibilitatea produselor</h2>
+
+      <p>
+        Disponibilitatea produselor este verificată înainte de finalizarea
+        comenzii.
+      </p>
+
+      <p>
+        Dacă stocul disponibil nu este suficient pentru cantitatea solicitată,
+        comanda nu poate fi finalizată până la actualizarea coșului.
+      </p>
+    </section>
+
+    <section>
+      <h2>7. Returnarea produselor</h2>
+
+      <p>
+        Într-un magazin online real, returnarea produselor se realizează în
+        conformitate cu legislația aplicabilă și cu politica comerciantului.
+      </p>
+
+      <p>
+        Versiunea demonstrativă BookLoop nu include un flux complet automatizat
+        pentru solicitarea, procesarea și rambursarea retururilor.
+      </p>
+    </section>
+
+    <section>
+      <h2>8. Comenzi anulate</h2>
+
+      <p>
+        O comandă poate avea statusul „Anulată”. După ce o comandă ajunge în
+        status final „Anulată” sau „Livrată”, statusul acesteia nu mai poate fi
+        modificat din panoul de administrare.
+      </p>
+    </section>
+
+    <section>
+      <h2>9. Probleme privind livrarea</h2>
+
+      <p>
+        Pentru întrebări sau probleme privind o comandă poate fi utilizată
+        adresa de contact BookLoop.
+      </p>
+
+      <div class="contact-box">
+        <div>
+          <mat-icon>email</mat-icon>
+          <span>contact@bookloop.ro</span>
+        </div>
+
+        <div>
+          <mat-icon>phone</mat-icon>
+          <span>0700 000 000</span>
+        </div>
+      </div>
+    </section>
+  </mat-card>
+</div>

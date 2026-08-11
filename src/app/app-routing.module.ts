@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TermsAndConditionsComponent } from './pages/terms-and-conditions/terms-and-conditions.component';
+
 import { AdminGuard } from './guards/admin.guard';
 
 const routes: Routes = [
@@ -20,14 +20,9 @@ const routes: Routes = [
       ),
   },
   {
-    path: '',
-    loadChildren: () =>
-      import('./modules/book/book.module').then((module) => module.BookModule),
-  },
-  {
     path: 'cart',
     loadChildren: () =>
-      import('./modules/cart/cart.module').then((m) => m.CartModule),
+      import('./modules/cart/cart.module').then((module) => module.CartModule),
   },
   {
     path: 'checkout',
@@ -39,16 +34,29 @@ const routes: Routes = [
   {
     path: 'account',
     loadChildren: () =>
-      import('./modules/user/user.module').then((m) => m.UserModule),
+      import('./modules/user/user.module').then((module) => module.UserModule),
   },
   {
-    path: 'terms-and-conditions',
-    component: TermsAndConditionsComponent,
+    path: 'info',
+    loadChildren: () =>
+      import('./modules/information-pages/information-pages.module').then(
+        (module) => module.InformationPagesModule,
+      ),
+  },
+  {
+    path: '',
+    loadChildren: () =>
+      import('./modules/book/book.module').then((module) => module.BookModule),
   },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, {
+      scrollPositionRestoration: 'enabled',
+      anchorScrolling: 'enabled',
+    }),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
