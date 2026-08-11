@@ -2,7 +2,10 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { take } from 'rxjs';
 
+// Services
 import { UserService } from 'src/app/services/user.service';
+
+// Components
 import { ConfirmationDialogComponent } from 'src/app/shared-components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
@@ -37,9 +40,11 @@ export class UserSidebarMenuComponent {
       .afterClosed()
       .pipe(take(1))
       .subscribe((confirmed: boolean | undefined) => {
-        if (confirmed) {
-          this.userService.logout();
+        if (!confirmed) {
+          return;
         }
+
+        this.userService.logout();
       });
   }
 }

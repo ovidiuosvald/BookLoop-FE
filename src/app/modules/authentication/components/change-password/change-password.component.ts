@@ -1,10 +1,17 @@
-import { CommonService } from '../../../../services/common.service';
-import { UserInterface } from 'src/app/models/user.model';
-import { UserService } from '../../../../services/user.service';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+
+// Models
+import { UserInterface } from 'src/app/models/user.model';
+
+// Services
+import { CommonService } from 'src/app/services/common.service';
+import { UserService } from 'src/app/services/user.service';
+
+// Validators
 import { confirmPasswordValidator } from 'src/app/validators/confirm-passwod.validator';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-change-password',
@@ -12,26 +19,39 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ['./change-password.component.scss'],
 })
 export class ChangePasswordComponent implements OnInit {
-  public updateUserForm!: FormGroup;
+  updateUserForm!: FormGroup;
+
   hideOldPassword = true;
   hideNewPassword = true;
   hideConfirmPassword = true;
-  public authenticatedUser?: UserInterface;
+
+  isSaving = false;
+
+  authenticatedUser?: UserInterface;
 
   constructor(
-    private formBuilder: FormBuilder,
-    private userService: UserService,
-    private commonService: CommonService,
+    private readonly formBuilder: FormBuilder,
+    private readonly userService: UserService,
+    private readonly commonService: CommonService,
+    private readonly dialogRef: MatDialogRef<ChangePasswordComponent>,
   ) {
     this.authenticatedUser = this.userService.authenticatedUser;
   }
 
   ngOnInit(): void {
     this.createUpdateUserForm();
-    const user = this.authenticatedUser;
   }
 
-  public submitUpdateUserForm(): void {
+  // =========================
+  // ACTIONS
+  // =========================
+
+  submitUpdateUserForm(): void {
+    if (this.updateUserForm.invalid) {
+      this.updateUserForm.markAllAsTouched();
+      return;
+    }
+
     const userToBeUpdated: UserInterface = {
       userId: this.authenticatedUser?.userId,
       email: this.authenticatedUser?.email,
@@ -41,40 +61,54 @@ export class ChangePasswordComponent implements OnInit {
       newPassword: this.updateUserForm.controls.newPassword.value,
     };
 
+    this.isSaving = true;
+
     this.userService.changePassword(userToBeUpdated).subscribe({
       next: () => {
+        this.isSaving = false;
+
         this.commonService.showSnackBarSuccess(
           'Parola a fost actualizată cu succes.',
         );
 
+        this.dialogRef.close();
+
         this.userService.logout();
       },
       error: (error: HttpErrorResponse) => {
-        const message =
-          typeof error.error === 'string' ? error.error : error.error?.message;
+        this.isSaving = false;
 
-        this.commonService.showSnackBarError(
-          message || 'Parola nu a putut fi actualizată.',
+        this.commonService.showHttpError(
+          error,
+          'Parola nu a putut fi actualizată.',
         );
       },
     });
   }
 
+  close(): void {
+    this.dialogRef.close();
+  }
+
+  // =========================
+  // FORM
+  // =========================
+
   private createUpdateUserForm(): void {
-    const passwordRegExp: RegExp = new RegExp(
-      '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~`!@#$%^&()--+={}[]|\\:;<>,.?/_₹])(?=.{8,20})',
-    );
+    const passwordRegExp =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~`!@#$%^&()\-+={}[\]|\\:;<>,.?/_₹]).{8,20}$/;
+
     this.updateUserForm = this.formBuilder.group(
       {
-        password: ['', [Validators.required]],
+        password: ['', Validators.required],
 
         newPassword: [
           '',
           [
             Validators.required,
-            Validators.pattern(passwordRegExp),
             Validators.minLength(8),
             Validators.maxLength(20),
+            Validators.pattern(passwordRegExp),
           ],
         ],
 

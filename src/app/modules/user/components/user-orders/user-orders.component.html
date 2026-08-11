@@ -1,6 +1,7 @@
 <div class="orders-page">
   <header class="page-header">
     <h1>Comenzile mele</h1>
+
     <p>Vezi istoricul și statusul comenzilor tale.</p>
   </header>
 
@@ -12,107 +13,64 @@
         class="order-card"
         *ngFor="let order of orders; trackBy: trackByOrderId"
       >
-        <ng-container *ngIf="getFirstItem(order) as firstItem">
-          <div class="cover-container">
-            <img
-              *ngIf="firstItem.coverUrl; else coverPlaceholder"
-              class="book-cover"
-              [src]="getImageUrl(firstItem.coverUrl)"
-              [alt]="firstItem.bookName"
-              [routerLink]="['/account/orders', order.orderId]"
-            />
+        <div class="order-info">
+          <div class="order-top">
+            <span class="order-number">
+              <mat-icon>inventory_2</mat-icon>
 
-            <ng-template #coverPlaceholder>
-              <div
-                class="book-cover cover-placeholder"
-                [routerLink]="['/account/orders', order.orderId]"
-              >
-                <mat-icon>menu_book</mat-icon>
-              </div>
-            </ng-template>
-          </div>
+              Comanda #{{ order.orderNumber }}
+            </span>
 
-          <div class="order-info">
-            <div class="order-top">
-              <span class="order-number">
-                <mat-icon>inventory_2</mat-icon>
-                Comanda #{{ order.orderNumber }}
-              </span>
-
-              <span
-                class="status-badge"
-                [ngClass]="getStatusClass(order.status)"
-              >
-                {{ getStatusLabel(order.status) }}
-              </span>
-            </div>
-
-            <h2 [routerLink]="['/account/orders', order.orderId]">
-              {{ firstItem.bookName }}
-            </h2>
-
-            <div class="order-meta">
-              <span>
-                <mat-icon>calendar_today</mat-icon>
-
-                {{ order.creationDate | date: "dd.MM.yyyy, HH:mm" }}
-              </span>
-
-              <span>
-                <mat-icon>
-                  {{ getDeliveryIcon(order.deliveryMethod) }}
-                </mat-icon>
-
-                {{ getDeliveryLabel(order.deliveryMethod) }}
-              </span>
-            </div>
-
-            <p class="quantity">
-              {{ firstItem.quantity }}
-              {{ firstItem.quantity === 1 ? "exemplar" : "exemplare" }}
-            </p>
-
-            <p
-              class="additional-items"
-              *ngIf="getAdditionalItemsCount(order) > 0"
-            >
-              +{{ getAdditionalItemsCount(order) }}
-              {{
-                getAdditionalItemsCount(order) === 1
-                  ? "alt titlu"
-                  : "alte titluri"
-              }}
-              în această comandă
-            </p>
-
-            <span class="products-count">
-              {{ getTotalItems(order) }}
-              {{
-                getTotalItems(order) === 1
-                  ? "produs comandat"
-                  : "produse comandate"
-              }}
+            <span class="status-badge" [ngClass]="getStatusClass(order.status)">
+              {{ getStatusLabel(order.status) }}
             </span>
           </div>
 
-          <div class="order-actions">
-            <span class="total-label">Total comandă</span>
+          <div class="order-meta">
+            <span>
+              <mat-icon>calendar_today</mat-icon>
 
-            <strong class="price">
-              {{ order.totalPrice | currency: "RON" : "symbol" : "1.2-2" }}
-            </strong>
+              {{ order.creationDate | date: "dd.MM.yyyy, HH:mm" }}
+            </span>
 
-            <button
-              mat-flat-button
-              type="button"
-              class="details-button"
-              [routerLink]="['/account/orders', order.orderId]"
-            >
-              Vezi detalii
-              <mat-icon>arrow_forward</mat-icon>
-            </button>
+            <span>
+              <mat-icon>
+                {{ getDeliveryIcon(order.deliveryMethod) }}
+              </mat-icon>
+
+              {{ getDeliveryLabel(order.deliveryMethod) }}
+            </span>
           </div>
-        </ng-container>
+
+          <p class="items-summary">
+            {{ getTotalItems(order) }}
+
+            {{
+              getTotalItems(order) === 1
+                ? "produs în comandă"
+                : "produse în comandă"
+            }}
+          </p>
+        </div>
+
+        <div class="order-actions">
+          <span class="total-label"> Total comandă </span>
+
+          <strong class="price">
+            {{ order.totalPrice | currency: "RON" : "symbol" : "1.2-2" }}
+          </strong>
+
+          <button
+            mat-flat-button
+            type="button"
+            class="details-button"
+            [routerLink]="['/account/orders', order.orderId]"
+          >
+            Vezi detalii
+
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </div>
       </article>
     </div>
   </ng-container>
@@ -127,6 +85,7 @@
 
       <button mat-flat-button type="button" class="shop-button" routerLink="/">
         <mat-icon>menu_book</mat-icon>
+
         Descoperă cărțile
       </button>
     </div>

@@ -1,8 +1,9 @@
 <section class="user-details" *ngIf="authenticatedUser$ | async as user">
-  <div class="section-header">
-    <h2>Datele mele</h2>
+  <header class="page-header">
+    <h1>Datele mele</h1>
+
     <p>Gestionează informațiile asociate contului tău.</p>
-  </div>
+  </header>
 
   <div class="details-card">
     <div class="card-header">
@@ -25,12 +26,14 @@
     <div class="card-content">
       <div class="info-row">
         <span class="label">Nume</span>
-        <span class="value">{{ user.firstName }} {{ user.lastName }}</span>
+        <span class="value"> {{ user.firstName }} {{ user.lastName }} </span>
       </div>
 
       <div class="info-row">
         <span class="label">Email</span>
-        <span class="value">{{ user.email }}</span>
+        <span class="value">
+          {{ user.email }}
+        </span>
       </div>
     </div>
   </div>
@@ -53,6 +56,7 @@
         mat-flat-button
         color="primary"
         type="button"
+        class="password-button"
         (click)="openChangePasswordDialog()"
       >
         <mat-icon>lock_reset</mat-icon>

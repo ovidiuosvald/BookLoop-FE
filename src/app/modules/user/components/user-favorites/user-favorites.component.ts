@@ -1,6 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+
+// Models
 import { Book } from 'src/app/models/book.model';
+
+// Services
 import { CartService } from 'src/app/services/cart.service';
 import { CommonService } from 'src/app/services/common.service';
 import { FavoriteService } from 'src/app/services/favorite.service';
@@ -12,8 +16,8 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./user-favorites.component.scss'],
 })
 export class UserFavoritesComponent implements OnInit {
-  public favoriteBooks: Book[] = [];
-  public isLoading = true;
+  favoriteBooks: Book[] = [];
+  isLoading = true;
 
   constructor(
     private readonly favoriteService: FavoriteService,
@@ -26,52 +30,26 @@ export class UserFavoritesComponent implements OnInit {
     this.loadFavoriteBooks();
   }
 
-  public getImageUrl(imageUrl?: string): string {
-    return this.commonService.getImageUrl(imageUrl);
+  // =========================
+  // NAVIGATION
+  // =========================
+
+  goToSpecificBook(bookId: number): void {
+    this.commonService.goToSpecificBook(bookId);
   }
 
-  private loadFavoriteBooks(): void {
-    const userId = this.userService.authenticatedUser.userId;
+  // =========================
+  // CART
+  // =========================
+
+  addToCart(book: Book): void {
+    const userId = this.userService.authenticatedUser?.userId;
 
     if (!userId) {
-      this.isLoading = false;
-
       this.commonService.showSnackBarError(
         'Datele utilizatorului nu au putut fi identificate.',
       );
 
-      return;
-    }
-
-    this.favoriteService.getFavorites(userId).subscribe({
-      next: (books: Book[]) => {
-        this.favoriteBooks = books;
-        this.isLoading = false;
-      },
-      error: (error: HttpErrorResponse) => {
-        console.error('Eroare favorite:', error);
-
-        this.isLoading = false;
-
-        this.commonService.showHttpError(
-          error,
-          'Cărțile favorite nu au putut fi încărcate.',
-        );
-      },
-    });
-  }
-
-  public goToSpecificBook(bookId: number): void {
-    this.commonService.goToSpecificBook(bookId);
-  }
-
-  addToCart(book: Book): void {
-    const userId = this.userService.authenticatedUser.userId;
-
-    if (!userId) {
-      this.commonService.showSnackBarError(
-        'Trebuie să fii autentificat pentru a adăuga cărți în coș.',
-      );
       return;
     }
 
@@ -90,10 +68,18 @@ export class UserFavoritesComponent implements OnInit {
     });
   }
 
-  public removeFromFavorites(book: Book): void {
-    const userId = this.userService.authenticatedUser.userId;
+  // =========================
+  // FAVORITES
+  // =========================
+
+  removeFromFavorites(book: Book): void {
+    const userId = this.userService.authenticatedUser?.userId;
 
     if (!userId) {
+      this.commonService.showSnackBarError(
+        'Datele utilizatorului nu au putut fi identificate.',
+      );
+
       return;
     }
 
@@ -107,9 +93,55 @@ export class UserFavoritesComponent implements OnInit {
           'Cartea a fost eliminată din favorite.',
         );
       },
-      error: () => {
-        this.commonService.showSnackBarError(
+      error: (error: HttpErrorResponse) => {
+        this.commonService.showHttpError(
+          error,
           'Cartea nu a putut fi eliminată din favorite.',
+        );
+      },
+    });
+  }
+
+  // =========================
+  // HELPERS
+  // =========================
+
+  getImageUrl(imageUrl?: string): string {
+    return this.commonService.getImageUrl(imageUrl);
+  }
+
+  trackByBookId(index: number, book: Book): number {
+    return book.bookId;
+  }
+
+  // =========================
+  // DATA
+  // =========================
+
+  private loadFavoriteBooks(): void {
+    const userId = this.userService.authenticatedUser?.userId;
+
+    if (!userId) {
+      this.isLoading = false;
+
+      this.commonService.showSnackBarError(
+        'Datele utilizatorului nu au putut fi identificate.',
+      );
+
+      return;
+    }
+
+    this.favoriteService.getFavorites(userId).subscribe({
+      next: (books: Book[]) => {
+        this.favoriteBooks = books;
+        this.isLoading = false;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.isLoading = false;
+
+        this.commonService.showHttpError(
+          error,
+          'Cărțile favorite nu au putut fi încărcate.',
         );
       },
     });

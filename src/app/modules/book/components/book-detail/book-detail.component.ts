@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 // Models
 import { Book } from 'src/app/models/book.model';
@@ -20,7 +20,10 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class BookDetailComponent implements OnInit {
   book?: Book;
+  returnUrl?: string;
+
   isLoading = true;
+  isUnavailable = false;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -29,10 +32,34 @@ export class BookDetailComponent implements OnInit {
     private readonly commonService: CommonService,
     private readonly favoriteService: FavoriteService,
     private readonly userService: UserService,
+    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
+    this.returnUrl = history.state?.returnUrl;
+
     this.loadBook();
+  }
+
+  // =========================
+  // NAVIGATION
+  // =========================
+
+  goToAllBooks(): void {
+    this.commonService.goToAllBooks();
+  }
+
+  goToHomePage(): void {
+    this.commonService.goToHomePage();
+  }
+
+  goBack(): void {
+    if (this.returnUrl) {
+      this.router.navigateByUrl(this.returnUrl);
+      return;
+    }
+
+    this.commonService.goToAllBooks();
   }
 
   // =========================
@@ -90,8 +117,9 @@ export class BookDetailComponent implements OnInit {
             : 'Cartea a fost eliminată din favorite.',
         );
       },
-      error: () => {
-        this.commonService.showSnackBarError(
+      error: (error: HttpErrorResponse) => {
+        this.commonService.showHttpError(
+          error,
           'Favoritele nu au putut fi actualizate.',
         );
       },
@@ -117,23 +145,28 @@ export class BookDetailComponent implements OnInit {
   private loadBook(): void {
     const id = this.route.snapshot.paramMap.get('id');
 
-    if (!id) {
-      this.isLoading = false;
+    const bookId = Number(id);
 
-      this.commonService.showSnackBarError(
-        'Cartea nu a putut fi identificată.',
-      );
+    if (!id || Number.isNaN(bookId) || bookId <= 0) {
+      this.isLoading = false;
+      this.isUnavailable = true;
 
       return;
     }
 
-    this.bookService.getBook(Number(id)).subscribe({
+    this.bookService.getBook(bookId).subscribe({
       next: (book: Book) => {
         this.book = book;
         this.isLoading = false;
+        this.isUnavailable = false;
       },
       error: (error: HttpErrorResponse) => {
         this.isLoading = false;
+
+        if (error.status === 404) {
+          this.isUnavailable = true;
+          return;
+        }
 
         this.commonService.showHttpError(
           error,

@@ -1,4 +1,10 @@
 <aside class="user-sidebar">
+  <div class="sidebar-header">
+    <span class="sidebar-eyebrow">Cont</span>
+
+    <h2>Contul meu</h2>
+  </div>
+
   <nav class="sidebar-navigation">
     <a
       class="sidebar-item"
@@ -11,7 +17,16 @@
         <span>Datele mele</span>
       </span>
 
-      <mat-icon class="sidebar-arrow">chevron_right</mat-icon>
+      <mat-icon class="sidebar-arrow"> chevron_right </mat-icon>
+    </a>
+
+    <a class="sidebar-item" routerLink="addresses" routerLinkActive="active">
+      <span class="sidebar-item-content">
+        <mat-icon>location_on</mat-icon>
+        <span>Adresele mele</span>
+      </span>
+
+      <mat-icon class="sidebar-arrow"> chevron_right </mat-icon>
     </a>
 
     <div class="sidebar-divider"></div>
@@ -22,7 +37,7 @@
         <span>Comenzile mele</span>
       </span>
 
-      <mat-icon class="sidebar-arrow">chevron_right</mat-icon>
+      <mat-icon class="sidebar-arrow"> chevron_right </mat-icon>
     </a>
 
     <a class="sidebar-item" routerLink="favorites" routerLinkActive="active">
@@ -31,16 +46,7 @@
         <span>Favorite</span>
       </span>
 
-      <mat-icon class="sidebar-arrow">chevron_right</mat-icon>
-    </a>
-
-    <a class="sidebar-item" routerLink="reviews" routerLinkActive="active">
-      <span class="sidebar-item-content">
-        <mat-icon>rate_review</mat-icon>
-        <span>Recenziile mele</span>
-      </span>
-
-      <mat-icon class="sidebar-arrow">chevron_right</mat-icon>
+      <mat-icon class="sidebar-arrow"> chevron_right </mat-icon>
     </a>
 
     <div class="sidebar-divider"></div>
@@ -55,7 +61,7 @@
         <span>Delogare</span>
       </span>
 
-      <mat-icon class="sidebar-arrow">chevron_right</mat-icon>
+      <mat-icon class="sidebar-arrow"> chevron_right </mat-icon>
     </button>
   </nav>
 </aside>

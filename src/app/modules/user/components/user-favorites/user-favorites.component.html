@@ -1,6 +1,7 @@
 <div class="favorites-page">
   <div class="page-header">
     <h1>Favorite</h1>
+
     <p>Cărțile salvate de tine vor apărea aici.</p>
   </div>
 
@@ -11,7 +12,10 @@
       class="favorites-list"
       *ngIf="favoriteBooks.length > 0; else emptyState"
     >
-      <article class="favorite-card" *ngFor="let book of favoriteBooks">
+      <article
+        class="favorite-card"
+        *ngFor="let book of favoriteBooks; trackBy: trackByBookId"
+      >
         <img
           class="book-cover"
           [src]="getImageUrl(book.coverUrl)"
@@ -26,9 +30,10 @@
 
           <p class="author">de {{ book.author }}</p>
 
-          <p class="description">
+          <p class="description" *ngIf="book.description">
             {{ book.description | slice: 0 : 160 }}
-            <span *ngIf="book.description.length > 160">...</span>
+
+            <span *ngIf="book.description.length > 160"> ... </span>
           </p>
 
           <span class="stock" [class.out-of-stock]="!book.quantity">
@@ -46,7 +51,8 @@
             [inStock]="book.quantity > 0"
             (addToCart)="addToCart(book)"
             (toggleFavorite)="removeFromFavorites(book)"
-          ></app-action-buttons>
+          >
+          </app-action-buttons>
         </div>
       </article>
     </div>

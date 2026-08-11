@@ -2,12 +2,32 @@
   display: block;
 }
 
-.update-profile-dialog {
+.dialog-container {
+  position: relative;
+
   width: 100%;
-  min-width: 500px;
-  max-width: 580px;
+
+  padding: 24px 28px 22px;
 
   box-sizing: border-box;
+}
+
+/* =========================
+   CLOSE
+   ========================= */
+
+.close-button {
+  position: absolute;
+
+  top: 8px;
+  right: 8px;
+
+  color: #8a8393;
+
+  &:hover {
+    color: #4f4658;
+    background: #f5f0fa;
+  }
 }
 
 /* =========================
@@ -20,9 +40,8 @@
 
   gap: 14px;
 
-  padding: 24px 26px 18px;
-
-  border-bottom: 1px solid #ece7f5;
+  padding-right: 40px;
+  margin-bottom: 18px;
 }
 
 .dialog-icon {
@@ -74,22 +93,49 @@
    FORM
    ========================= */
 
-.profile-form {
-  width: 100%;
+.address-dialog-form {
+  display: flex;
+  flex-direction: column;
 }
 
-.form-content {
-  display: grid;
+/* =========================
+   BOTTOM AREA
+   ========================= */
 
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+.dialog-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-  gap: 16px;
+  gap: 24px;
 
-  padding: 22px 26px 12px;
+  margin-top: 8px;
 }
 
-mat-form-field {
-  width: 100%;
+.default-option {
+  flex: 1;
+
+  min-width: 0;
+
+  padding: 12px 14px;
+
+  background: #faf8fd;
+
+  border: 1px solid #eee8f5;
+  border-radius: 10px;
+
+  mat-checkbox {
+    color: #2d2456;
+  }
+
+  p {
+    margin: 3px 0 0 34px;
+
+    color: #8a8393;
+
+    font-size: 11px;
+    line-height: 1.45;
+  }
 }
 
 /* =========================
@@ -99,13 +145,10 @@ mat-form-field {
 .dialog-actions {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+
+  flex-shrink: 0;
 
   gap: 10px;
-
-  padding: 16px 26px 22px;
-
-  border-top: 1px solid #ece7f5;
 }
 
 .cancel-button {
@@ -119,7 +162,7 @@ mat-form-field {
   font-weight: 500;
 }
 
-.submit-button {
+.save-button {
   min-height: 42px;
 
   padding: 0 18px !important;
@@ -150,38 +193,43 @@ mat-form-field {
    RESPONSIVE
    ========================= */
 
-@media (max-width: 650px) {
-  .update-profile-dialog {
-    min-width: 0;
-    max-width: 100%;
+@media (max-width: 760px) {
+  .dialog-container {
+    padding: 22px 20px 20px;
   }
 
+  .dialog-bottom {
+    align-items: stretch;
+    flex-direction: column;
+
+    gap: 16px;
+  }
+
+  .dialog-actions {
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 560px) {
   .dialog-header {
     align-items: flex-start;
-
-    padding: 22px 20px 16px;
-
-    h2 {
-      font-size: 20px;
-    }
-  }
-
-  .form-content {
-    grid-template-columns: 1fr;
-
-    gap: 8px;
-
-    padding: 20px 20px 8px;
   }
 
   .dialog-actions {
     align-items: stretch;
     flex-direction: column-reverse;
 
-    padding: 16px 20px 20px;
+    width: 100%;
+  }
 
-    button {
-      width: 100%;
+  .cancel-button,
+  .save-button {
+    width: 100%;
+  }
+
+  .default-option {
+    p {
+      margin-left: 0;
     }
   }
 }

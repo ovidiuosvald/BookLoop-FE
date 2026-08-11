@@ -1,9 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 
+// Enums
 import { DeliveryMethod, OrderStatus } from 'src/app/enums/order.enums';
+
+// Models
 import { Order } from 'src/app/models/order.model';
-import { OrderItem } from 'src/app/models/order-item.model';
+
+// Services
 import { CommonService } from 'src/app/services/common.service';
 import { OrderService } from 'src/app/services/order.service';
 import { UserService } from 'src/app/services/user.service';
@@ -17,8 +21,6 @@ export class UserOrdersComponent implements OnInit {
   orders: Order[] = [];
   isLoading = true;
 
-  readonly deliveryMethod = DeliveryMethod;
-
   constructor(
     private readonly orderService: OrderService,
     private readonly userService: UserService,
@@ -29,17 +31,17 @@ export class UserOrdersComponent implements OnInit {
     this.loadOrders();
   }
 
-  getFirstItem(order: Order): OrderItem | undefined {
-    return order.items[0];
-  }
-
-  getAdditionalItemsCount(order: Order): number {
-    return Math.max(order.items.length - 1, 0);
-  }
+  // =========================
+  // ORDER DATA
+  // =========================
 
   getTotalItems(order: Order): number {
     return order.items.reduce((total, item) => total + item.quantity, 0);
   }
+
+  // =========================
+  // STATUS
+  // =========================
 
   getStatusLabel(status: OrderStatus): string {
     const labels: Record<OrderStatus, string> = {
@@ -65,6 +67,10 @@ export class UserOrdersComponent implements OnInit {
     return classes[status] ?? '';
   }
 
+  // =========================
+  // DELIVERY
+  // =========================
+
   getDeliveryLabel(method: DeliveryMethod): string {
     return method === DeliveryMethod.Pickup
       ? 'Ridicare din librărie'
@@ -75,16 +81,20 @@ export class UserOrdersComponent implements OnInit {
     return method === DeliveryMethod.Pickup ? 'storefront' : 'local_shipping';
   }
 
+  // =========================
+  // HELPERS
+  // =========================
+
   trackByOrderId(index: number, order: Order): number {
     return order.orderId;
   }
 
-  getImageUrl(imageUrl?: string): string {
-    return this.commonService.getImageUrl(imageUrl);
-  }
+  // =========================
+  // DATA
+  // =========================
 
   private loadOrders(): void {
-    const userId = this.userService.authenticatedUser.userId;
+    const userId = this.userService.authenticatedUser?.userId;
 
     if (!userId) {
       this.isLoading = false;
@@ -97,7 +107,7 @@ export class UserOrdersComponent implements OnInit {
     }
 
     this.orderService.getUserOrders(userId).subscribe({
-      next: (orders) => {
+      next: (orders: Order[]) => {
         this.orders = orders;
         this.isLoading = false;
       },

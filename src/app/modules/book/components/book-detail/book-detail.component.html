@@ -1,132 +1,194 @@
 <div class="book-detail-page">
-  <ng-container *ngIf="book as currentBook; else loadingState">
-    <article class="book-detail-card">
-      <section class="cover-section">
-        <div class="cover-wrapper">
-          <img
-            class="book-cover"
-            [src]="getImageUrl(currentBook.coverUrl)"
-            [alt]="currentBook.bookName"
-          />
+  <div class="unavailable-state" *ngIf="isUnavailable; else bookContent">
+    <div class="unavailable-icon">
+      <mat-icon>menu_book</mat-icon>
+    </div>
 
-          <div class="badges">
-            <span
-              class="book-badge bestseller"
-              *ngIf="currentBook.isBestseller"
-            >
-              Bestseller
-            </span>
+    <h1>Cartea nu mai este disponibilă</h1>
 
-            <span class="book-badge new-book" *ngIf="currentBook.isNew">
-              Nou
-            </span>
-          </div>
-        </div>
-      </section>
+    <p>
+      Acest titlu nu mai este disponibil în catalogul BookLoop. Informațiile
+      despre comenzile plasate anterior rămân disponibile în istoricul
+      comenzilor tale.
+    </p>
 
-      <section class="book-info">
-        <span class="category" *ngIf="currentBook.category">
-          {{ getCategoryName(currentBook.category) }}
-        </span>
+    <div class="unavailable-actions">
+      <button
+        *ngIf="returnUrl"
+        mat-stroked-button
+        type="button"
+        class="back-button"
+        (click)="goBack()"
+      >
+        <mat-icon>arrow_back</mat-icon>
+        Înapoi la comandă
+      </button>
 
-        <h1>
-          {{ currentBook.bookName }}
-        </h1>
+      <button
+        mat-flat-button
+        type="button"
+        class="catalog-button"
+        (click)="goToAllBooks()"
+      >
+        <mat-icon>auto_stories</mat-icon>
+        Vezi toate cărțile
+      </button>
 
-        <p class="author">
-          de
-          <strong>
-            {{ currentBook.author }}
-          </strong>
-        </p>
+      <button
+        *ngIf="!returnUrl"
+        mat-stroked-button
+        type="button"
+        class="home-button"
+        (click)="goToHomePage()"
+      >
+        Înapoi acasă
+      </button>
+    </div>
+  </div>
 
-        <div
-          class="book-meta"
-          *ngIf="
-            currentBook.publisher ||
-            currentBook.yearOfPublication != null ||
-            currentBook.numberOfPages != null
-          "
-        >
-          <div class="meta-item" *ngIf="currentBook.publisher">
-            <mat-icon>business</mat-icon>
+  <ng-template #bookContent>
+    <ng-container *ngIf="book as currentBook; else loadingState">
+      <article class="book-detail-card">
+        <section class="cover-section">
+          <div class="cover-wrapper">
+            <img
+              class="book-cover"
+              [src]="getImageUrl(currentBook.coverUrl)"
+              [alt]="currentBook.bookName"
+            />
 
-            <div>
-              <span>Editură</span>
-              <strong>{{ currentBook.publisher }}</strong>
+            <div class="badges">
+              <span
+                class="book-badge bestseller"
+                *ngIf="currentBook.isBestseller"
+              >
+                Bestseller
+              </span>
+
+              <span class="book-badge new-book" *ngIf="currentBook.isNew">
+                Nou
+              </span>
             </div>
           </div>
+        </section>
 
-          <div class="meta-item" *ngIf="currentBook.yearOfPublication != null">
-            <mat-icon>calendar_today</mat-icon>
-
-            <div>
-              <span>An apariție</span>
-              <strong>
-                {{ currentBook.yearOfPublication }}
-              </strong>
-            </div>
-          </div>
-
-          <div class="meta-item" *ngIf="currentBook.numberOfPages != null">
-            <mat-icon>auto_stories</mat-icon>
-
-            <div>
-              <span>Număr pagini</span>
-              <strong>
-                {{ currentBook.numberOfPages }}
-              </strong>
-            </div>
-          </div>
-        </div>
-
-        <div class="description" *ngIf="currentBook.description">
-          <h2>Despre carte</h2>
-
-          <p>
-            {{ currentBook.description }}
-          </p>
-        </div>
-      </section>
-
-      <aside class="book-side">
-        <p class="price">
-          {{ currentBook.currentPrice | currency: "RON" : "symbol" : "1.2-2" }}
-        </p>
-
-        <div class="stock" [class.out-of-stock]="!currentBook.quantity">
-          <mat-icon>
-            {{ currentBook.quantity ? "check_circle" : "cancel" }}
-          </mat-icon>
-
-          <span>
-            {{ currentBook.quantity ? "În stoc" : "Stoc epuizat" }}
+        <section class="book-info">
+          <span class="category" *ngIf="currentBook.category">
+            {{ getCategoryName(currentBook.category) }}
           </span>
-        </div>
 
-        <p class="quantity" *ngIf="currentBook.quantity">
-          {{ currentBook.quantity }}
-          {{
-            currentBook.quantity === 1
-              ? "exemplar disponibil"
-              : "exemplare disponibile"
-          }}
-        </p>
+          <h1>
+            {{ currentBook.bookName }}
+          </h1>
 
-        <div class="purchase-divider"></div>
+          <p class="author">
+            de
+            <strong>
+              {{ currentBook.author }}
+            </strong>
+          </p>
 
-        <app-action-buttons
-          [isFavorite]="currentBook.isFavorite"
-          [inStock]="currentBook.quantity > 0"
-          (addToCart)="addToCart(currentBook)"
-          (toggleFavorite)="toggleFavorite(currentBook)"
-        >
-        </app-action-buttons>
-      </aside>
-    </article>
-  </ng-container>
+          <div
+            class="book-meta"
+            *ngIf="
+              currentBook.publisher ||
+              currentBook.yearOfPublication != null ||
+              currentBook.numberOfPages != null
+            "
+          >
+            <div class="meta-item" *ngIf="currentBook.publisher">
+              <mat-icon>business</mat-icon>
+
+              <div>
+                <span>Editură</span>
+
+                <strong>
+                  {{ currentBook.publisher }}
+                </strong>
+              </div>
+            </div>
+
+            <div
+              class="meta-item"
+              *ngIf="currentBook.yearOfPublication != null"
+            >
+              <mat-icon>calendar_today</mat-icon>
+
+              <div>
+                <span>An apariție</span>
+
+                <strong>
+                  {{ currentBook.yearOfPublication }}
+                </strong>
+              </div>
+            </div>
+
+            <div class="meta-item" *ngIf="currentBook.numberOfPages != null">
+              <mat-icon>auto_stories</mat-icon>
+
+              <div>
+                <span>Număr pagini</span>
+
+                <strong>
+                  {{ currentBook.numberOfPages }}
+                </strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="description" *ngIf="currentBook.description">
+            <h2>Despre carte</h2>
+
+            <p>
+              {{ currentBook.description }}
+            </p>
+          </div>
+        </section>
+
+        <aside class="book-side">
+          <p class="price">
+            {{
+              currentBook.currentPrice | currency: "RON" : "symbol" : "1.2-2"
+            }}
+          </p>
+
+          <div class="stock" [class.out-of-stock]="!currentBook.quantity">
+            <mat-icon>
+              {{ currentBook.quantity ? "check_circle" : "cancel" }}
+            </mat-icon>
+
+            <span>
+              {{ currentBook.quantity ? "În stoc" : "Stoc epuizat" }}
+            </span>
+          </div>
+
+          <p class="quantity" *ngIf="currentBook.quantity">
+            {{ currentBook.quantity }}
+
+            {{
+              currentBook.quantity === 1
+                ? "exemplar disponibil"
+                : "exemplare disponibile"
+            }}
+          </p>
+
+          <div class="purchase-divider"></div>
+
+          <app-action-buttons
+            [isFavorite]="currentBook.isFavorite"
+            [inStock]="currentBook.quantity > 0"
+            (addToCart)="addToCart(currentBook)"
+            (toggleFavorite)="toggleFavorite(currentBook)"
+          >
+          </app-action-buttons>
+        </aside>
+      </article>
+    </ng-container>
+  </ng-template>
 
   <ng-template #loadingState>
-    <div class="loading-state">Se încarcă detaliile cărții...</div>
+    <div class="loading-state" *ngIf="isLoading">
+      Se încarcă detaliile cărții...
+    </div>
   </ng-template>
 </div>

@@ -1,10 +1,15 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 
+// Models
 import { UserInterface } from 'src/app/models/user.model';
+
+// Components
 import { ChangePasswordComponent } from 'src/app/modules/authentication/components/change-password/change-password.component';
 import { UpdateProfileComponent } from 'src/app/modules/authentication/components/update-profile/update-profile.component';
+
+// Services
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -22,23 +27,35 @@ export class UserDetailsComponent {
     this.authenticatedUser$ = this.userService.authenticatedUser$;
   }
 
+  // =========================
+  // PROFILE
+  // =========================
+
   openUpdateProfileDialog(user: UserInterface): void {
     const dialogRef = this.dialog.open(UpdateProfileComponent, {
-      width: '680px',
-      maxWidth: '95vw',
+      width: '620px',
+      maxWidth: 'calc(100vw - 32px)',
+      maxHeight: '90vh',
       autoFocus: false,
       disableClose: true,
-      backdropClass: 'dialog-backdrop',
+      data: user,
     });
 
-    dialogRef.afterClosed().subscribe((updatedUser?: UserInterface) => {
-      if (!updatedUser) {
-        return;
-      }
+    dialogRef
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe((updatedUser: UserInterface | undefined) => {
+        if (!updatedUser) {
+          return;
+        }
 
-      this.userService.updateAuthenticatedUser(updatedUser);
-    });
+        this.userService.updateAuthenticatedUser(updatedUser);
+      });
   }
+
+  // =========================
+  // PASSWORD
+  // =========================
 
   openChangePasswordDialog(): void {
     this.dialog.open(ChangePasswordComponent, {
@@ -47,7 +64,6 @@ export class UserDetailsComponent {
       maxHeight: '90vh',
       autoFocus: false,
       disableClose: true,
-      backdropClass: 'dialog-backdrop',
     });
   }
 }

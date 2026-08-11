@@ -1,0 +1,81 @@
+<div class="dialog-container">
+  <button
+    mat-icon-button
+    type="button"
+    class="close-button"
+    aria-label="Închide"
+    [disabled]="isSaving"
+    (click)="close()"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <div class="dialog-header">
+    <div class="dialog-icon">
+      <mat-icon>
+        {{ isEditMode ? "edit_location_alt" : "add_location_alt" }}
+      </mat-icon>
+    </div>
+
+    <div class="dialog-title">
+      <h2>
+        {{ isEditMode ? "Editează adresa" : "Adaugă adresă" }}
+      </h2>
+
+      <p>
+        {{
+          isEditMode
+            ? "Actualizează datele adresei salvate."
+            : "Completează datele adresei pe care dorești să o salvezi."
+        }}
+      </p>
+    </div>
+  </div>
+
+  <form class="address-dialog-form" [formGroup]="form" (ngSubmit)="save()">
+    <app-address-form [form]="form"></app-address-form>
+
+    <div class="dialog-bottom">
+      <div class="default-option">
+        <mat-checkbox color="primary" formControlName="isDefault">
+          Setează ca adresă implicită
+        </mat-checkbox>
+
+        <p>
+          Adresa implicită va fi selectată prioritar la plasarea comenzilor.
+        </p>
+      </div>
+
+      <div class="dialog-actions">
+        <button
+          mat-stroked-button
+          type="button"
+          class="cancel-button"
+          [disabled]="isSaving"
+          (click)="close()"
+        >
+          Anulează
+        </button>
+
+        <button
+          mat-flat-button
+          type="submit"
+          class="save-button"
+          [disabled]="isSaving"
+        >
+          <mat-icon>
+            {{ isEditMode ? "save" : "add" }}
+          </mat-icon>
+
+          {{
+            isSaving
+              ? "Se salvează..."
+              : isEditMode
+                ? "Salvează modificările"
+                : "Adaugă adresa"
+          }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

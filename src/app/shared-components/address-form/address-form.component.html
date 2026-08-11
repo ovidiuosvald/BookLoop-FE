@@ -1,0 +1,131 @@
+<div class="form-grid" [formGroup]="form">
+  <mat-form-field appearance="outline">
+    <mat-label>Prenume</mat-label>
+
+    <input
+      matInput
+      type="text"
+      formControlName="firstName"
+      autocomplete="given-name"
+    />
+
+    <mat-error *ngIf="shouldShowError('firstName')">
+      {{ getError("firstName") }}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Nume</mat-label>
+
+    <input
+      matInput
+      type="text"
+      formControlName="lastName"
+      autocomplete="family-name"
+    />
+
+    <mat-error *ngIf="shouldShowError('lastName')">
+      {{ getError("lastName") }}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Telefon</mat-label>
+
+    <input
+      matInput
+      type="tel"
+      formControlName="phoneNumber"
+      autocomplete="tel"
+      placeholder="0712345678"
+    />
+
+    <mat-error *ngIf="shouldShowError('phoneNumber')">
+      {{ getError("phoneNumber") }}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Țară</mat-label>
+
+    <input matInput type="text" formControlName="country" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Județ</mat-label>
+
+    <mat-select formControlName="county" [disabled]="isLoadingCounties">
+      <mat-option *ngIf="isLoadingCounties" disabled>
+        Se încarcă județele...
+      </mat-option>
+
+      <mat-option *ngFor="let county of counties" [value]="county.name">
+        {{ county.name }}
+      </mat-option>
+    </mat-select>
+
+    <mat-error *ngIf="shouldShowError('county')">
+      {{ getError("county") }}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Localitate</mat-label>
+
+    <mat-select
+      formControlName="city"
+      [disabled]="isLoadingLocalities || !getControl('county').value"
+    >
+      <mat-option *ngIf="isLoadingLocalities" disabled>
+        Se încarcă localitățile...
+      </mat-option>
+
+      <mat-option *ngFor="let locality of localities" [value]="locality.name">
+        {{ locality.name }}
+      </mat-option>
+    </mat-select>
+
+    <mat-hint *ngIf="!getControl('county').value">
+      Selectează mai întâi județul.
+    </mat-hint>
+
+    <mat-error *ngIf="shouldShowError('city')">
+      {{ getError("city") }}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label> Adresă completă </mat-label>
+
+    <input
+      matInput
+      type="text"
+      formControlName="addressLine"
+      autocomplete="street-address"
+      placeholder="Stradă, număr, bloc, apartament"
+    />
+
+    <mat-error *ngIf="shouldShowError('addressLine')">
+      {{ getError("addressLine") }}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Cod poștal</mat-label>
+
+    <input
+      matInput
+      type="text"
+      inputmode="numeric"
+      formControlName="postalCode"
+      autocomplete="postal-code"
+      maxlength="6"
+    />
+
+    <mat-hint> Se completează automat dacă este disponibil. </mat-hint>
+
+    <mat-error *ngIf="shouldShowError('postalCode')">
+      {{ getError("postalCode") }}
+    </mat-error>
+  </mat-form-field>
+</div>

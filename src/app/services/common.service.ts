@@ -92,8 +92,10 @@ export class CommonService {
     });
   }
 
-  goToSpecificBook(bookId: number): void {
-    this.router.navigate(['/book', bookId]);
+  goToSpecificBook(bookId: number, returnUrl?: string): void {
+    this.router.navigate(['/book', bookId], {
+      state: returnUrl ? { returnUrl } : undefined,
+    });
   }
 
   goToCart(): void {

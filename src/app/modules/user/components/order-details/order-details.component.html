@@ -21,7 +21,7 @@
 
           <p>
             {{ currentOrder.creationDate | date: "dd.MM.yyyy, HH:mm" }}
-            •
+            ·
             {{ getDeliveryLabel(currentOrder.deliveryMethod) }}
           </p>
         </div>
@@ -39,23 +39,27 @@
       <main class="details-main">
         <section class="products-section">
           <div class="section-title">
-            <div>
-              <h2>Produsele comandate</h2>
+            <h2>Produsele comandate</h2>
 
-              <p>
-                {{ currentOrder.items.length }}
-                {{ currentOrder.items.length === 1 ? "titlu" : "titluri" }}
-                în această comandă
-              </p>
-            </div>
+            <p>
+              {{ getTotalItems(currentOrder) }}
+              {{
+                getTotalItems(currentOrder) === 1
+                  ? "produs în această comandă"
+                  : "produse în această comandă"
+              }}
+            </p>
           </div>
 
           <div class="products-list">
             <article
               class="product-card"
-              *ngFor="let item of currentOrder.items"
+              *ngFor="let item of currentOrder.items; trackBy: trackByOrderItem"
             >
-              <div class="cover-wrapper">
+              <div
+                class="cover-wrapper clickable"
+                (click)="goToBook(item.bookId)"
+              >
                 <img
                   *ngIf="item.coverUrl; else coverPlaceholder"
                   class="book-cover"
@@ -71,17 +75,17 @@
               </div>
 
               <div class="product-info">
-                <h3>{{ item.bookName }}</h3>
+                <h3 class="clickable" (click)="goToBook(item.bookId)">
+                  {{ item.bookName }}
+                </h3>
 
-                <p class="product-price">
+                <p class="product-meta">
+                  {{ item.quantity }}
+                  {{ item.quantity === 1 ? "exemplar" : "exemplare" }}
+                  ·
                   {{ item.unitPrice | currency: "RON" : "symbol" : "1.2-2" }}
                   / exemplar
                 </p>
-
-                <span class="quantity-badge">
-                  {{ item.quantity }}
-                  {{ item.quantity === 1 ? "exemplar" : "exemplare" }}
-                </span>
               </div>
 
               <div class="product-total">
@@ -141,11 +145,6 @@
                 <strong>
                   {{ getPaymentLabel(currentOrder.paymentMethod) }}
                 </strong>
-
-                <p>
-                  Status comandă:
-                  {{ getStatusLabel(currentOrder.status) }}
-                </p>
               </div>
             </article>
 
@@ -218,7 +217,7 @@
             </strong>
           </div>
 
-          <mat-divider></mat-divider>
+          <div class="summary-divider"></div>
 
           <div class="summary-row total">
             <span>Total</span>
@@ -228,14 +227,6 @@
                 currentOrder.totalPrice | currency: "RON" : "symbol" : "1.2-2"
               }}
             </strong>
-          </div>
-
-          <div class="summary-status">
-            <mat-icon>check_circle</mat-icon>
-
-            <span>
-              {{ getStatusLabel(currentOrder.status) }}
-            </span>
           </div>
         </mat-card>
       </aside>

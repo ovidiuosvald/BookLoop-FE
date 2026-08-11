@@ -1,66 +1,105 @@
-.user-details {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+:host {
+  display: block;
   width: 100%;
 }
 
-.section-header {
-  h2 {
+.user-details {
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+
+  width: 100%;
+}
+
+/* =========================
+   HEADER
+   ========================= */
+
+.page-header {
+  margin-bottom: 8px;
+
+  h1 {
     margin: 0 0 8px;
-    color: #3f2b68;
-    font-size: 30px;
-    font-weight: 600;
+
+    color: #2d2456;
+
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1.2;
   }
 
   p {
     margin: 0;
-    color: #757575;
-    font-size: 15px;
-    line-height: 1.5;
+
+    color: #77717f;
+
+    font-size: 14px;
+    line-height: 1.6;
   }
 }
 
+/* =========================
+   CARD
+   ========================= */
+
 .details-card {
   overflow: hidden;
-  background: #fff;
-  border: 1px solid #ebe5f5;
-  border-radius: 20px;
+
+  background: #ffffff;
+
+  border: 1px solid #ece7f5;
+  border-radius: 14px;
+
+  box-shadow: 0 3px 12px rgba(45, 36, 86, 0.04);
 }
 
 .card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   gap: 16px;
 
-  padding: 20px 24px;
-  border-bottom: 1px solid #ebe5f5;
+  padding: 18px 20px;
+
+  border-bottom: 1px solid #ece7f5;
 }
 
 .card-title {
   display: flex;
   align-items: center;
-  gap: 10px;
 
-  color: #3f2b68;
-  font-size: 18px;
-  font-weight: 600;
+  gap: 9px;
+
+  color: #2d2456;
+
+  font-size: 16px;
+  font-weight: 500;
 
   mat-icon {
+    width: 20px;
+    height: 20px;
+
     color: var(--deep-purple);
+
+    font-size: 20px;
   }
 }
 
 .card-content {
-  padding: 24px;
+  padding: 20px;
 }
+
+/* =========================
+   INFO
+   ========================= */
 
 .info-row {
   display: flex;
   align-items: center;
 
-  min-height: 56px;
+  min-height: 52px;
 
   &:not(:last-child) {
     border-bottom: 1px solid #f3eef9;
@@ -68,65 +107,110 @@
 }
 
 .label {
-  flex: 0 0 180px;
+  flex: 0 0 160px;
 
-  color: #757575;
-  font-size: 14px;
-  font-weight: 500;
+  color: #8a8393;
+
+  font-size: 13px;
+  font-weight: 400;
 }
 
 .value {
   flex: 1;
 
-  color: #2f2f2f;
-  font-size: 15px;
+  color: #2d2456;
+
+  font-size: 14px;
   font-weight: 500;
 }
 
+/* =========================
+   BUTTONS
+   ========================= */
+
 .edit-button {
+  min-height: 40px;
+
+  color: var(--deep-purple) !important;
+
+  border-color: #d9cfeb !important;
+  border-radius: 10px !important;
+
+  font-weight: 500;
+
   mat-icon {
-    margin-right: 6px;
+    width: 18px;
+    height: 18px;
+
+    margin-right: 5px;
+
+    font-size: 18px;
   }
 }
 
-.security-text {
-  margin: 0 0 24px;
+.password-button {
+  min-height: 42px;
 
-  color: #616161;
+  color: #ffffff !important;
+  background: var(--deep-purple) !important;
+
+  border-radius: 10px !important;
+
+  font-weight: 500;
+
+  mat-icon {
+    margin-right: 6px;
+  }
+
+  &:hover {
+    background: #5b2da8 !important;
+  }
+}
+
+/* =========================
+   SECURITY
+   ========================= */
+
+.security-text {
+  margin: 0 0 20px;
+
+  color: #77717f;
+
+  font-size: 14px;
   line-height: 1.6;
 }
 
+/* =========================
+   RESPONSIVE
+   ========================= */
+
 @media (max-width: 768px) {
-  .section-header {
-    h2 {
-      font-size: 26px;
+  .page-header {
+    h1 {
+      font-size: 28px;
     }
   }
 
   .card-header {
-    flex-direction: column;
     align-items: flex-start;
+    flex-direction: column;
   }
 
   .info-row {
-    flex-direction: column;
     align-items: flex-start;
+    flex-direction: column;
+
     gap: 4px;
 
-    padding: 16px 0;
+    padding: 14px 0;
   }
 
   .label {
     flex: initial;
   }
 
-  .edit-button {
+  .edit-button,
+  .password-button {
     width: 100%;
-
-    mat-icon {
-      font-size: 18px;
-      width: 18px;
-      height: 18px;
-    }
   }
 }

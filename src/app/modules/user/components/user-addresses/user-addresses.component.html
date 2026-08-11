@@ -1,0 +1,130 @@
+<div class="addresses-page">
+  <header class="page-header">
+    <div>
+      <h1>Adresele mele</h1>
+
+      <p>Gestionează adresele folosite pentru livrarea comenzilor.</p>
+    </div>
+
+    <button
+      mat-flat-button
+      type="button"
+      class="add-address-button"
+      (click)="openAddressDialog()"
+    >
+      <mat-icon>add</mat-icon>
+
+      Adaugă adresă
+    </button>
+  </header>
+
+  <div *ngIf="isLoading" class="loading-container">Se încarcă adresele...</div>
+
+  <ng-container *ngIf="!isLoading">
+    <div class="addresses-list" *ngIf="addresses.length > 0; else emptyState">
+      <article
+        class="address-card"
+        *ngFor="let address of addresses; trackBy: trackByAddressId"
+      >
+        <div class="address-info">
+          <div class="address-top">
+            <div class="address-name">
+              <mat-icon>location_on</mat-icon>
+
+              <strong>
+                {{ address.firstName }}
+                {{ address.lastName }}
+              </strong>
+            </div>
+
+            <span class="default-badge" *ngIf="address.isDefault">
+              <mat-icon>check_circle</mat-icon>
+              Implicită
+            </span>
+          </div>
+
+          <div class="address-details">
+            <p>
+              {{ address.addressLine }}
+            </p>
+
+            <p>
+              {{ address.city }},
+              {{ address.county }}
+              <ng-container *ngIf="address.postalCode">
+                · {{ address.postalCode }}
+              </ng-container>
+            </p>
+
+            <p>
+              {{ address.country }}
+            </p>
+          </div>
+
+          <div class="phone">
+            <mat-icon>phone</mat-icon>
+
+            <span>
+              {{ address.phoneNumber }}
+            </span>
+          </div>
+        </div>
+
+        <div class="address-actions">
+          <button
+            *ngIf="!address.isDefault"
+            mat-button
+            type="button"
+            class="default-button"
+            (click)="setDefaultAddress(address)"
+          >
+            Setează ca implicită
+          </button>
+
+          <button
+            mat-stroked-button
+            type="button"
+            class="edit-button"
+            (click)="openAddressDialog(address)"
+          >
+            <mat-icon>edit</mat-icon>
+            Editează
+          </button>
+
+          <button
+            mat-icon-button
+            type="button"
+            class="delete-button"
+            aria-label="Șterge adresa"
+            (click)="openDeleteDialog(address)"
+          >
+            <mat-icon>delete_outline</mat-icon>
+          </button>
+        </div>
+      </article>
+    </div>
+  </ng-container>
+
+  <ng-template #emptyState>
+    <div class="empty-state">
+      <mat-icon>location_on</mat-icon>
+
+      <h2>Nu ai nicio adresă salvată</h2>
+
+      <p>
+        Adaugă o adresă pentru a o putea folosi mai rapid la plasarea
+        comenzilor.
+      </p>
+
+      <button
+        mat-flat-button
+        type="button"
+        class="add-address-button"
+        (click)="openAddressDialog()"
+      >
+        <mat-icon>add</mat-icon>
+        Adaugă prima adresă
+      </button>
+    </div>
+  </ng-template>
+</div>

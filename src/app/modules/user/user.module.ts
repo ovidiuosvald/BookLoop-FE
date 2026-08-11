@@ -7,8 +7,9 @@ import { UserFavoritesComponent } from './components/user-favorites/user-favorit
 import { UserLayoutComponent } from './components/user-layout/user-layout.component';
 import { SharedModule } from 'src/app/shared-components/shared.module';
 import { BookModule } from '../book/book.module';
-import { UserReviewsComponent } from './components/user-reviews/user-reviews.component';
 import { OrderDetailsComponent } from './components/order-details/order-details.component';
+import { UserAddressesComponent } from './components/user-addresses/user-addresses.component';
+import { AddressDialogComponent } from './components/address-dialog/address-dialog.component';
 
 @NgModule({
   declarations: [
@@ -17,8 +18,9 @@ import { OrderDetailsComponent } from './components/order-details/order-details.
     UserOrdersComponent,
     UserFavoritesComponent,
     UserLayoutComponent,
-    UserReviewsComponent,
     OrderDetailsComponent,
+    UserAddressesComponent,
+    AddressDialogComponent,
   ],
   imports: [UserRoutingModule, SharedModule, BookModule],
 })

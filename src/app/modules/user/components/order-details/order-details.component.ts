@@ -2,13 +2,19 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
+// Enums
 import {
   BillingType,
   DeliveryMethod,
   OrderStatus,
   PaymentMethod,
 } from 'src/app/enums/order.enums';
+
+// Models
+import { OrderItem } from 'src/app/models/order-item.model';
 import { Order } from 'src/app/models/order.model';
+
+// Services
 import { CommonService } from 'src/app/services/common.service';
 import { OrderService } from 'src/app/services/order.service';
 import { UserService } from 'src/app/services/user.service';
@@ -20,10 +26,8 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class OrderDetailsComponent implements OnInit {
   order?: Order;
-
   isLoading = true;
 
-  readonly deliveryMethod = DeliveryMethod;
   readonly billingType = BillingType;
 
   constructor(
@@ -37,6 +41,34 @@ export class OrderDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.loadOrderDetails();
   }
+
+  // =========================
+  // NAVIGATION
+  // =========================
+
+  goBack(): void {
+    this.router.navigate(['/account/orders']);
+  }
+
+  goToBook(bookId: number): void {
+    this.commonService.goToSpecificBook(bookId, this.router.url);
+  }
+
+  // =========================
+  // ORDER ITEMS
+  // =========================
+
+  getTotalItems(order: Order): number {
+    return order.items.reduce((total, item) => total + item.quantity, 0);
+  }
+
+  trackByOrderItem(index: number, item: OrderItem): number {
+    return item.bookId;
+  }
+
+  // =========================
+  // STATUS
+  // =========================
 
   getStatusLabel(status: OrderStatus): string {
     const labels: Record<OrderStatus, string> = {
@@ -62,6 +94,10 @@ export class OrderDetailsComponent implements OnInit {
     return classes[status] ?? '';
   }
 
+  // =========================
+  // DELIVERY
+  // =========================
+
   getDeliveryLabel(method: DeliveryMethod): string {
     return method === DeliveryMethod.Pickup
       ? 'Ridicare din librărie'
@@ -71,6 +107,10 @@ export class OrderDetailsComponent implements OnInit {
   getDeliveryIcon(method: DeliveryMethod): string {
     return method === DeliveryMethod.Pickup ? 'storefront' : 'local_shipping';
   }
+
+  // =========================
+  // PAYMENT / BILLING
+  // =========================
 
   getPaymentLabel(method: PaymentMethod): string {
     const labels: Record<PaymentMethod, string> = {
@@ -88,16 +128,21 @@ export class OrderDetailsComponent implements OnInit {
       : 'Persoană fizică';
   }
 
-  goBack(): void {
-    this.router.navigate(['/account/orders']);
-  }
+  // =========================
+  // HELPERS
+  // =========================
 
   getImageUrl(imageUrl?: string): string {
     return this.commonService.getImageUrl(imageUrl);
   }
 
+  // =========================
+  // DATA
+  // =========================
+
   private loadOrderDetails(): void {
-    const userId = this.userService.authenticatedUser.userId;
+    const userId = this.userService.authenticatedUser?.userId;
+
     const orderId = Number(this.route.snapshot.paramMap.get('orderId'));
 
     if (!userId) {
@@ -116,11 +161,12 @@ export class OrderDetailsComponent implements OnInit {
       this.commonService.showSnackBarError('Comanda selectată nu este validă.');
 
       this.router.navigate(['/account/orders']);
+
       return;
     }
 
     this.orderService.getOrderDetails(userId, orderId).subscribe({
-      next: (order) => {
+      next: (order: Order) => {
         this.order = order;
         this.isLoading = false;
       },

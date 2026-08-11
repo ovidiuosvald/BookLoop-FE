@@ -2,7 +2,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+
+// Models
 import { UserInterface } from 'src/app/models/user.model';
+
+// Services
 import { CommonService } from 'src/app/services/common.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -12,36 +16,31 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./update-profile.component.scss'],
 })
 export class UpdateProfileComponent implements OnInit {
-  public updateUserForm!: FormGroup;
-  public authenticatedUser?: UserInterface;
+  updateUserForm!: FormGroup;
+
+  authenticatedUser?: UserInterface;
+
+  isSaving = false;
 
   constructor(
-    private formBuilder: FormBuilder,
-    private userService: UserService,
-    private commonService: CommonService,
-    private dialogRef: MatDialogRef<UpdateProfileComponent>,
+    private readonly formBuilder: FormBuilder,
+    private readonly userService: UserService,
+    private readonly commonService: CommonService,
+    private readonly dialogRef: MatDialogRef<UpdateProfileComponent>,
   ) {
     this.authenticatedUser = this.userService.authenticatedUser;
   }
 
   ngOnInit(): void {
     this.createUpdateUserForm();
-
-    if (this.authenticatedUser) {
-      this.updateUserForm.patchValue({
-        firstName: this.authenticatedUser.firstName,
-        lastName: this.authenticatedUser.lastName,
-      });
-    } else {
-      this.commonService.showSnackBarError('Failed to get user information!');
-    }
+    this.populateForm();
   }
 
-  public goToHomePage(): void {
-    this.commonService.goToHomePage();
-  }
+  // =========================
+  // ACTIONS
+  // =========================
 
-  public submitUpdateUserForm(): void {
+  submitUpdateUserForm(): void {
     if (this.updateUserForm.invalid || !this.authenticatedUser?.userId) {
       this.updateUserForm.markAllAsTouched();
       return;
@@ -49,30 +48,44 @@ export class UpdateProfileComponent implements OnInit {
 
     const userToBeUpdated: UserInterface = {
       userId: this.authenticatedUser.userId,
-      firstName: this.updateUserForm.value.firstName.trim(),
-      lastName: this.updateUserForm.value.lastName.trim(),
+
+      firstName: this.updateUserForm.controls.firstName.value.trim(),
+
+      lastName: this.updateUserForm.controls.lastName.value.trim(),
     };
+
+    this.isSaving = true;
 
     this.userService.updateUser(userToBeUpdated).subscribe({
       next: (updatedUser: UserInterface) => {
+        this.isSaving = false;
+
         this.userService.updateAuthenticatedUser(updatedUser);
 
         this.commonService.showSnackBarSuccess(
           'Profilul tău a fost actualizat cu succes.',
         );
 
-        this.dialogRef.close(true);
+        this.dialogRef.close(updatedUser);
       },
       error: (error: HttpErrorResponse) => {
-        const message =
-          typeof error.error === 'string' ? error.error : error.error?.message;
+        this.isSaving = false;
 
-        this.commonService.showSnackBarError(
-          message || 'Profilul nu a putut fi actualizat.',
+        this.commonService.showHttpError(
+          error,
+          'Profilul nu a putut fi actualizat.',
         );
       },
     });
   }
+
+  close(): void {
+    this.dialogRef.close();
+  }
+
+  // =========================
+  // FORM
+  // =========================
 
   private createUpdateUserForm(): void {
     this.updateUserForm = this.formBuilder.group({
@@ -84,6 +97,7 @@ export class UpdateProfileComponent implements OnInit {
           Validators.maxLength(100),
         ],
       ],
+
       lastName: [
         '',
         [
@@ -92,6 +106,21 @@ export class UpdateProfileComponent implements OnInit {
           Validators.maxLength(100),
         ],
       ],
+    });
+  }
+
+  private populateForm(): void {
+    if (!this.authenticatedUser) {
+      this.commonService.showSnackBarError(
+        'Datele utilizatorului nu au putut fi identificate.',
+      );
+
+      return;
+    }
+
+    this.updateUserForm.patchValue({
+      firstName: this.authenticatedUser.firstName,
+      lastName: this.authenticatedUser.lastName,
     });
   }
 }

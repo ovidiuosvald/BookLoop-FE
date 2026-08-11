@@ -10,6 +10,7 @@ import { AuthenticationRequiredDialogComponent } from './authentication-required
 import { NotificationComponent } from './notification/notification.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { FooterComponent } from './footer/footer.component';
+import { AddressFormComponent } from './address-form/address-form.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { FooterComponent } from './footer/footer.component';
     NotificationComponent,
     ConfirmationDialogComponent,
     FooterComponent,
+    AddressFormComponent,
   ],
   imports: [
     CommonModule,
@@ -44,6 +46,7 @@ import { FooterComponent } from './footer/footer.component';
     FooterComponent,
     AuthenticationRequiredDialogComponent,
     ConfirmationDialogComponent,
+    AddressFormComponent,
   ],
 })
 export class SharedModule {}
