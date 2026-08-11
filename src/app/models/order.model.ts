@@ -11,6 +11,7 @@ import {
 export interface Order {
   orderId: number;
   userId: number;
+  orderNumber: string;
 
   customerName: string;
   customerEmail: string;
