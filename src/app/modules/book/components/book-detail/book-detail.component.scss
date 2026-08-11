@@ -4,31 +4,41 @@
 }
 
 .book-detail-page {
-  width: 100%;
-  padding: 32px;
+  width: min(1240px, calc(100% - 72px));
+
+  margin: 0 auto;
+  padding: 32px 0 64px;
+
   box-sizing: border-box;
 }
 
 .book-detail-card {
   display: grid;
-  grid-template-columns:
-    minmax(260px, 340px)
-    minmax(0, 1fr)
-    290px;
 
-  gap: 44px;
+  grid-template-columns:
+    minmax(240px, 315px)
+    minmax(0, 1fr)
+    270px;
+
+  gap: 36px;
 
   width: 100%;
-  max-width: 1380px;
-  margin: 0 auto;
-  padding: 36px;
+
+  padding: 32px;
+
   box-sizing: border-box;
 
   background: #ffffff;
+
   border: 1px solid #ece7f5;
   border-radius: 20px;
-  box-shadow: 0 8px 28px rgba(45, 36, 86, 0.08);
+
+  box-shadow: 0 8px 28px rgba(45, 36, 86, 0.07);
 }
+
+/* =========================
+   COVER
+   ========================= */
 
 .cover-section {
   min-width: 0;
@@ -41,11 +51,14 @@
   align-items: center;
   justify-content: center;
 
-  min-height: 470px;
-  padding: 28px;
+  min-height: 430px;
+
+  padding: 26px;
+
   box-sizing: border-box;
 
   background: #f8f6fb;
+
   border-radius: 16px;
 }
 
@@ -53,32 +66,35 @@
   display: block;
 
   width: 100%;
-  max-width: 290px;
-  height: 420px;
+  max-width: 265px;
+  height: 380px;
 
   object-fit: contain;
 }
 
 .badges {
   position: absolute;
-  top: 18px;
-  left: 18px;
+
+  top: 16px;
+  left: 16px;
 
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+
+  gap: 7px;
 }
 
 .book-badge {
   display: inline-flex;
   align-items: center;
 
-  min-height: 30px;
-  padding: 0 12px;
+  min-height: 28px;
+
+  padding: 0 11px;
 
   border-radius: 999px;
 
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   line-height: 1;
 }
@@ -93,36 +109,44 @@
   background: #f7dc5c;
 }
 
+/* =========================
+   BOOK INFO
+   ========================= */
+
 .book-info {
   min-width: 0;
-  padding-top: 8px;
+
+  padding-top: 4px;
 
   .category {
     display: inline-block;
 
-    margin-bottom: 14px;
+    margin-bottom: 12px;
 
     color: #806fa0;
-    font-size: 13px;
+
+    font-size: 12px;
     font-weight: 700;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
   }
 
   h1 {
-    margin: 0 0 14px;
+    margin: 0 0 12px;
 
     color: #2d2456;
-    font-size: clamp(32px, 4vw, 48px);
+
+    font-size: clamp(30px, 3.4vw, 44px);
     font-weight: 750;
     line-height: 1.15;
   }
 
   .author {
-    margin: 0 0 26px;
+    margin: 0 0 24px;
 
-    color: #6f6f6f;
-    font-size: 17px;
+    color: #716a79;
+
+    font-size: 16px;
 
     strong {
       color: #4e4560;
@@ -130,34 +154,44 @@
   }
 }
 
+/* =========================
+   META
+   ========================= */
+
 .book-meta {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 12px;
 
-  margin-bottom: 28px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+
+  gap: 10px;
+
+  margin-bottom: 26px;
 }
 
 .meta-item {
   display: flex;
   align-items: center;
+
   gap: 10px;
 
   min-width: 0;
-  padding: 13px 14px;
+
+  padding: 12px 13px;
 
   background: #faf8fd;
+
   border: 1px solid #eee8f5;
-  border-radius: 12px;
+  border-radius: 11px;
 
   mat-icon {
     flex-shrink: 0;
 
-    width: 20px;
-    height: 20px;
+    width: 19px;
+    height: 19px;
 
-    color: #6f42c1;
-    font-size: 20px;
+    color: var(--deep-purple);
+
+    font-size: 19px;
   }
 
   div {
@@ -170,7 +204,8 @@
     margin-bottom: 2px;
 
     color: #8a8393;
-    font-size: 11px;
+
+    font-size: 10px;
   }
 
   strong {
@@ -179,68 +214,87 @@
     overflow: hidden;
 
     color: #2d2456;
-    font-size: 13px;
+
+    font-size: 12px;
     font-weight: 600;
+
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 }
 
+/* =========================
+   DESCRIPTION
+   ========================= */
+
 .description {
-  padding-top: 26px;
+  padding-top: 22px;
 
   border-top: 1px solid #ece7f5;
 
   h2 {
-    margin: 0 0 14px;
+    margin: 0 0 12px;
 
     color: #2d2456;
-    font-size: 21px;
+
+    font-size: 20px;
+    font-weight: 700;
   }
 
   p {
     margin: 0;
 
-    color: #666;
-    font-size: 16px;
+    color: #66606c;
+
+    font-size: 15px;
     line-height: 1.75;
+
     white-space: pre-line;
   }
 }
 
+/* =========================
+   PURCHASE PANEL
+   ========================= */
+
 .book-side {
   align-self: start;
 
-  padding: 24px;
+  padding: 22px;
 
   background: #faf9fc;
+
   border: 1px solid #e8e1f1;
   border-radius: 16px;
 }
 
 .price {
-  margin: 0 0 22px;
+  margin: 0 0 18px;
 
-  color: #6f42c1;
-  font-size: 30px;
+  color: var(--deep-purple);
+
+  font-size: 28px;
   font-weight: 750;
 }
 
 .stock {
   display: flex;
   align-items: center;
+
   gap: 8px;
 
-  margin-bottom: 8px;
+  margin-bottom: 7px;
 
   color: #287a3f;
-  font-size: 14px;
+
+  font-size: 13px;
   font-weight: 650;
 
   mat-icon {
-    width: 20px;
-    height: 20px;
-    font-size: 20px;
+    width: 19px;
+    height: 19px;
+
+    font-size: 19px;
   }
 
   &.out-of-stock {
@@ -249,29 +303,52 @@
 }
 
 .quantity {
-  margin: 0 0 24px 28px;
+  margin: 0 0 18px 27px;
 
-  color: #777;
-  font-size: 13px;
+  color: #77717f;
+
+  font-size: 12px;
+}
+
+.purchase-divider {
+  margin: 18px 0;
+
+  border-top: 1px solid #e8e1f1;
 }
 
 app-action-buttons {
   display: block;
+
   width: 100%;
 }
+
+/* =========================
+   LOADING
+   ========================= */
 
 .loading-state {
   padding: 80px 20px;
 
-  color: #777;
+  color: #77717f;
+
   text-align: center;
 }
 
+/* =========================
+   RESPONSIVE
+   ========================= */
+
 @media (max-width: 1100px) {
+  .book-detail-page {
+    width: calc(100% - 40px);
+  }
+
   .book-detail-card {
     grid-template-columns:
-      minmax(230px, 300px)
+      minmax(220px, 285px)
       minmax(0, 1fr);
+
+    gap: 30px;
   }
 
   .book-side {
@@ -279,34 +356,41 @@ app-action-buttons {
   }
 
   .book-meta {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 760px) {
   .book-detail-page {
-    padding: 18px;
+    width: calc(100% - 28px);
+
+    padding: 22px 0 44px;
   }
 
   .book-detail-card {
     grid-template-columns: 1fr;
-    gap: 28px;
+
+    gap: 26px;
 
     padding: 20px;
   }
 
   .cover-wrapper {
-    min-height: 380px;
+    min-height: 360px;
   }
 
   .book-cover {
-    height: 340px;
+    height: 320px;
   }
 
   .book-info {
     h1 {
-      font-size: 32px;
+      font-size: 30px;
     }
+  }
+
+  .book-meta {
+    grid-template-columns: 1fr;
   }
 
   .book-side {
