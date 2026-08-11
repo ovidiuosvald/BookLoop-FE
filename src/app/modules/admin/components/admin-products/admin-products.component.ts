@@ -4,13 +4,19 @@ import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, take } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
+// Models
 import { Book } from 'src/app/models/book.model';
 import { PageResponse } from 'src/app/models/page-response.model';
+
+// Services
 import { AdminService } from 'src/app/services/admin.service';
 import { CommonService } from 'src/app/services/common.service';
+
+// Components
 import { ConfirmationDialogComponent } from 'src/app/shared-components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
@@ -22,6 +28,8 @@ export class AdminProductsComponent implements OnInit, OnDestroy {
   products: Book[] = [];
 
   searchControl = new FormControl('');
+
+  lowStockFilter = false;
 
   isLoading = true;
 
@@ -38,11 +46,16 @@ export class AdminProductsComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly dialog: MatDialog,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
     private readonly adminService: AdminService,
     private readonly commonService: CommonService,
   ) {}
 
   ngOnInit(): void {
+    this.lowStockFilter =
+      this.route.snapshot.queryParamMap.get('lowStock') === 'true';
+
     this.listenToSearchChanges();
     this.loadProducts();
   }
@@ -50,6 +63,21 @@ export class AdminProductsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  setLowStockFilter(lowStock: boolean): void {
+    this.lowStockFilter = lowStock;
+    this.pageIndex = 0;
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        lowStock: lowStock ? true : null,
+      },
+      queryParamsHandling: 'merge',
+    });
+
+    this.loadProducts();
   }
 
   onPageChange(event: PageEvent): void {
@@ -175,6 +203,7 @@ export class AdminProductsComponent implements OnInit, OnDestroy {
     this.adminService
       .getProducts(
         this.searchControl.value ?? '',
+        this.lowStockFilter,
         this.pageIndex,
         this.pageSize,
         this.sortBy,

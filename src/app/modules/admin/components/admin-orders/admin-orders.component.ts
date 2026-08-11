@@ -4,16 +4,22 @@ import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, take } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
+// Enums
 import { OrderStatus } from 'src/app/enums/order.enums';
+
+// Models
 import { AdminOrder } from 'src/app/models/admin-order.model';
 import { PageResponse } from 'src/app/models/page-response.model';
+
+// Services
 import { AdminService } from 'src/app/services/admin.service';
 import { CommonService } from 'src/app/services/common.service';
 
+// Components
 import { OrderStatusDialogComponent } from '../order-status-dialog/order-status-dialog.component';
 
 @Component({
@@ -24,7 +30,27 @@ import { OrderStatusDialogComponent } from '../order-status-dialog/order-status-
 export class AdminOrdersComponent implements OnInit, OnDestroy {
   orders: AdminOrder[] = [];
 
+  displayedColumns: string[] = [
+    'orderId',
+    'customerName',
+    'totalPrice',
+    'status',
+    'creationDate',
+    'lastModifiedDate',
+    'actions',
+  ];
+
+  readonly orderStatuses: OrderStatus[] = [
+    OrderStatus.Placed,
+    OrderStatus.Processing,
+    OrderStatus.Shipped,
+    OrderStatus.Delivered,
+    OrderStatus.Cancelled,
+  ];
+
   searchControl = new FormControl('');
+
+  statusFilter?: OrderStatus;
 
   isLoading = true;
 
@@ -32,23 +58,28 @@ export class AdminOrdersComponent implements OnInit, OnDestroy {
   pageSize = 10;
   totalElements = 0;
 
-  sortBy = 'creationDate';
-  sortDirection: 'asc' | 'desc' = 'desc';
-
   readonly pageSizeOptions = [5, 10, 20, 50];
 
-  readonly OrderStatus = OrderStatus;
+  sortBy = 'creationDate';
+  sortDirection: 'asc' | 'desc' = 'desc';
 
   private readonly destroy$ = new Subject<void>();
 
   constructor(
     private readonly dialog: MatDialog,
+    private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly adminService: AdminService,
     private readonly commonService: CommonService,
   ) {}
 
   ngOnInit(): void {
+    const status = this.route.snapshot.queryParamMap.get('status');
+
+    if (status) {
+      this.statusFilter = status as OrderStatus;
+    }
+
     this.listenToSearchChanges();
     this.loadOrders();
   }
@@ -56,6 +87,21 @@ export class AdminOrdersComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  setStatusFilter(status?: OrderStatus): void {
+    this.statusFilter = status;
+    this.pageIndex = 0;
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        status: status ?? null,
+      },
+      queryParamsHandling: 'merge',
+    });
+
+    this.loadOrders();
   }
 
   onPageChange(event: PageEvent): void {
@@ -207,6 +253,7 @@ export class AdminOrdersComponent implements OnInit, OnDestroy {
     this.adminService
       .getOrders(
         this.searchControl.value ?? '',
+        this.statusFilter,
         this.pageIndex,
         this.pageSize,
         this.sortBy,

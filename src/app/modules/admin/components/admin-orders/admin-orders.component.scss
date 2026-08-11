@@ -105,6 +105,53 @@
 }
 
 /* =========================
+   STATUS FILTER HEADER
+   ========================= */
+
+.status-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  min-width: 0;
+}
+
+.status-filter-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 20px;
+  height: 20px;
+
+  padding: 0;
+
+  color: #9a93a2;
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+
+  cursor: pointer;
+
+  mat-icon {
+    width: 16px;
+    height: 16px;
+
+    font-size: 16px;
+    line-height: 16px;
+  }
+
+  &:hover {
+    color: var(--deep-purple);
+    background: #f0eafa;
+  }
+
+  &.active {
+    color: var(--deep-purple);
+  }
+}
+
+/* =========================
    ROW
    ========================= */
 

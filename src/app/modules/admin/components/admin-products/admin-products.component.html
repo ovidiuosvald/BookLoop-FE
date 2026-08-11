@@ -21,7 +21,7 @@
     <mat-form-field appearance="outline" class="search-field">
       <mat-label>Caută produse</mat-label>
 
-      <mat-icon matPrefix> search </mat-icon>
+      <mat-icon matPrefix>search</mat-icon>
 
       <input
         matInput
@@ -66,7 +66,46 @@
 
           <div mat-sort-header="quantity">Stoc</div>
 
-          <div>Status</div>
+          <div class="status-header">
+            <span>Status</span>
+
+            <button
+              type="button"
+              class="status-filter-button"
+              [class.active]="lowStockFilter"
+              [matMenuTriggerFor]="stockMenu"
+              matTooltip="Filtrează după stoc"
+              (click)="$event.stopPropagation()"
+            >
+              <mat-icon>filter_list</mat-icon>
+            </button>
+
+            <mat-menu #stockMenu="matMenu">
+              <button
+                mat-menu-item
+                type="button"
+                (click)="setLowStockFilter(false)"
+              >
+                <mat-icon>
+                  {{ !lowStockFilter ? "check" : "" }}
+                </mat-icon>
+
+                <span>Toate produsele</span>
+              </button>
+
+              <button
+                mat-menu-item
+                type="button"
+                (click)="setLowStockFilter(true)"
+              >
+                <mat-icon>
+                  {{ lowStockFilter ? "check" : "" }}
+                </mat-icon>
+
+                <span>Stoc redus</span>
+              </button>
+            </mat-menu>
+          </div>
 
           <div mat-sort-header="lastModifiedDate">Ultima modificare</div>
 
@@ -196,7 +235,13 @@
         Nu există produse pentru căutarea „{{ searchControl.value }}”.
       </p>
 
-      <p *ngIf="!searchControl.value">Adaugă primul produs în BookLoop.</p>
+      <p *ngIf="!searchControl.value && lowStockFilter">
+        Nu există produse cu stoc redus.
+      </p>
+
+      <p *ngIf="!searchControl.value && !lowStockFilter">
+        Adaugă primul produs în BookLoop.
+      </p>
 
       <button
         *ngIf="searchControl.value"
@@ -209,7 +254,17 @@
       </button>
 
       <button
-        *ngIf="!searchControl.value"
+        *ngIf="lowStockFilter"
+        mat-stroked-button
+        type="button"
+        class="clear-button"
+        (click)="setLowStockFilter(false)"
+      >
+        Vezi toate produsele
+      </button>
+
+      <button
+        *ngIf="!searchControl.value && !lowStockFilter"
         mat-flat-button
         type="button"
         class="admin-primary-button"

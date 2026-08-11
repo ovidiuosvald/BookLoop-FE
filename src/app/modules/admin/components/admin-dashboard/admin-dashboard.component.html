@@ -13,7 +13,11 @@
   <ng-container *ngIf="!isLoading && dashboard as data">
     <!-- PRIORITIES -->
     <section class="priority-grid">
-      <article class="priority-card orders-priority" routerLink="/admin/orders">
+      <article
+        class="priority-card orders-priority"
+        [routerLink]="['/admin/orders']"
+        [queryParams]="{ status: 'PLACED' }"
+      >
         <div class="priority-icon">
           <mat-icon>pending_actions</mat-icon>
         </div>
@@ -35,7 +39,8 @@
 
       <article
         class="priority-card stock-priority"
-        routerLink="/admin/products"
+        [routerLink]="['/admin/products']"
+        [queryParams]="{ lowStock: true }"
       >
         <div class="priority-icon">
           <mat-icon>inventory_2</mat-icon>

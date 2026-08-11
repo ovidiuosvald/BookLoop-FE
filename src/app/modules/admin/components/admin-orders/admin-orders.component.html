@@ -11,7 +11,7 @@
     <mat-form-field appearance="outline" class="search-field">
       <mat-label>Caută comenzi</mat-label>
 
-      <mat-icon matPrefix> search </mat-icon>
+      <mat-icon matPrefix>search</mat-icon>
 
       <input
         matInput
@@ -54,7 +54,47 @@
 
           <div mat-sort-header="totalPrice">Total</div>
 
-          <div mat-sort-header="status">Status</div>
+          <div class="status-header">
+            <span>Status</span>
+
+            <button
+              type="button"
+              class="status-filter-button"
+              [class.active]="statusFilter"
+              [matMenuTriggerFor]="statusMenu"
+              matTooltip="Filtrează după status"
+              (click)="$event.stopPropagation()"
+            >
+              <mat-icon>filter_list</mat-icon>
+            </button>
+
+            <mat-menu #statusMenu="matMenu">
+              <button
+                mat-menu-item
+                type="button"
+                (click)="setStatusFilter(undefined)"
+              >
+                <mat-icon>
+                  {{ !statusFilter ? "check" : "" }}
+                </mat-icon>
+
+                <span>Toate statusurile</span>
+              </button>
+
+              <button
+                mat-menu-item
+                type="button"
+                *ngFor="let status of orderStatuses"
+                (click)="setStatusFilter(status)"
+              >
+                <mat-icon>
+                  {{ statusFilter === status ? "check" : "" }}
+                </mat-icon>
+
+                <span>{{ getStatusLabel(status) }}</span>
+              </button>
+            </mat-menu>
+          </div>
 
           <div mat-sort-header="creationDate">Plasată la</div>
 
@@ -68,17 +108,13 @@
           *ngFor="let order of orders; trackBy: trackByOrderId"
         >
           <div class="order-id-cell" data-label="Comandă">
-            <strong> #{{ order.orderId }} </strong>
+            <strong>#{{ order.orderId }}</strong>
           </div>
 
           <div class="customer-cell" data-label="Client">
-            <strong>
-              {{ order.customerName }}
-            </strong>
+            <strong>{{ order.customerName }}</strong>
 
-            <span>
-              {{ order.customerEmail }}
-            </span>
+            <span>{{ order.customerEmail }}</span>
           </div>
 
           <div class="total-cell" data-label="Total">
@@ -148,7 +184,13 @@
         Nu există comenzi pentru căutarea „{{ searchControl.value }}”.
       </p>
 
-      <p *ngIf="!searchControl.value">Nu există comenzi plasate momentan.</p>
+      <p *ngIf="!searchControl.value && statusFilter">
+        Nu există comenzi cu statusul „{{ getStatusLabel(statusFilter) }}”.
+      </p>
+
+      <p *ngIf="!searchControl.value && !statusFilter">
+        Nu există comenzi plasate momentan.
+      </p>
 
       <button
         *ngIf="searchControl.value"
@@ -158,6 +200,16 @@
         (click)="clearSearch()"
       >
         Șterge căutarea
+      </button>
+
+      <button
+        *ngIf="statusFilter"
+        mat-stroked-button
+        type="button"
+        class="clear-button"
+        (click)="setStatusFilter(undefined)"
+      >
+        Vezi toate comenzile
       </button>
     </div>
   </ng-template>
