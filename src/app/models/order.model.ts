@@ -11,6 +11,10 @@ import {
 export interface Order {
   orderId: number;
   userId: number;
+
+  customerName: string;
+  customerEmail: string;
+
   items: OrderItem[];
 
   status: OrderStatus;

@@ -118,6 +118,7 @@ export class AdminProductsComponent implements OnInit, OnDestroy {
       width: '440px',
       maxWidth: 'calc(100vw - 32px)',
       autoFocus: false,
+      disableClose: true,
       panelClass: 'confirmation-dialog-panel',
       data: {
         title: 'Șterge produsul',

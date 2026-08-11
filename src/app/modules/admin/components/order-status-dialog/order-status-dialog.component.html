@@ -1,0 +1,74 @@
+<div class="order-status-dialog">
+  <div class="dialog-header">
+    <div class="dialog-icon">
+      <mat-icon>local_shipping</mat-icon>
+    </div>
+
+    <div>
+      <h2>Actualizează statusul</h2>
+
+      <p>
+        Comanda <strong>#{{ data.order.orderId }}</strong>
+      </p>
+    </div>
+  </div>
+
+  <div class="current-status">
+    <span>Status actual</span>
+
+    <strong>
+      {{ currentStatusLabel }}
+    </strong>
+  </div>
+
+  <form
+    *ngIf="availableStatuses.length > 0"
+    [formGroup]="statusForm"
+    (ngSubmit)="save()"
+  >
+    <mat-form-field appearance="outline">
+      <mat-label>Status nou</mat-label>
+
+      <mat-select formControlName="status">
+        <mat-option
+          *ngFor="let status of availableStatuses"
+          [value]="status.value"
+        >
+          {{ status.label }}
+        </mat-option>
+      </mat-select>
+
+      <mat-error *ngIf="statusForm.get('status')?.hasError('required')">
+        Selectează noul status.
+      </mat-error>
+    </mat-form-field>
+
+    <div class="status-note">
+      <mat-icon>info_outline</mat-icon>
+
+      <p>
+        Sunt disponibile doar tranzițiile permise pentru statusul actual al
+        comenzii.
+      </p>
+    </div>
+
+    <div class="dialog-actions">
+      <button mat-stroked-button type="button" (click)="cancel()">
+        Anulează
+      </button>
+
+      <button mat-flat-button type="submit" class="save-button">
+        <mat-icon>save</mat-icon>
+        Actualizează
+      </button>
+    </div>
+  </form>
+
+  <div class="final-status" *ngIf="availableStatuses.length === 0">
+    <mat-icon>lock_outline</mat-icon>
+
+    <p>Statusul acestei comenzi nu mai poate fi modificat.</p>
+
+    <button mat-stroked-button type="button" (click)="cancel()">Închide</button>
+  </div>
+</div>

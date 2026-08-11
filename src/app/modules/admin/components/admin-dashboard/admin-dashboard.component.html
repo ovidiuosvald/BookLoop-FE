@@ -11,70 +11,119 @@
   </div>
 
   <ng-container *ngIf="!isLoading && dashboard as data">
-    <section class="stats-grid">
-      <article class="stat-card clickable" routerLink="/admin/products">
-        <div class="stat-icon">
-          <mat-icon>menu_book</mat-icon>
-        </div>
-
-        <div class="stat-content">
-          <span class="stat-label">Produse</span>
-          <strong>{{ data.totalProducts }}</strong>
-          <span class="stat-link">Vezi produsele</span>
-        </div>
-      </article>
-
-      <article class="stat-card clickable" routerLink="/admin/users">
-        <div class="stat-icon">
-          <mat-icon>group</mat-icon>
-        </div>
-
-        <div class="stat-content">
-          <span class="stat-label">Utilizatori</span>
-          <strong>{{ data.totalUsers }}</strong>
-          <span class="stat-link">Vezi utilizatorii</span>
-        </div>
-      </article>
-
-      <article class="stat-card clickable" routerLink="/admin/orders">
-        <div class="stat-icon">
-          <mat-icon>receipt_long</mat-icon>
-        </div>
-
-        <div class="stat-content">
-          <span class="stat-label">Comenzi</span>
-          <strong>{{ data.totalOrders }}</strong>
-          <span class="stat-link">Vezi comenzile</span>
-        </div>
-      </article>
-
-      <article class="stat-card clickable" routerLink="/admin/orders">
-        <div class="stat-icon attention">
+    <!-- PRIORITIES -->
+    <section class="priority-grid">
+      <article class="priority-card orders-priority" routerLink="/admin/orders">
+        <div class="priority-icon">
           <mat-icon>pending_actions</mat-icon>
         </div>
 
-        <div class="stat-content">
-          <span class="stat-label">Comenzi noi</span>
-          <strong>{{ data.placedOrders }}</strong>
-          <span class="stat-link">Necesită procesare</span>
+        <div class="priority-content">
+          <span class="priority-label"> Comenzi de procesat </span>
+
+          <strong>
+            {{ data.placedOrders }}
+          </strong>
+
+          <span class="priority-description">
+            Comenzi noi care necesită atenție
+          </span>
         </div>
+
+        <mat-icon class="priority-arrow"> arrow_forward </mat-icon>
       </article>
 
-      <article class="stat-card clickable" routerLink="/admin/products">
-        <div class="stat-icon warning">
+      <article
+        class="priority-card stock-priority"
+        routerLink="/admin/products"
+      >
+        <div class="priority-icon">
           <mat-icon>inventory_2</mat-icon>
         </div>
 
-        <div class="stat-content">
-          <span class="stat-label">Stoc redus</span>
-          <strong>{{ data.lowStockProducts }}</strong>
-          <span class="stat-link">5 sau mai puține bucăți</span>
+        <div class="priority-content">
+          <span class="priority-label"> Produse cu stoc redus </span>
+
+          <strong>
+            {{ data.lowStockProducts }}
+          </strong>
+
+          <span class="priority-description">
+            5 sau mai puține bucăți disponibile
+          </span>
         </div>
+
+        <mat-icon class="priority-arrow"> arrow_forward </mat-icon>
       </article>
     </section>
 
+    <!-- ADMINISTRATION -->
+    <section class="management-section">
+      <div class="section-title">
+        <div>
+          <h2>Administrare</h2>
+          <p>Acces rapid la principalele zone ale aplicației.</p>
+        </div>
+      </div>
+
+      <div class="management-grid">
+        <article class="management-card" routerLink="/admin/products">
+          <div class="management-icon">
+            <mat-icon>menu_book</mat-icon>
+          </div>
+
+          <div class="management-content">
+            <span>Produse</span>
+            <strong>{{ data.totalProducts }}</strong>
+          </div>
+
+          <mat-icon class="management-arrow"> chevron_right </mat-icon>
+        </article>
+
+        <article class="management-card" routerLink="/admin/categories">
+          <div class="management-icon">
+            <mat-icon>category</mat-icon>
+          </div>
+
+          <div class="management-content">
+            <span>Categorii</span>
+            <strong>{{ data.totalCategories }}</strong>
+          </div>
+
+          <mat-icon class="management-arrow"> chevron_right </mat-icon>
+        </article>
+
+        <article class="management-card" routerLink="/admin/users">
+          <div class="management-icon">
+            <mat-icon>group</mat-icon>
+          </div>
+
+          <div class="management-content">
+            <span>Utilizatori</span>
+            <strong>{{ data.totalUsers }}</strong>
+          </div>
+
+          <mat-icon class="management-arrow"> chevron_right </mat-icon>
+        </article>
+
+        <article class="management-card" routerLink="/admin/orders">
+          <div class="management-icon">
+            <mat-icon>receipt_long</mat-icon>
+          </div>
+
+          <div class="management-content">
+            <span>Comenzi</span>
+            <strong>{{ data.totalOrders }}</strong>
+          </div>
+
+          <mat-icon class="management-arrow"> chevron_right </mat-icon>
+        </article>
+      </div>
+    </section>
+
+    <!-- RECENT ORDERS -->
     <section class="recent-section">
-      <div class="section-header">
+      <div class="recent-header">
         <div>
           <h2>Comenzi recente</h2>
           <p>Ultimele comenzi plasate în BookLoop.</p>
@@ -97,15 +146,19 @@
         >
           <div class="order-main">
             <div class="order-icon">
-              <mat-icon>inventory_2</mat-icon>
+              <mat-icon>receipt_long</mat-icon>
             </div>
 
-            <div>
-              <strong>Comanda #{{ order.orderId }}</strong>
+            <div class="order-main-content">
+              <strong> Comanda #{{ order.orderId }} </strong>
 
               <span>
-                {{ order.creationDate | date: "dd.MM.yyyy, HH:mm" }}
+                {{ order.customerName || "Client" }}
               </span>
+
+              <small>
+                {{ order.creationDate | date: "dd.MM.yyyy, HH:mm" }}
+              </small>
             </div>
           </div>
 
@@ -114,7 +167,7 @@
 
             <span>
               {{ order.items.length }}
-              {{ order.items.length === 1 ? "titlu" : "titluri" }}
+              {{ order.items.length === 1 ? "produs" : "produse" }}
             </span>
           </div>
 

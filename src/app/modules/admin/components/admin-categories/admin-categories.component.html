@@ -17,36 +17,39 @@
     </button>
   </div>
 
-  <section class="categories-content">
-    <div class="categories-summary">
-      <div>
-        <h2>Categorii existente</h2>
+  <div class="categories-toolbar">
+    <span class="results-count">
+      {{ totalElements }}
+      {{ totalElements === 1 ? "categorie" : "categorii" }}
+    </span>
+  </div>
 
-        <p>
-          {{ categories.length }}
-          {{
-            categories.length === 1
-              ? "categorie disponibilă"
-              : "categorii disponibile"
-          }}
-        </p>
-      </div>
-    </div>
-
-    <ng-container *ngIf="!isLoading">
+  <ng-container *ngIf="!isLoading">
+    <div class="categories-card" *ngIf="categories.length > 0; else emptyState">
       <div
-        class="categories-grid"
-        *ngIf="categories.length > 0; else emptyState"
+        class="categories-table"
+        matSort
+        [matSortActive]="sortBy"
+        [matSortDirection]="sortDirection"
+        (matSortChange)="onSortChange($event)"
       >
+        <div class="table-header">
+          <div mat-sort-header="categoryName">Categorie</div>
+
+          <div class="actions-header">Acțiuni</div>
+        </div>
+
         <div
-          class="category-item"
+          class="category-row"
           *ngFor="let category of categories; trackBy: trackByCategoryId"
         >
-          <span class="category-name">
-            {{ category.categoryName }}
-          </span>
+          <div class="category-cell">
+            <strong>
+              {{ category.categoryName }}
+            </strong>
+          </div>
 
-          <div class="category-actions">
+          <div class="actions-cell">
             <button
               mat-icon-button
               type="button"
@@ -68,26 +71,36 @@
           </div>
         </div>
       </div>
-    </ng-container>
 
-    <ng-template #emptyState>
-      <div class="empty-state">
-        <mat-icon>category</mat-icon>
+      <mat-paginator
+        [length]="totalElements"
+        [pageIndex]="pageIndex"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions"
+        [showFirstLastButtons]="true"
+        (page)="onPageChange($event)"
+      >
+      </mat-paginator>
+    </div>
+  </ng-container>
 
-        <h2>Nu există categorii</h2>
+  <ng-template #emptyState>
+    <div class="empty-state">
+      <mat-icon>category</mat-icon>
 
-        <p>Adaugă prima categorie pentru cărțile din BookLoop.</p>
+      <h2>Nu există categorii</h2>
 
-        <button
-          mat-flat-button
-          type="button"
-          class="admin-primary-button"
-          (click)="openCreateDialog()"
-        >
-          <mat-icon>add</mat-icon>
-          Adaugă categorie
-        </button>
-      </div>
-    </ng-template>
-  </section>
+      <p>Adaugă prima categorie pentru cărțile din BookLoop.</p>
+
+      <button
+        mat-flat-button
+        type="button"
+        class="admin-primary-button"
+        (click)="openCreateDialog()"
+      >
+        <mat-icon>add</mat-icon>
+        Adaugă categorie
+      </button>
+    </div>
+  </ng-template>
 </div>

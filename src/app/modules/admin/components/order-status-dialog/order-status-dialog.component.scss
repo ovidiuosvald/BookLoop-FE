@@ -1,0 +1,194 @@
+:host {
+  display: block;
+}
+
+.order-status-dialog {
+  padding: 26px;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 14px;
+
+  margin-bottom: 22px;
+
+  h2 {
+    margin: 0 0 5px;
+
+    color: #2d2456;
+
+    font-size: 21px;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 0;
+
+    color: #77717f;
+
+    font-size: 13px;
+
+    strong {
+      color: #2d2456;
+      font-weight: 600;
+    }
+  }
+}
+
+.dialog-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 42px;
+
+  width: 42px;
+  height: 42px;
+
+  color: #673ab7;
+  background: #f1e8fb;
+
+  border-radius: 10px;
+
+  mat-icon {
+    width: 22px;
+    height: 22px;
+
+    font-size: 22px;
+  }
+}
+
+.current-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 20px;
+  padding: 12px 14px;
+
+  background: #faf8fc;
+
+  border: 1px solid #ece7f5;
+  border-radius: 9px;
+
+  span {
+    color: #80798b;
+
+    font-size: 12px;
+  }
+
+  strong {
+    color: #2d2456;
+
+    font-size: 13px;
+    font-weight: 600;
+  }
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.status-note {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 10px;
+
+  margin-top: 4px;
+  padding: 12px 14px;
+
+  background: #f8f4fc;
+
+  border-radius: 9px;
+
+  mat-icon {
+    flex: 0 0 auto;
+
+    width: 18px;
+    height: 18px;
+
+    color: #673ab7;
+
+    font-size: 18px;
+  }
+
+  p {
+    margin: 0;
+
+    color: #6f6877;
+
+    font-size: 12px;
+    line-height: 1.5;
+  }
+}
+
+.dialog-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  margin-top: 24px;
+}
+
+.save-button {
+  color: #ffffff !important;
+  background: #673ab7 !important;
+
+  border-radius: 8px !important;
+
+  mat-icon {
+    margin-right: 6px;
+  }
+
+  &:not(:disabled):hover {
+    background: #5c32a4 !important;
+  }
+}
+
+.final-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding-top: 6px;
+
+  text-align: center;
+
+  > mat-icon {
+    width: 32px;
+    height: 32px;
+
+    margin-bottom: 10px;
+
+    color: #9b94a3;
+
+    font-size: 32px;
+  }
+
+  p {
+    margin: 0 0 18px;
+
+    color: #6f6877;
+
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .order-status-dialog {
+    padding: 20px;
+  }
+
+  .dialog-actions {
+    flex-direction: column-reverse;
+
+    button {
+      width: 100%;
+    }
+  }
+}

@@ -26,8 +26,8 @@ export class UserDetailsComponent {
     const dialogRef = this.dialog.open(UpdateProfileComponent, {
       width: '680px',
       maxWidth: '95vw',
-      disableClose: true,
       autoFocus: false,
+      disableClose: true,
       backdropClass: 'dialog-backdrop',
     });
 
@@ -46,6 +46,7 @@ export class UserDetailsComponent {
       maxWidth: 'calc(100vw - 32px)',
       maxHeight: '90vh',
       autoFocus: false,
+      disableClose: true,
       backdropClass: 'dialog-backdrop',
     });
   }

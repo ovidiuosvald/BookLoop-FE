@@ -129,6 +129,7 @@ export class HeaderComponent {
       width: '420px',
       maxWidth: 'calc(100vw - 32px)',
       autoFocus: false,
+      disableClose: true,
       panelClass: 'confirmation-dialog-panel',
       data: {
         title: 'Delogare',
@@ -155,6 +156,7 @@ export class HeaderComponent {
       width: '620px',
       maxWidth: 'calc(100vw - 32px)',
       autoFocus: false,
+      disableClose: true,
       panelClass: 'authentication-required-dialog-panel',
     });
   }

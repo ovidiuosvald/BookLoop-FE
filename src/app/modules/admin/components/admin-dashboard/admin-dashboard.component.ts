@@ -13,6 +13,7 @@ import { CommonService } from 'src/app/services/common.service';
 })
 export class AdminDashboardComponent implements OnInit {
   dashboard?: AdminDashboard;
+
   isLoading = true;
 
   constructor(
@@ -49,6 +50,8 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   private loadDashboard(): void {
+    this.isLoading = true;
+
     this.adminService.getDashboard().subscribe({
       next: (dashboard: AdminDashboard) => {
         this.dashboard = dashboard;

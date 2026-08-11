@@ -37,6 +37,7 @@ export class AdminContainerComponent {
       width: '420px',
       maxWidth: 'calc(100vw - 32px)',
       autoFocus: false,
+      disableClose: true,
       panelClass: 'confirmation-dialog-panel',
       data: {
         title: 'Delogare',

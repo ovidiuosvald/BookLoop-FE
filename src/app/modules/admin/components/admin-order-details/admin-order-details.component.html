@@ -1,0 +1,335 @@
+<div class="loading-state" *ngIf="isLoading">
+  <mat-spinner diameter="42"></mat-spinner>
+
+  <p>Se încarcă detaliile comenzii...</p>
+</div>
+
+<div class="order-details-page" *ngIf="!isLoading && order">
+  <button mat-button type="button" class="back-button" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+    Înapoi la comenzi
+  </button>
+
+  <div class="page-header">
+    <div class="page-title">
+      <h1>Comanda #{{ order.orderId }}</h1>
+
+      <p>
+        Plasată în
+        {{ order.creationDate | date: "dd.MM.yyyy, HH:mm" }}
+      </p>
+    </div>
+
+    <div class="header-actions">
+      <span class="status-badge" [ngClass]="getStatusClass(order.status)">
+        {{ getStatusLabel(order.status) }}
+      </span>
+
+      <button
+        mat-flat-button
+        type="button"
+        class="admin-primary-button"
+        [disabled]="!canChangeStatus(order.status)"
+        [matTooltip]="
+          canChangeStatus(order.status)
+            ? 'Modifică statusul comenzii'
+            : 'Statusul unei comenzi livrate sau anulate nu mai poate fi modificat.'
+        "
+        (click)="openStatusDialog()"
+      >
+        <mat-icon>edit</mat-icon>
+        Modifică statusul
+      </button>
+    </div>
+  </div>
+
+  <div class="details-layout">
+    <div class="main-column">
+      <!-- PRODUCTS -->
+      <section class="details-card">
+        <div class="section-header">
+          <div class="section-icon">
+            <mat-icon>menu_book</mat-icon>
+          </div>
+
+          <div>
+            <h2>Produse comandate</h2>
+
+            <p>
+              {{ order.items.length }}
+              {{ order.items.length === 1 ? "produs" : "produse" }}
+            </p>
+          </div>
+        </div>
+
+        <div class="items-list">
+          <div class="order-item" *ngFor="let item of order.items">
+            <div class="item-product">
+              <div class="item-image">
+                <img
+                  *ngIf="item.coverUrl; else noCover"
+                  [src]="getImageUrl(item.coverUrl)"
+                  [alt]="item.bookName"
+                />
+
+                <ng-template #noCover>
+                  <mat-icon>menu_book</mat-icon>
+                </ng-template>
+              </div>
+
+              <div class="item-info">
+                <strong>
+                  {{ item.bookName }}
+                </strong>
+
+                <span>
+                  {{ item.unitPrice | currency: "RON" : "symbol" : "1.2-2" }}
+                  ×
+                  {{ item.quantity }}
+                </span>
+              </div>
+            </div>
+
+            <strong class="item-subtotal">
+              {{ item.subtotal | currency: "RON" : "symbol" : "1.2-2" }}
+            </strong>
+          </div>
+        </div>
+      </section>
+
+      <!-- DELIVERY -->
+      <section class="details-card">
+        <div class="section-header">
+          <div class="section-icon">
+            <mat-icon>local_shipping</mat-icon>
+          </div>
+
+          <div>
+            <h2>Livrare</h2>
+            <p>Detaliile adresei de livrare.</p>
+          </div>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <span>Destinatar</span>
+
+            <strong>
+              {{ order.deliveryAddress.firstName }}
+              {{ order.deliveryAddress.lastName }}
+            </strong>
+          </div>
+
+          <div class="info-item">
+            <span>Telefon</span>
+
+            <strong>
+              {{ order.deliveryAddress.phoneNumber }}
+            </strong>
+          </div>
+
+          <div class="info-item">
+            <span>Metodă livrare</span>
+
+            <strong>
+              {{ getDeliveryMethodLabel(order.deliveryMethod) }}
+            </strong>
+          </div>
+
+          <div class="info-item full-width">
+            <span>Adresă</span>
+
+            <strong>
+              {{ order.deliveryAddress.addressLine }},
+              {{ order.deliveryAddress.city }},
+              {{ order.deliveryAddress.county }},
+              {{ order.deliveryAddress.country }}
+
+              <ng-container *ngIf="order.deliveryAddress.postalCode">
+                · {{ order.deliveryAddress.postalCode }}
+              </ng-container>
+            </strong>
+          </div>
+        </div>
+      </section>
+
+      <!-- BILLING -->
+      <section class="details-card">
+        <div class="section-header">
+          <div class="section-icon">
+            <mat-icon>receipt_long</mat-icon>
+          </div>
+
+          <div>
+            <h2>Facturare</h2>
+            <p>Datele folosite pentru facturare.</p>
+          </div>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <span>Tip facturare</span>
+
+            <strong>
+              {{ getBillingTypeLabel(order.billingType) }}
+            </strong>
+          </div>
+
+          <ng-container *ngIf="order.billingAddress">
+            <div class="info-item">
+              <span>Destinatar</span>
+
+              <strong>
+                {{ order.billingAddress.firstName }}
+                {{ order.billingAddress.lastName }}
+              </strong>
+            </div>
+
+            <div class="info-item full-width">
+              <span>Adresă facturare</span>
+
+              <strong>
+                {{ order.billingAddress.addressLine }},
+                {{ order.billingAddress.city }},
+                {{ order.billingAddress.county }},
+                {{ order.billingAddress.country }}
+
+                <ng-container *ngIf="order.billingAddress.postalCode">
+                  · {{ order.billingAddress.postalCode }}
+                </ng-container>
+              </strong>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="order.companyDetails">
+            <div class="info-item">
+              <span>Companie</span>
+
+              <strong>
+                {{ order.companyDetails.companyName }}
+              </strong>
+            </div>
+
+            <div class="info-item">
+              <span>CUI</span>
+
+              <strong>
+                {{ order.companyDetails.cui }}
+              </strong>
+            </div>
+
+            <div class="info-item">
+              <span>Nr. înregistrare</span>
+
+              <strong>
+                {{ order.companyDetails.registrationNumber }}
+              </strong>
+            </div>
+
+            <div class="info-item">
+              <span>Bancă</span>
+
+              <strong>
+                {{ order.companyDetails.bank || "-" }}
+              </strong>
+            </div>
+
+            <div class="info-item full-width">
+              <span>Cont bancar</span>
+
+              <strong>
+                {{ order.companyDetails.bankAccount || "-" }}
+              </strong>
+            </div>
+          </ng-container>
+        </div>
+      </section>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="side-column">
+      <!-- CUSTOMER -->
+      <section class="details-card">
+        <div class="section-header compact">
+          <div class="section-icon">
+            <mat-icon>person</mat-icon>
+          </div>
+
+          <div>
+            <h2>Client</h2>
+          </div>
+        </div>
+
+        <div class="client-info">
+          <strong>
+            {{ order.customerName }}
+          </strong>
+
+          <span>
+            {{ order.customerEmail }}
+          </span>
+
+          <small> ID utilizator: {{ order.userId }} </small>
+        </div>
+      </section>
+
+      <!-- PAYMENT -->
+      <section class="details-card">
+        <div class="section-header compact">
+          <div class="section-icon">
+            <mat-icon>payments</mat-icon>
+          </div>
+
+          <div>
+            <h2>Plată</h2>
+          </div>
+        </div>
+
+        <div class="summary-row">
+          <span>Metodă plată</span>
+
+          <strong>
+            {{ getPaymentMethodLabel(order.paymentMethod) }}
+          </strong>
+        </div>
+      </section>
+
+      <!-- SUMMARY -->
+      <section class="details-card totals-card">
+        <div class="section-header compact">
+          <div class="section-icon">
+            <mat-icon>calculate</mat-icon>
+          </div>
+
+          <div>
+            <h2>Sumar comandă</h2>
+          </div>
+        </div>
+
+        <div class="summary-row">
+          <span>Subtotal</span>
+
+          <strong>
+            {{ order.subtotal | currency: "RON" : "symbol" : "1.2-2" }}
+          </strong>
+        </div>
+
+        <div class="summary-row">
+          <span>Transport</span>
+
+          <strong>
+            {{ order.shippingCost | currency: "RON" : "symbol" : "1.2-2" }}
+          </strong>
+        </div>
+
+        <div class="total-row">
+          <span>Total</span>
+
+          <strong>
+            {{ order.totalPrice | currency: "RON" : "symbol" : "1.2-2" }}
+          </strong>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

@@ -8,6 +8,7 @@ import { AdminProductsComponent } from './components/admin-products/admin-produc
 import { AdminProductFormComponent } from './components/admin-product-form/admin-product-form.component';
 import { AdminUsersComponent } from './components/admin-users/admin-users.component';
 import { AdminCategoriesComponent } from './components/admin-categories/admin-categories.component';
+import { AdminOrderDetailsComponent } from './components/admin-order-details/admin-order-details.component';
 
 const routes: Routes = [
   {
@@ -42,6 +43,10 @@ const routes: Routes = [
       {
         path: 'orders',
         component: AdminOrdersComponent,
+      },
+      {
+        path: 'orders/:orderId',
+        component: AdminOrderDetailsComponent,
       },
       {
         path: 'users',

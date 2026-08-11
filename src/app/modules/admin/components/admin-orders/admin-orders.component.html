@@ -1,1 +1,164 @@
-<p>admin-orders works!</p>
+<div class="orders-page">
+  <div class="page-header">
+    <div>
+      <h1>Comenzi</h1>
+
+      <p>Gestionează comenzile plasate în BookLoop.</p>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Caută comenzi</mat-label>
+
+      <mat-icon matPrefix> search </mat-icon>
+
+      <input
+        matInput
+        type="text"
+        [formControl]="searchControl"
+        placeholder="Nume sau email client"
+      />
+
+      <button
+        *ngIf="searchControl.value"
+        mat-icon-button
+        matSuffix
+        type="button"
+        aria-label="Șterge căutarea"
+        (click)="clearSearch()"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <span class="results-count">
+      {{ totalElements }}
+      {{ totalElements === 1 ? "comandă" : "comenzi" }}
+    </span>
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+    <div class="orders-card" *ngIf="orders.length > 0; else emptyState">
+      <div
+        class="orders-table"
+        matSort
+        [matSortActive]="sortBy"
+        [matSortDirection]="sortDirection"
+        (matSortChange)="onSortChange($event)"
+      >
+        <div class="table-header">
+          <div mat-sort-header="orderId">Comandă</div>
+
+          <div mat-sort-header="user.firstName">Client</div>
+
+          <div mat-sort-header="totalPrice">Total</div>
+
+          <div mat-sort-header="status">Status</div>
+
+          <div mat-sort-header="creationDate">Plasată la</div>
+
+          <div mat-sort-header="lastModifiedDate">Ultima modificare</div>
+
+          <div class="actions-header">Acțiuni</div>
+        </div>
+
+        <article
+          class="order-row"
+          *ngFor="let order of orders; trackBy: trackByOrderId"
+        >
+          <div class="order-id-cell" data-label="Comandă">
+            <strong> #{{ order.orderId }} </strong>
+          </div>
+
+          <div class="customer-cell" data-label="Client">
+            <strong>
+              {{ order.customerName }}
+            </strong>
+
+            <span>
+              {{ order.customerEmail }}
+            </span>
+          </div>
+
+          <div class="total-cell" data-label="Total">
+            {{ order.totalPrice | currency: "RON" : "symbol" : "1.2-2" }}
+          </div>
+
+          <div class="status-cell" data-label="Status">
+            <span class="status-badge" [ngClass]="getStatusClass(order.status)">
+              {{ getStatusLabel(order.status) }}
+            </span>
+          </div>
+
+          <div class="date-cell" data-label="Plasată la">
+            {{ order.creationDate | date: "dd.MM.yyyy, HH:mm" }}
+          </div>
+
+          <div class="date-cell" data-label="Ultima modificare">
+            {{ order.lastModifiedDate | date: "dd.MM.yyyy, HH:mm" }}
+          </div>
+
+          <div class="actions-cell">
+            <button
+              mat-icon-button
+              type="button"
+              matTooltip="Vezi detaliile comenzii"
+              (click)="openOrderDetails(order)"
+            >
+              <mat-icon>visibility</mat-icon>
+            </button>
+
+            <button
+              mat-icon-button
+              type="button"
+              [disabled]="!canChangeStatus(order.status)"
+              [matTooltip]="getStatusTooltip(order.status)"
+              (click)="openStatusDialog(order)"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+          </div>
+        </article>
+      </div>
+
+      <mat-paginator
+        [length]="totalElements"
+        [pageIndex]="pageIndex"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions"
+        [showFirstLastButtons]="true"
+        (page)="onPageChange($event)"
+      >
+      </mat-paginator>
+    </div>
+  </ng-container>
+
+  <ng-template #emptyState>
+    <div class="empty-state">
+      <mat-icon>
+        {{ searchControl.value ? "search_off" : "receipt_long" }}
+      </mat-icon>
+
+      <h2>
+        {{ searchControl.value ? "Nu am găsit comenzi" : "Nu există comenzi" }}
+      </h2>
+
+      <p *ngIf="searchControl.value">
+        Nu există comenzi pentru căutarea „{{ searchControl.value }}”.
+      </p>
+
+      <p *ngIf="!searchControl.value">Nu există comenzi plasate momentan.</p>
+
+      <button
+        *ngIf="searchControl.value"
+        mat-stroked-button
+        type="button"
+        class="clear-button"
+        (click)="clearSearch()"
+      >
+        Șterge căutarea
+      </button>
+    </div>
+  </ng-template>
+</div>

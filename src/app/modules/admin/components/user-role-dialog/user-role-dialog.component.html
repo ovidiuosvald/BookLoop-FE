@@ -1,0 +1,53 @@
+<div class="user-role-dialog">
+  <div class="dialog-header">
+    <div class="dialog-icon">
+      <mat-icon>manage_accounts</mat-icon>
+    </div>
+
+    <div>
+      <h2>Modifică rolul</h2>
+
+      <p>
+        Selectează rolul pentru
+        <strong>{{ userFullName }}</strong
+        >.
+      </p>
+    </div>
+  </div>
+
+  <form [formGroup]="roleForm" (ngSubmit)="save()">
+    <mat-form-field appearance="outline">
+      <mat-label>Rol</mat-label>
+
+      <mat-select formControlName="role">
+        <mat-option *ngFor="let role of roles" [value]="role.value">
+          {{ role.label }}
+        </mat-option>
+      </mat-select>
+
+      <mat-error *ngIf="roleForm.get('role')?.hasError('required')">
+        Rolul este obligatoriu.
+      </mat-error>
+    </mat-form-field>
+
+    <div class="role-info">
+      <mat-icon>info_outline</mat-icon>
+
+      <p>
+        Administratorii au acces la panoul de administrare și la funcțiile de
+        management ale aplicației.
+      </p>
+    </div>
+
+    <div class="dialog-actions">
+      <button mat-stroked-button type="button" (click)="cancel()">
+        Anulează
+      </button>
+
+      <button mat-flat-button type="submit" class="save-button">
+        <mat-icon>save</mat-icon>
+        Salvează
+      </button>
+    </div>
+  </form>
+</div>

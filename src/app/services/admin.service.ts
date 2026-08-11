@@ -5,6 +5,12 @@ import { Observable } from 'rxjs';
 import { AdminDashboard } from '../models/admin-dashboard.model';
 import { Book } from '../models/book.model';
 import { PageResponse } from '../models/page-response.model';
+import { UserInterface } from '../models/user.model';
+import { UserRole } from '../enums/user-role.enum';
+import { AdminOrder } from '../models/admin-order.model';
+import { OrderStatus } from '../enums/order.enums';
+import { Order } from '../models/order.model';
+import { Category } from '../models/category.model';
 
 @Injectable({
   providedIn: 'root',
@@ -82,5 +88,108 @@ export class AdminService {
       responseType: 'text',
       withCredentials: true,
     });
+  }
+
+  getUsers(
+    search = '',
+    page = 0,
+    size = 10,
+    sortBy = 'firstName',
+    sortDirection: 'asc' | 'desc' = 'asc',
+  ): Observable<PageResponse<UserInterface>> {
+    let params = new HttpParams()
+      .set('page', page)
+      .set('size', size)
+      .set('sort', `${sortBy},${sortDirection}`);
+
+    if (search.trim()) {
+      params = params.set('search', search.trim());
+    }
+
+    return this.httpClient.get<PageResponse<UserInterface>>(
+      `${this.apiUrl}/users`,
+      {
+        params,
+        withCredentials: true,
+      },
+    );
+  }
+
+  updateUserRole(userId: number, role: UserRole): Observable<UserInterface> {
+    return this.httpClient.put<UserInterface>(
+      `${this.apiUrl}/users/${userId}/role`,
+      {
+        role,
+      },
+      {
+        withCredentials: true,
+      },
+    );
+  }
+
+  getOrders(
+    search = '',
+    page = 0,
+    size = 10,
+    sortBy = 'creationDate',
+    sortDirection: 'asc' | 'desc' = 'desc',
+  ): Observable<PageResponse<AdminOrder>> {
+    let params = new HttpParams()
+      .set('page', page)
+      .set('size', size)
+      .set('sort', `${sortBy},${sortDirection}`);
+
+    if (search.trim()) {
+      params = params.set('search', search.trim());
+    }
+
+    return this.httpClient.get<PageResponse<AdminOrder>>(
+      `${this.apiUrl}/orders`,
+      {
+        params,
+        withCredentials: true,
+      },
+    );
+  }
+
+  updateOrderStatus(
+    orderId: number,
+    status: OrderStatus,
+  ): Observable<AdminOrder> {
+    return this.httpClient.put<AdminOrder>(
+      `${this.apiUrl}/orders/${orderId}/status`,
+      {
+        status,
+      },
+      {
+        withCredentials: true,
+      },
+    );
+  }
+
+  getOrderDetails(orderId: number): Observable<Order> {
+    return this.httpClient.get<Order>(`${this.apiUrl}/orders/${orderId}`, {
+      withCredentials: true,
+    });
+  }
+
+  getCategories(
+    page = 0,
+    size = 10,
+    sortBy = 'categoryName',
+    sortDirection: 'asc' | 'desc' = 'asc',
+  ): Observable<PageResponse<Category>> {
+    const params = new HttpParams()
+      .set('page', page)
+      .set('size', size)
+      .set('sort', `${sortBy},${sortDirection}`);
+
+    return this.httpClient.get<PageResponse<Category>>(
+      `${this.apiUrl}/categories`,
+      {
+        params,
+        withCredentials: true,
+      },
+    );
   }
 }

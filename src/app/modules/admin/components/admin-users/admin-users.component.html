@@ -1,1 +1,156 @@
-<p>admin-users works!</p>
+<div class="users-page">
+  <div class="page-header">
+    <div>
+      <h1>Utilizatori</h1>
+
+      <p>Gestionează utilizatorii înregistrați în BookLoop.</p>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Caută utilizatori</mat-label>
+
+      <mat-icon matPrefix> search </mat-icon>
+
+      <input
+        matInput
+        type="text"
+        [formControl]="searchControl"
+        placeholder="Nume sau email"
+      />
+
+      <button
+        *ngIf="searchControl.value"
+        mat-icon-button
+        matSuffix
+        type="button"
+        aria-label="Șterge căutarea"
+        (click)="clearSearch()"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <span class="results-count">
+      {{ totalElements }}
+      {{ totalElements === 1 ? "utilizator" : "utilizatori" }}
+    </span>
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+    <div class="users-card" *ngIf="users.length > 0; else emptyState">
+      <div
+        class="users-table"
+        matSort
+        [matSortActive]="sortBy"
+        [matSortDirection]="sortDirection"
+        (matSortChange)="onSortChange($event)"
+      >
+        <div class="table-header">
+          <div mat-sort-header="firstName">Utilizator</div>
+
+          <div mat-sort-header="email">Email</div>
+
+          <div mat-sort-header="role">Rol</div>
+
+          <div mat-sort-header="creationDate">Data creării</div>
+
+          <div class="actions-header">Acțiuni</div>
+        </div>
+
+        <article
+          class="user-row"
+          *ngFor="let user of users; trackBy: trackByUserId"
+        >
+          <div class="user-cell">
+            <div class="avatar">
+              {{ getInitials(user) }}
+            </div>
+
+            <div class="user-info">
+              <strong>
+                {{ getFullName(user) || "-" }}
+              </strong>
+
+              <span> ID {{ user.userId }} </span>
+            </div>
+          </div>
+
+          <div class="email-cell" data-label="Email">
+            {{ user.email || "-" }}
+          </div>
+
+          <div class="role-cell" data-label="Rol">
+            <span class="role-badge" [ngClass]="getRoleClass(user)">
+              {{ getRoleLabel(user) }}
+            </span>
+          </div>
+
+          <div class="date-cell" data-label="Data creării">
+            <ng-container *ngIf="user.creationDate; else noCreationDate">
+              {{ user.creationDate | date: "dd.MM.yyyy, HH:mm" }}
+            </ng-container>
+
+            <ng-template #noCreationDate> - </ng-template>
+          </div>
+
+          <div class="actions-cell">
+            <button
+              mat-icon-button
+              type="button"
+              matTooltip="Modifică rolul"
+              (click)="openRoleDialog(user)"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+          </div>
+        </article>
+      </div>
+
+      <mat-paginator
+        [length]="totalElements"
+        [pageIndex]="pageIndex"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions"
+        [showFirstLastButtons]="true"
+        (page)="onPageChange($event)"
+      >
+      </mat-paginator>
+    </div>
+  </ng-container>
+
+  <ng-template #emptyState>
+    <div class="empty-state">
+      <mat-icon>
+        {{ searchControl.value ? "search_off" : "group" }}
+      </mat-icon>
+
+      <h2>
+        {{
+          searchControl.value
+            ? "Nu am găsit utilizatori"
+            : "Nu există utilizatori"
+        }}
+      </h2>
+
+      <p *ngIf="searchControl.value">
+        Nu există utilizatori pentru căutarea „{{ searchControl.value }}”.
+      </p>
+
+      <p *ngIf="!searchControl.value">
+        Nu există utilizatori înregistrați momentan.
+      </p>
+
+      <button
+        *ngIf="searchControl.value"
+        mat-stroked-button
+        type="button"
+        class="clear-button"
+        (click)="clearSearch()"
+      >
+        Șterge căutarea
+      </button>
+    </div>
+  </ng-template>
+</div>
