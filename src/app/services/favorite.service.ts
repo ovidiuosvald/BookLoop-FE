@@ -12,18 +12,18 @@ export class FavoriteService {
 
   constructor(private readonly httpClient: HttpClient) {}
 
+  getFavorites(userId: number): Observable<Book[]> {
+    return this.httpClient.get<Book[]>(`${this.apiUrl}/user/${userId}`, {
+      withCredentials: true,
+    });
+  }
+
   toggleFavorite(userId: number, book: Book): Observable<boolean> {
     if (book.isFavorite) {
       return this.removeFavorite(userId, book.bookId).pipe(map(() => false));
     }
 
     return this.addFavorite(userId, book.bookId).pipe(map(() => true));
-  }
-
-  getFavorites(userId: number): Observable<Book[]> {
-    return this.httpClient.get<Book[]>(`${this.apiUrl}/user/${userId}`, {
-      withCredentials: true,
-    });
   }
 
   addFavorite(userId: number, bookId: number): Observable<void> {

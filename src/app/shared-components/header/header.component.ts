@@ -135,13 +135,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onFavoritesClick(): void {
+    this.runIfAuthenticated(() => {
+      this.commonService.goToFavorites();
+    }, 'Pentru a accesa cărțile favorite, trebuie să fii autentificat în contul tău BookLoop.');
+  }
+
+  onCartClick(): void {
+    this.runIfAuthenticated(() => {
+      this.commonService.goToCart();
+    }, 'Pentru a accesa coșul de cumpărături, trebuie să fii autentificat în contul tău BookLoop.');
+  }
+
+  private runIfAuthenticated(action: () => void, message: string): void {
     this.isUserLoggedIn$.pipe(take(1)).subscribe((isUserLoggedIn: boolean) => {
       if (isUserLoggedIn) {
-        this.goToFavorites();
+        action();
         return;
       }
 
-      this.openAuthenticationRequiredDialog();
+      this.openAuthenticationRequiredDialog(message);
     });
   }
 
@@ -264,13 +276,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
   // DIALOGS
   // =========================
 
-  private openAuthenticationRequiredDialog(): void {
+  private openAuthenticationRequiredDialog(message: string): void {
     this.dialog.open(AuthenticationRequiredDialogComponent, {
-      width: '620px',
+      width: '520px',
       maxWidth: 'calc(100vw - 32px)',
       autoFocus: false,
       disableClose: true,
       panelClass: 'authentication-required-dialog-panel',
+      data: {
+        message,
+      },
     });
   }
 }

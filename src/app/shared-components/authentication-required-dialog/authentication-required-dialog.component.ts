@@ -1,6 +1,11 @@
-import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
+import { CommonService } from 'src/app/services/common.service';
+
+export interface AuthenticationRequiredDialogData {
+  message: string;
+}
 
 @Component({
   selector: 'app-authentication-required-dialog',
@@ -9,8 +14,10 @@ import { Router } from '@angular/router';
 })
 export class AuthenticationRequiredDialogComponent {
   constructor(
+    @Inject(MAT_DIALOG_DATA)
+    readonly data: AuthenticationRequiredDialogData,
     private readonly dialogRef: MatDialogRef<AuthenticationRequiredDialogComponent>,
-    private readonly router: Router,
+    private readonly commonService: CommonService,
   ) {}
 
   close(): void {
@@ -19,11 +26,11 @@ export class AuthenticationRequiredDialogComponent {
 
   goToLogin(): void {
     this.dialogRef.close();
-    this.router.navigate(['/auth/login']);
+    this.commonService.goToLoginPage();
   }
 
   goToRegister(): void {
     this.dialogRef.close();
-    this.router.navigate(['/auth/register']);
+    this.commonService.goToRegisterPage();
   }
 }

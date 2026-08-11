@@ -1,6 +1,7 @@
 <div class="dialog-container">
   <button
     mat-icon-button
+    type="button"
     class="close-button"
     aria-label="Închide"
     (click)="close()"
@@ -8,28 +9,30 @@
     <mat-icon>close</mat-icon>
   </button>
 
-  <div class="warning-icon">
-    <mat-icon>priority_high</mat-icon>
+  <div class="dialog-icon">
+    <mat-icon>lock</mat-icon>
   </div>
 
-  <h2>
-    Pentru a putea adăuga cărți la favorite, trebuie să fii autentificat în
-    contul tău BookLoop.
-  </h2>
+  <h2>Autentificare necesară</h2>
+
+  <p class="dialog-message">
+    {{ data.message }}
+  </p>
 
   <div class="dialog-actions">
     <button
       mat-flat-button
-      color="primary"
+      type="button"
       class="login-button"
       (click)="goToLogin()"
     >
+      <mat-icon>login</mat-icon>
       Autentificare
     </button>
 
     <button
       mat-stroked-button
-      color="primary"
+      type="button"
       class="register-button"
       (click)="goToRegister()"
     >

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AdminGuard } from './guards/admin.guard';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -21,11 +22,13 @@ const routes: Routes = [
   },
   {
     path: 'cart',
+    canActivate: [AuthGuard],
     loadChildren: () =>
       import('./modules/cart/cart.module').then((module) => module.CartModule),
   },
   {
     path: 'checkout',
+    canActivate: [AuthGuard],
     loadChildren: () =>
       import('./modules/checkout/checkout.module').then(
         (module) => module.CheckoutModule,
@@ -33,6 +36,7 @@ const routes: Routes = [
   },
   {
     path: 'account',
+    canActivate: [AuthGuard],
     loadChildren: () =>
       import('./modules/user/user.module').then((module) => module.UserModule),
   },

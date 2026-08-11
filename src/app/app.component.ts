@@ -8,18 +8,25 @@ import { filter } from 'rxjs';
 })
 export class AppComponent {
   showHeader = true;
+  showFooter = true;
 
-  constructor(private router: Router) {
+  constructor(private readonly router: Router) {
     this.router.events
       .pipe(
         filter(
           (event): event is NavigationEnd => event instanceof NavigationEnd,
         ),
       )
-      .subscribe((event) => {
+      .subscribe((event: NavigationEnd) => {
         const url = event.urlAfterRedirects;
 
-        this.showHeader = !url.startsWith('/auth') && !url.startsWith('/admin');
+        const hideLayout =
+          url.startsWith('/auth') ||
+          url.startsWith('/admin') ||
+          url.startsWith('/info/not-found');
+
+        this.showHeader = !hideLayout;
+        this.showFooter = !hideLayout;
       });
   }
 }

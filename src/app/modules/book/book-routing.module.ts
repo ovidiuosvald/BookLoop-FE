@@ -8,6 +8,7 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 const routes: Routes = [
   {
     path: '',
+    pathMatch: 'full',
     component: HomePageComponent,
   },
   {
@@ -17,6 +18,11 @@ const routes: Routes = [
   {
     path: 'book/:id',
     component: BookDetailComponent,
+  },
+  // MUST BE LAST
+  {
+    path: '**',
+    redirectTo: '/info/not-found',
   },
 ];
 

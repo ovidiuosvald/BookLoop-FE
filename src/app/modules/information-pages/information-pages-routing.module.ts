@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { TermsAndConditionsComponent } from './terms-and-conditions/terms-and-conditions.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { DeliveryAndReturnsComponent } from './delivery-and-returns/delivery-and-returns.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,7 @@ const routes: Routes = [
     path: 'delivery-and-returns',
     component: DeliveryAndReturnsComponent,
   },
+  { path: 'not-found', component: NotFoundComponent },
 ];
 
 @NgModule({

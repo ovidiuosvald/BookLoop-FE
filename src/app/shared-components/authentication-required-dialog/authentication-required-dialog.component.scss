@@ -1,66 +1,129 @@
+:host {
+  display: block;
+}
+
 .dialog-container {
   position: relative;
-  padding: 32px 32px 36px;
-  color: #08265c;
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  padding: 34px 34px 30px;
+
+  box-sizing: border-box;
+
+  text-align: center;
 }
 
 .close-button {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  border: 1px solid #08265c;
+
+  top: 10px;
+  right: 10px;
+
+  color: #8b8493;
+
+  &:hover {
+    color: #4f4658;
+    background: #f5f0fa;
+  }
 }
 
-.warning-icon {
-  width: 44px;
-  height: 44px;
-  margin-bottom: 24px;
+.dialog-icon {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  width: 58px;
+  height: 58px;
+
+  margin-bottom: 18px;
+
+  color: var(--deep-purple);
+  background: #f0eafa;
+
   border-radius: 50%;
-  background: #edf3ff;
 
   mat-icon {
-    color: #08265c;
+    width: 28px;
+    height: 28px;
+
+    font-size: 28px;
   }
 }
 
 h2 {
-  max-width: 510px;
-  margin: 0 0 28px;
-  font-size: 25px;
-  line-height: 1.35;
-  font-weight: 500;
+  margin: 0 0 10px;
+
+  color: #2d2456;
+
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.dialog-message {
+  max-width: 470px;
+
+  margin: 0;
+
+  color: #6f6878;
+
+  font-size: 14px;
+  line-height: 1.6;
 }
 
 .dialog-actions {
   display: flex;
   align-items: center;
-  gap: 20px;
+  justify-content: center;
+
+  gap: 12px;
+
+  width: 100%;
+
+  margin-top: 26px;
 }
 
-.login-button,
-.register-button {
-  min-height: 48px;
-  padding: 0 28px;
-  border-radius: 24px;
-  font-size: 16px;
-}
+.login-button {
+  min-width: 150px;
 
-@media (max-width: 600px) {
-  .dialog-container {
-    padding: 28px 20px;
+  color: #ffffff !important;
+  background: var(--deep-purple) !important;
+
+  border-radius: 10px !important;
+
+  mat-icon {
+    margin-right: 6px;
   }
 
-  h2 {
-    padding-right: 24px;
-    font-size: 20px;
+  &:hover {
+    background: #59309f !important;
+  }
+}
+
+.register-button {
+  min-width: 180px;
+
+  color: var(--deep-purple) !important;
+
+  border-color: #cfc2e2 !important;
+  border-radius: 10px !important;
+
+  &:hover {
+    background: #f7f3fb;
+  }
+}
+
+@media (max-width: 560px) {
+  .dialog-container {
+    padding: 30px 20px 24px;
   }
 
   .dialog-actions {
-    flex-direction: column;
     align-items: stretch;
+    flex-direction: column;
   }
 
   .login-button,
