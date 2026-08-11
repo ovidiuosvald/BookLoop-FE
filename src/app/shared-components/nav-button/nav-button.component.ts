@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-nav-button',
@@ -6,13 +6,18 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./nav-button.component.scss'],
 })
 export class NavButtonComponent {
-  @Input() text: string = 'Buton';
-  @Input() icon: string = 'arrow_forward'; // default icon
+  @Input() text = 'Buton';
+  @Input() icon = 'arrow_forward';
   @Input() iconPosition: 'left' | 'right' = 'right';
-  @Input() disabled: boolean = false;
+  @Input() disabled = false;
+
   @Output() clicked = new EventEmitter<void>();
 
-  onClick() {
+  onClick(): void {
+    if (this.disabled) {
+      return;
+    }
+
     this.clicked.emit();
   }
 }

@@ -1,6 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+
+// Models
 import { Cart } from 'src/app/models/cart.model';
+
+// Services
 import { CartService } from 'src/app/services/cart.service';
 import { CommonService } from 'src/app/services/common.service';
 import { UserService } from 'src/app/services/user.service';
@@ -24,34 +28,9 @@ export class CartComponent implements OnInit {
     this.loadCart();
   }
 
-  private loadCart(): void {
-    const userId = this.userService.authenticatedUser.userId;
-
-    if (!userId) {
-      this.isLoading = false;
-
-      this.commonService.showSnackBarError(
-        'Datele utilizatorului nu au putut fi identificate.',
-      );
-
-      return;
-    }
-
-    this.cartService.getCart(userId).subscribe({
-      next: (cart: Cart) => {
-        this.cart = cart;
-        this.isLoading = false;
-      },
-      error: (error: HttpErrorResponse) => {
-        this.isLoading = false;
-
-        this.commonService.showHttpError(
-          error,
-          'Coșul nu a putut fi încărcat.',
-        );
-      },
-    });
-  }
+  // =========================
+  // NAVIGATION
+  // =========================
 
   nextStep(): void {
     this.commonService.goToCheckout();
@@ -61,13 +40,14 @@ export class CartComponent implements OnInit {
     this.commonService.goToHomePage();
   }
 
+  // =========================
+  // CART ACTIONS
+  // =========================
+
   removeBook(bookId: number): void {
-    const userId = this.userService.authenticatedUser.userId;
+    const userId = this.getUserId();
 
     if (!userId) {
-      this.commonService.showSnackBarError(
-        'Datele utilizatorului nu au putut fi identificate.',
-      );
       return;
     }
 
@@ -89,12 +69,9 @@ export class CartComponent implements OnInit {
   }
 
   updateQuantity(event: { bookId: number; quantity: number }): void {
-    const userId = this.userService.authenticatedUser.userId;
+    const userId = this.getUserId();
 
     if (!userId) {
-      this.commonService.showSnackBarError(
-        'Datele utilizatorului nu au putut fi identificate.',
-      );
       return;
     }
 
@@ -118,12 +95,9 @@ export class CartComponent implements OnInit {
   }
 
   moveToFavorites(bookId: number): void {
-    const userId = this.userService.authenticatedUser.userId;
+    const userId = this.getUserId();
 
     if (!userId) {
-      this.commonService.showSnackBarError(
-        'Datele utilizatorului nu au putut fi identificate.',
-      );
       return;
     }
 
@@ -142,5 +116,45 @@ export class CartComponent implements OnInit {
         );
       },
     });
+  }
+
+  // =========================
+  // DATA
+  // =========================
+
+  private loadCart(): void {
+    const userId = this.getUserId();
+
+    if (!userId) {
+      this.isLoading = false;
+      return;
+    }
+
+    this.cartService.getCart(userId).subscribe({
+      next: (cart: Cart) => {
+        this.cart = cart;
+        this.isLoading = false;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.isLoading = false;
+
+        this.commonService.showHttpError(
+          error,
+          'Coșul nu a putut fi încărcat.',
+        );
+      },
+    });
+  }
+
+  private getUserId(): number | undefined {
+    const userId = this.userService.authenticatedUser?.userId;
+
+    if (!userId) {
+      this.commonService.showSnackBarError(
+        'Datele utilizatorului nu au putut fi identificate.',
+      );
+    }
+
+    return userId;
   }
 }

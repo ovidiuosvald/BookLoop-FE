@@ -5,99 +5,133 @@
 
 .cart-item {
   display: grid;
-  grid-template-columns: 120px minmax(0, 1fr) 120px 150px;
-  gap: 24px;
+
+  grid-template-columns:
+    100px
+    minmax(0, 1fr)
+    105px
+    130px;
+
   align-items: center;
 
+  gap: 22px;
+
   width: 100%;
-  padding: 22px;
+
+  padding: 18px;
+
   box-sizing: border-box;
 
-  background: rgba(255, 255, 255, 0.94);
-  border: 1px solid #ebe6f1;
-  border-radius: 18px;
-  box-shadow:
-    0 6px 18px rgba(45, 36, 86, 0.06),
-    0 1px 4px rgba(45, 36, 86, 0.04);
+  background: #ffffff;
+
+  border: 1px solid #ece7f5;
+  border-radius: 14px;
+
+  box-shadow: 0 3px 12px rgba(45, 36, 86, 0.04);
 
   transition:
     border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
+    box-shadow 0.2s ease;
 
   &:hover {
-    border-color: #d8cbed;
-    box-shadow:
-      0 12px 28px rgba(45, 36, 86, 0.1),
-      0 2px 8px rgba(45, 36, 86, 0.05);
-    transform: translateY(-2px);
+    border-color: #ddd1ef;
+
+    box-shadow: 0 6px 18px rgba(45, 36, 86, 0.08);
   }
 }
+
+/* =========================
+   COVER
+   ========================= */
 
 .book-cover {
   display: block;
 
-  width: 110px;
-  height: 160px;
+  width: 100px;
+  height: 145px;
 
   object-fit: contain;
 
   background: #f8f6fb;
-  border-radius: 10px;
+
+  border-radius: 8px;
+
   cursor: pointer;
 }
+
+/* =========================
+   BOOK INFO
+   ========================= */
 
 .book-info {
   min-width: 0;
 }
 
 .title {
-  margin: 0 0 8px;
+  margin: 0 0 7px;
 
   color: #2d2456;
-  font-size: 20px;
-  font-weight: 700;
+
+  font-size: 19px;
+  font-weight: 500;
   line-height: 1.3;
+
+  cursor: pointer;
+
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--deep-purple);
+  }
 }
 
 .author {
-  margin: 0 0 18px;
+  margin: 0 0 16px;
 
-  color: #756f7d;
-  font-size: 14px;
+  color: #77717f;
+
+  font-size: 13px;
 }
+
+/* =========================
+   ACTIONS
+   ========================= */
 
 .item-actions {
   display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
   align-items: center;
+  flex-wrap: wrap;
+
+  gap: 14px;
 }
 
 .text-action {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
 
+  gap: 5px;
   padding: 0;
 
+  color: inherit;
   background: transparent;
   border: 0;
 
-  font-size: 14px;
+  font-family: inherit;
+  font-size: 13px;
   font-weight: 500;
-  line-height: 1;
+  line-height: 1.2;
 
   mat-icon {
-    width: 18px;
-    height: 18px;
-    font-size: 18px;
+    width: 17px;
+    height: 17px;
+
+    font-size: 17px;
   }
 }
 
 button.text-action {
+  font-family: inherit;
   cursor: pointer;
-  transition: color 0.2s ease;
 }
 
 .favorite-action {
@@ -109,127 +143,152 @@ button.text-action {
 
   &:hover {
     color: #4d2f89;
-
-    mat-icon {
-      color: #4d2f89;
-    }
   }
 }
 
 .already-favorite {
-  color: #c3becd;
+  color: #aaa3b3;
+
   cursor: default;
-  user-select: none;
 
   mat-icon {
-    color: #c3becd;
+    color: #aaa3b3;
   }
 }
 
 .remove-action {
-  color: #c44343;
+  color: #b3261e;
 
   mat-icon {
-    color: #c44343;
+    color: #b3261e;
   }
 
   &:hover {
-    color: #9f2f2f;
-
-    mat-icon {
-      color: #9f2f2f;
-    }
+    color: #8f1e18;
   }
 }
+
+/* =========================
+   QUANTITY
+   ========================= */
 
 .quantity {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+
+  gap: 7px;
 
   label {
-    color: #746d80;
-    font-size: 12px;
-    font-weight: 600;
+    color: #8a8393;
+
+    font-size: 11px;
+    font-weight: 400;
   }
 
   input[type="number"] {
     width: 100%;
-    height: 42px;
+    height: 40px;
+
     padding: 0 6px 0 10px;
+
     box-sizing: border-box;
 
     color: #2d2456;
-    background: #fff;
-    border: 1px solid #d9d1e5;
-    border-radius: 10px;
+    background: #ffffff;
 
-    font-size: 15px;
-    font-weight: 600;
+    border: 1px solid #d9d1e5;
+    border-radius: 9px;
+
+    font-size: 14px;
+    font-weight: 500;
     text-align: center;
 
-    transition:
-      border-color 0.2s ease,
-      box-shadow 0.2s ease;
+    &:focus {
+      border-color: var(--deep-purple);
 
-    // Păstrează săgețile vizibile în Chrome și Edge
+      outline: none;
+
+      box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.1);
+    }
+
     &::-webkit-inner-spin-button,
     &::-webkit-outer-spin-button {
       opacity: 1;
-      margin: 0;
       cursor: pointer;
-      -webkit-appearance: inner-spin-button;
-    }
-
-    &:focus {
-      border-color: #7e57c2;
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(126, 87, 194, 0.12);
     }
   }
 }
 
+/* =========================
+   PRICE
+   ========================= */
+
 .price {
   display: flex;
-  flex-direction: column;
   align-items: flex-end;
-  gap: 6px;
+  flex-direction: column;
+
+  gap: 5px;
 
   span {
-    color: #746d80;
-    font-size: 12px;
-    font-weight: 600;
+    color: #8a8393;
+
+    font-size: 11px;
+    font-weight: 400;
   }
 
   strong {
-    color: #2d2456;
-    font-size: 20px;
-    font-weight: 700;
+    color: var(--deep-purple);
+
+    font-size: 19px;
+    font-weight: 600;
+
     white-space: nowrap;
   }
 }
 
+/* =========================
+   RESPONSIVE
+   ========================= */
+
 @media (max-width: 900px) {
   .cart-item {
-    grid-template-columns: 110px minmax(0, 1fr) 110px;
+    grid-template-columns:
+      95px
+      minmax(0, 1fr)
+      100px;
+  }
+
+  .book-cover {
+    width: 95px;
+    height: 138px;
   }
 
   .price {
     grid-column: 2 / -1;
+
     align-items: flex-start;
   }
 }
 
 @media (max-width: 650px) {
   .cart-item {
-    grid-template-columns: 90px minmax(0, 1fr);
-    gap: 18px;
-    padding: 18px;
+    grid-template-columns:
+      78px
+      minmax(0, 1fr);
+
+    gap: 16px;
+
+    padding: 14px;
   }
 
   .book-cover {
-    width: 88px;
-    height: 132px;
+    width: 78px;
+    height: 115px;
+  }
+
+  .title {
+    font-size: 17px;
   }
 
   .quantity,
@@ -238,7 +297,7 @@ button.text-action {
   }
 
   .quantity {
-    max-width: 150px;
+    max-width: 140px;
   }
 
   .price {

@@ -6,7 +6,8 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./free-shipping-chip.component.scss'],
 })
 export class FreeShippingChipComponent {
-  @Input() total: number = 0;
+  @Input() total = 0;
+
   readonly freeShippingLimit = 200;
 
   get isFreeShipping(): boolean {

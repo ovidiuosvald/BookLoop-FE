@@ -1,39 +1,50 @@
+:host {
+  display: inline-block;
+}
+
 .nav-btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  border-radius: 24px;
-  border: 2px solid var(--deep-purple);
-  background-color: white;
-  color: var(--deep-purple);
-  cursor: pointer;
+  justify-content: center;
+
+  gap: 7px;
+
+  min-height: 42px;
+
+  padding: 0 18px;
+
+  color: #ffffff;
+  background: var(--deep-purple);
+
+  border: none;
+  border-radius: 10px;
+
+  font-family: inherit;
+  font-size: 14px;
   font-weight: 500;
-  font-size: 1rem;
+
+  cursor: pointer;
+
   transition:
-    background-color 0.2s,
-    color 0.2s;
+    background-color 0.2s ease,
+    opacity 0.2s ease;
 
-  &:hover {
-    background-color: var(--deep-purple);
-    color: white;
-
-    .icon {
-      color: white;
-    }
+  &:hover:not(:disabled) {
+    background: #5b2da8;
   }
 
-  .icon {
-    font-size: 20px;
-  }
+  &:disabled {
+    opacity: 0.55;
 
-  .icon.left {
-    margin-right: 4px;
-    margin-top: 4px;
+    cursor: default;
   }
+}
 
-  .icon.right {
-    margin-left: 4px;
-    margin-top: 4px;
-  }
+.icon {
+  width: 19px;
+  height: 19px;
+
+  color: inherit;
+
+  font-size: 19px;
 }

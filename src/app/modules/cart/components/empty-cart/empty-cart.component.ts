@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-empty-cart',
@@ -8,7 +8,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 export class EmptyCartComponent {
   @Output() goHome = new EventEmitter<void>();
 
-  onGoHome() {
+  onGoHome(): void {
     this.goHome.emit();
   }
 }

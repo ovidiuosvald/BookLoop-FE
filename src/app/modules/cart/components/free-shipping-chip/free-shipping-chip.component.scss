@@ -1,23 +1,58 @@
-$primary-purple: #673ab7;
-$light-purple: #ede7f6; // un mov foarte deschis
-$success-purple: #d1c4e9; // pentru stare activă
-
-.chip {
-  background-color: $light-purple;
-  border-radius: 16px;
-  padding: 10px 16px;
-  font-weight: 600;
-  margin: 10px 0;
-  user-select: none;
-  border: 1px solid lighten($primary-purple, 30%);
-  transition: background-color 0.3s ease;
+:host {
+  display: block;
+  width: 100%;
 }
 
-.free-shipping {
-  border: 1px solid $primary-purple;
-}
+.shipping-info {
+  display: flex;
+  align-items: flex-start;
 
-.highlight {
-  color: darken($primary-purple, 15%);
-  font-weight: bold;
+  gap: 10px;
+
+  padding: 13px 16px;
+
+  color: #625a70;
+  background: #f8f5fc;
+
+  border: 1px solid #e7def2;
+  border-radius: 10px;
+
+  font-size: 13px;
+  line-height: 1.5;
+
+  mat-icon {
+    flex-shrink: 0;
+
+    width: 19px;
+    height: 19px;
+
+    margin-top: 1px;
+
+    color: var(--deep-purple);
+
+    font-size: 19px;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+  }
+
+  strong {
+    color: var(--deep-purple);
+    font-weight: 600;
+  }
+
+  small {
+    color: #8a8393;
+
+    font-size: 12px;
+  }
+
+  &.eligible {
+    background: #f6f3fa;
+    border-color: #ded4ec;
+  }
 }

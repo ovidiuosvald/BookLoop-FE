@@ -4,20 +4,30 @@
   <div class="summary-row">
     <span> Produse ({{ totalItems }}) </span>
 
-    <span> {{ subtotal | number: "1.2-2" }} Lei </span>
+    <strong>
+      {{ subtotal | currency: "RON" : "symbol" : "1.2-2" }}
+    </strong>
   </div>
 
   <div class="summary-row">
     <span>Livrare</span>
 
-    <span> {{ shippingPrice | number: "1.2-2" }} Lei </span>
+    <strong>
+      <ng-container *ngIf="shippingPrice > 0; else freeShipping">
+        {{ shippingPrice | currency: "RON" : "symbol" : "1.2-2" }}
+      </ng-container>
+
+      <ng-template #freeShipping> Gratuit </ng-template>
+    </strong>
   </div>
 
-  <hr />
+  <div class="summary-divider"></div>
 
   <div class="summary-row total">
-    <strong>Total</strong>
+    <span>Total</span>
 
-    <strong> {{ totalPrice | number: "1.2-2" }} Lei </strong>
+    <strong>
+      {{ totalPrice | currency: "RON" : "symbol" : "1.2-2" }}
+    </strong>
   </div>
 </div>

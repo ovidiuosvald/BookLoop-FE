@@ -1,11 +1,11 @@
-<button class="nav-btn" [disabled]="disabled" (click)="onClick()">
-  <ng-container *ngIf="iconPosition === 'left'">
-    <mat-icon class="icon left">{{ icon }}</mat-icon>
-  </ng-container>
+<button type="button" class="nav-btn" [disabled]="disabled" (click)="onClick()">
+  <mat-icon *ngIf="iconPosition === 'left'" class="icon">
+    {{ icon }}
+  </mat-icon>
 
   <span>{{ text }}</span>
 
-  <ng-container *ngIf="iconPosition === 'right'">
-    <mat-icon class="icon right">{{ icon }}</mat-icon>
-  </ng-container>
+  <mat-icon *ngIf="iconPosition === 'right'" class="icon">
+    {{ icon }}
+  </mat-icon>
 </button>

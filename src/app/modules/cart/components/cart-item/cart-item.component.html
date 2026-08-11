@@ -3,10 +3,13 @@
     class="book-cover"
     [src]="getImageUrl(item.coverUrl)"
     [alt]="item.bookName"
+    (click)="goToBook()"
   />
 
   <div class="book-info">
-    <h3 class="title">{{ item.bookName }}</h3>
+    <h3 class="title" (click)="goToBook()">
+      {{ item.bookName }}
+    </h3>
 
     <p class="author">de {{ item.author }}</p>
 
@@ -40,12 +43,13 @@
   </div>
 
   <div class="quantity">
-    <label [for]="'quantity-' + item.cartItemId">Cantitate</label>
+    <label [for]="'quantity-' + item.cartItemId"> Cantitate </label>
 
     <input
       [id]="'quantity-' + item.cartItemId"
       type="number"
       min="1"
+      [max]="item.availableQuantity"
       [value]="item.quantity"
       (input)="onQuantityInput($event)"
       (change)="onQuantityChange($event)"
@@ -56,7 +60,7 @@
     <span>Subtotal</span>
 
     <strong>
-      {{ item.subtotal | currency: "RON" : "symbol" : "1.2-2" : "ro" }}
+      {{ item.subtotal | currency: "RON" : "symbol" : "1.2-2" }}
     </strong>
   </div>
 </div>

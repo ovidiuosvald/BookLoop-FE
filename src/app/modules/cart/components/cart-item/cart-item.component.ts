@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
+// Models
 import { CartItem } from 'src/app/models/cart-item.model';
+
+// Services
 import { CommonService } from 'src/app/services/common.service';
 
 @Component({
@@ -22,6 +25,10 @@ export class CartItemComponent {
 
   constructor(private readonly commonService: CommonService) {}
 
+  goToBook(): void {
+    this.commonService.goToSpecificBook(this.item.bookId);
+  }
+
   getImageUrl(imageUrl?: string): string {
     return this.commonService.getImageUrl(imageUrl);
   }
@@ -37,7 +44,6 @@ export class CartItemComponent {
   onQuantityInput(event: Event): void {
     const input = event.target as HTMLInputElement;
 
-    // Permitem câmpul gol temporar, ca utilizatorul să poată scrie.
     if (input.value.trim() === '') {
       return;
     }
@@ -60,6 +66,7 @@ export class CartItemComponent {
       input.value = String(this.item.quantity);
 
       this.commonService.showSnackBarWarning('Introdu o cantitate validă.');
+
       return;
     }
 
@@ -71,6 +78,7 @@ export class CartItemComponent {
       this.commonService.showSnackBarWarning(
         'Cantitatea trebuie să fie de cel puțin 1.',
       );
+
       return;
     }
 
@@ -80,6 +88,7 @@ export class CartItemComponent {
       this.commonService.showSnackBarWarning(
         `Sunt disponibile doar ${this.item.availableQuantity} exemplare.`,
       );
+
       return;
     }
 
