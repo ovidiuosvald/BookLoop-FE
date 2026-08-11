@@ -61,27 +61,39 @@ export class CommonService {
   }
 
   goToBooks(category: Category): void {
-    this.router.navigate(['/books', category.categoryCode]);
-  }
-
-  goToSpecificBook(bookId: number): void {
-    this.router.navigate(['/book', bookId]);
+    this.router.navigate(['/books'], {
+      queryParams: {
+        categoryCode: category.categoryCode,
+      },
+    });
   }
 
   goToBestsellers(): void {
-    this.router.navigate(['/books/bestsellere'], {
-      state: {
+    this.router.navigate(['/books'], {
+      queryParams: {
         isBestseller: true,
       },
     });
   }
 
-  goToSearch(query: string): void {
-    this.router.navigate(['/search'], {
+  goToNewBooks(): void {
+    this.router.navigate(['/books'], {
       queryParams: {
-        q: query,
+        isNew: true,
       },
     });
+  }
+
+  goToSearch(query: string): void {
+    this.router.navigate(['/books'], {
+      queryParams: {
+        q: query.trim(),
+      },
+    });
+  }
+
+  goToSpecificBook(bookId: number): void {
+    this.router.navigate(['/book', bookId]);
   }
 
   goToCart(): void {

@@ -1,62 +1,131 @@
 <div class="catalog-page">
-  <header class="catalog-header">
-    <div>
-      <span class="catalog-eyebrow"> Catalog BookLoop </span>
+  <div class="catalog-layout">
+    <!-- FILTERS -->
+    <aside class="filters-panel">
+      <div class="filters-header">
+        <h2>Filtrează</h2>
 
-      <h1>
-        {{ pageTitle }}
-      </h1>
+        <button
+          *ngIf="selectedCategoryCode || isNewFilter || isBestsellerFilter"
+          type="button"
+          class="clear-filters-button"
+          (click)="clearFilters()"
+        >
+          Resetează
+        </button>
+      </div>
 
-      <p>
-        {{ pageDescription }}
-      </p>
-    </div>
-  </header>
+      <!-- CATEGORIES -->
+      <div class="filter-group">
+        <h3>Categorii</h3>
 
-  <div class="catalog-toolbar">
-    <span class="results-count">
-      {{ books.length }}
-      {{ books.length === 1 ? "carte" : "cărți" }}
-    </span>
+        <button
+          type="button"
+          class="category-option"
+          [class.active]="!selectedCategoryCode"
+          (click)="selectCategory()"
+        >
+          <span>Toate cărțile</span>
 
-    <mat-form-field appearance="outline" class="sort-field">
-      <mat-label> Sortează după </mat-label>
+          <mat-icon>chevron_right</mat-icon>
+        </button>
 
-      <mat-select [(value)]="selectedSort" (selectionChange)="onSortChange()">
-        <mat-option *ngFor="let option of sortOptions" [value]="option.value">
-          {{ option.label }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+        <button
+          *ngFor="let category of categories"
+          type="button"
+          class="category-option"
+          [class.active]="selectedCategoryCode === category.categoryCode"
+          (click)="selectCategory(category.categoryCode)"
+        >
+          <span>
+            {{ category.categoryName }}
+          </span>
+
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+
+      <!-- COLLECTIONS -->
+      <div class="filter-group">
+        <h3>Colecții</h3>
+
+        <mat-checkbox [(ngModel)]="isNewFilter" (change)="toggleNewFilter()">
+          Noutăți
+        </mat-checkbox>
+
+        <mat-checkbox
+          [(ngModel)]="isBestsellerFilter"
+          (change)="toggleBestsellerFilter()"
+        >
+          Bestsellere
+        </mat-checkbox>
+      </div>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="catalog-content">
+      <header class="catalog-header">
+        <h1>{{ pageTitle }}</h1>
+
+        <p>{{ pageDescription }}</p>
+      </header>
+
+      <div class="catalog-toolbar">
+        <span class="results-count">
+          {{ books.length }}
+          {{ books.length === 1 ? "carte" : "cărți" }}
+        </span>
+
+        <mat-form-field appearance="outline" class="sort-field">
+          <mat-label>Sortează după</mat-label>
+
+          <mat-select
+            [(value)]="selectedSort"
+            (selectionChange)="onSortChange()"
+          >
+            <mat-option
+              *ngFor="let option of sortOptions"
+              [value]="option.value"
+            >
+              {{ option.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="loading-state" *ngIf="isLoading">Se încarcă cărțile...</div>
+
+      <ng-container *ngIf="!isLoading">
+        <div class="book-grid" *ngIf="books.length > 0; else emptyState">
+          <app-book-card
+            *ngFor="let book of books; trackBy: trackByBookId"
+            [book]="book"
+            (openBook)="goToSpecificBook($event)"
+            (addToCart)="addToCart($event)"
+            (toggleFavorite)="toggleFavorite($event)"
+          >
+          </app-book-card>
+        </div>
+      </ng-container>
+
+      <ng-template #emptyState>
+        <div class="empty-state">
+          <mat-icon>menu_book</mat-icon>
+
+          <h2>Nu există cărți disponibile</h2>
+
+          <p>Nu există cărți care să corespundă filtrelor selectate.</p>
+
+          <button
+            mat-stroked-button
+            type="button"
+            class="back-button"
+            (click)="clearFilters()"
+          >
+            Resetează filtrele
+          </button>
+        </div>
+      </ng-template>
+    </main>
   </div>
-
-  <div class="book-grid" *ngIf="books.length > 0; else emptyState">
-    <app-book-card
-      *ngFor="let book of books; trackBy: trackByBookId"
-      [book]="book"
-      (openBook)="goToSpecificBook($event)"
-      (addToCart)="addToCart($event)"
-      (toggleFavorite)="toggleFavorite($event)"
-    >
-    </app-book-card>
-  </div>
-
-  <ng-template #emptyState>
-    <div class="empty-state">
-      <mat-icon>menu_book</mat-icon>
-
-      <h2>Nu există cărți disponibile</h2>
-
-      <p>Momentan nu există cărți pentru această selecție.</p>
-
-      <button
-        mat-stroked-button
-        type="button"
-        class="back-button"
-        (click)="goToAllBooks()"
-      >
-        Vezi toate cărțile
-      </button>
-    </div>
-  </ng-template>
 </div>

@@ -24,13 +24,11 @@ export class HomePageComponent implements OnInit, OnDestroy {
     const sub = this.bookService.getBooks().subscribe({
       next: (books: Book[]) => {
         this.promoBooks = books.filter((book) => !!book.promoImageUrl);
-
         this.newBooks = books.filter((book) => book.isNew);
-
-        this.bestsellerBooks = books.filter((book) => book.isBestseller);
       },
-      error: () =>
-        this.commonService.showSnackBarError('Nu s-au putut încărca cărțile!'),
+      error: () => {
+        this.commonService.showSnackBarError('Nu s-au putut încărca cărțile!');
+      },
     });
     this.subscriptionList.push(sub);
   }

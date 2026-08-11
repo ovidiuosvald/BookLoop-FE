@@ -1,7 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable, Subject, take, takeUntil } from 'rxjs';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter, Observable, Subject, take, takeUntil } from 'rxjs';
 
 // Models
 import { Category } from 'src/app/models/category.model';
@@ -36,19 +37,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly dialog: MatDialog,
+    private readonly router: Router,
     private readonly userService: UserService,
     private readonly cartService: CartService,
     private readonly categoryService: CategoryService,
     private readonly commonService: CommonService,
   ) {
     this.isUserLoggedIn$ = this.userService.isUserLoggedIn$;
-
     this.cartItemCount$ = this.cartService.cartItemCount$;
   }
+
+  // =========================
+  // LIFECYCLE
+  // =========================
 
   ngOnInit(): void {
     this.loadCategories();
     this.listenToAuthenticationChanges();
+    this.listenToSearchQuery();
   }
 
   ngOnDestroy(): void {
@@ -97,7 +103,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   clearSearch(): void {
     this.searchTerm = '';
 
-    this.commonService.goToHomePage();
+    this.commonService.goToAllBooks();
   }
 
   // =========================
@@ -198,6 +204,35 @@ export class HeaderComponent implements OnInit, OnDestroy {
       },
     });
   }
+
+  // =========================
+  // SEARCH SYNC
+  // =========================
+
+  private listenToSearchQuery(): void {
+    this.syncSearchTermWithUrl();
+
+    this.router.events
+      .pipe(
+        filter(
+          (event): event is NavigationEnd => event instanceof NavigationEnd,
+        ),
+        takeUntil(this.destroy$),
+      )
+      .subscribe(() => {
+        this.syncSearchTermWithUrl();
+      });
+  }
+
+  private syncSearchTermWithUrl(): void {
+    const urlTree = this.router.parseUrl(this.router.url);
+
+    this.searchTerm = urlTree.queryParams['q'] ?? '';
+  }
+
+  // =========================
+  // AUTH STATE
+  // =========================
 
   private listenToAuthenticationChanges(): void {
     this.isUserLoggedIn$

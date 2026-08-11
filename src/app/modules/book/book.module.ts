@@ -8,7 +8,6 @@ import { ActionButtonsComponent } from './components/action-buttons/action-butto
 import { BooksRoutingModule } from './book-routing.module';
 import { BookService } from 'src/app/services/book.service';
 import { CategoryService } from 'src/app/services/category.service';
-import { SearchBookResultComponent } from './components/search-book/search-book-result.component';
 import { SharedModule } from 'src/app/shared-components/shared.module';
 import { BookCardComponent } from './components/book-card/book-card.component';
 import { PromoBookCarouselComponent } from './components/promo-book-carousel/promo-book-carousel.component';
@@ -21,7 +20,6 @@ import { MultiBookCarouselComponent } from './components/multi-book-carousel/mul
     BookListComponent,
     BookDetailComponent,
     ActionButtonsComponent,
-    SearchBookResultComponent,
     BookCardComponent,
     PromoBookCarouselComponent,
     MultiBookCarouselComponent,
