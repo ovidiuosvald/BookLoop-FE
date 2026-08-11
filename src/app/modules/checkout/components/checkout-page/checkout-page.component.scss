@@ -1,22 +1,55 @@
 :host {
   display: block;
+  width: 100%;
 }
 
 .checkout-page {
-  width: min(1180px, calc(100% - 40px));
+  width: min(1180px, calc(100% - 20px));
   margin: 0 auto;
-  padding: 48px 0 72px;
+  padding: 40px 0 64px;
 }
 
+/* =========================
+   BACK
+   ========================= */
+
+.back-to-cart-button {
+  margin-bottom: 16px;
+  padding: 0 4px;
+
+  color: var(--deep-purple);
+
+  font-size: 14px;
+  font-weight: 500;
+
+  mat-icon {
+    width: 19px;
+    height: 19px;
+    margin-right: 5px;
+
+    font-size: 19px;
+  }
+
+  &:hover {
+    background: transparent;
+    color: #5b2da8;
+  }
+}
+
+/* =========================
+   PAGE HEADER
+   ========================= */
+
 .page-header {
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 
   h1 {
     margin: 0 0 8px;
 
     color: #2d2456;
-    font-size: 36px;
-    font-weight: 700;
+
+    font-size: 34px;
+    font-weight: 600;
     line-height: 1.2;
   }
 
@@ -25,22 +58,29 @@
     margin: 0;
 
     color: #746d80;
-    font-size: 16px;
+
+    font-size: 15px;
     line-height: 1.5;
   }
 }
 
+/* =========================
+   LAYOUT
+   ========================= */
+
 .checkout-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 360px;
-  gap: 32px;
+  grid-template-columns: minmax(0, 1fr) 340px;
+
+  gap: 28px;
   align-items: start;
 }
 
 .checkout-content {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+
+  gap: 18px;
 
   min-width: 0;
 }
@@ -49,15 +89,19 @@
   min-width: 0;
 }
 
+/* =========================
+   TERMS
+   ========================= */
+
 .terms-card {
-  padding: 22px 24px;
+  padding: 20px 22px;
 
   background: #ffffff;
-  border: 1px solid #ebe6f1;
-  border-radius: 18px;
-  box-shadow:
-    0 6px 18px rgba(45, 36, 86, 0.05),
-    0 1px 4px rgba(45, 36, 86, 0.03);
+
+  border: 1px solid #ece7f5;
+  border-radius: 14px;
+
+  box-shadow: 0 3px 12px rgba(45, 36, 86, 0.04);
 
   transition:
     border-color 0.2s ease,
@@ -65,12 +109,14 @@
 
   &.invalid {
     border-color: rgba(198, 40, 40, 0.45);
-    box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.06);
+
+    box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.05);
   }
 
   mat-error {
     display: block;
-    margin: 10px 0 0 44px;
+
+    margin: 10px 0 0 38px;
 
     font-size: 12px;
   }
@@ -79,18 +125,20 @@
 .terms-content {
   display: flex;
   align-items: flex-start;
-  gap: 14px;
+
+  gap: 12px;
 }
 
 .terms-icon {
   flex-shrink: 0;
 
-  width: 24px;
-  height: 24px;
-  margin-top: 2px;
+  width: 22px;
+  height: 22px;
+  margin-top: 3px;
 
   color: var(--deep-purple);
-  font-size: 24px;
+
+  font-size: 22px;
 }
 
 .terms-text {
@@ -98,31 +146,91 @@
 
   mat-checkbox {
     color: #2d2456;
-    font-size: 14px;
-    line-height: 1.55;
+
+    font-size: 13px;
+    line-height: 1.5;
   }
 
   a {
     color: var(--deep-purple);
+
     font-weight: 500;
     text-decoration: none;
 
     &:hover {
-      color: #4d2f89;
+      color: #5b2da8;
       text-decoration: underline;
     }
   }
 
   p {
-    margin: 8px 0 0 30px;
+    margin: 6px 0 0 30px;
 
     color: #80798b;
+
     font-size: 12px;
-    line-height: 1.45;
+    line-height: 1.5;
+  }
+}
+
+/* =========================
+   LOADING
+   ========================= */
+
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 360px;
+  padding: 40px 20px;
+
+  color: #746d80;
+
+  font-size: 15px;
+  text-align: center;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 1000px) {
+  .checkout-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .checkout-sidebar {
+    order: -1;
   }
 }
 
 @media (max-width: 600px) {
+  .checkout-page {
+    width: calc(100% - 24px);
+    padding: 26px 0 44px;
+  }
+
+  .back-to-cart-button {
+    margin-bottom: 14px;
+  }
+
+  .page-header {
+    margin-bottom: 22px;
+
+    h1 {
+      font-size: 28px;
+    }
+
+    p {
+      font-size: 14px;
+    }
+  }
+
+  .checkout-content {
+    gap: 14px;
+  }
+
   .terms-card {
     padding: 18px;
 
@@ -139,67 +247,5 @@
     p {
       margin-left: 30px;
     }
-  }
-}
-
-.loading-state {
-  padding: 80px 20px;
-
-  color: #746d80;
-  font-size: 15px;
-  text-align: center;
-}
-
-@media (max-width: 1000px) {
-  .checkout-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .checkout-sidebar {
-    order: -1;
-  }
-}
-
-@media (max-width: 600px) {
-  .checkout-page {
-    width: calc(100% - 24px);
-    padding: 28px 0 48px;
-  }
-
-  .page-header {
-    margin-bottom: 24px;
-
-    h1 {
-      font-size: 30px;
-    }
-
-    p {
-      font-size: 14px;
-    }
-  }
-
-  .checkout-content {
-    gap: 16px;
-  }
-
-  .terms-card {
-    padding: 18px;
-  }
-}
-
-.back-to-cart-button {
-  margin-bottom: 18px;
-  padding-left: 0;
-
-  color: var(--deep-purple);
-  font-weight: 500;
-
-  mat-icon {
-    margin-right: 4px;
-  }
-
-  &:hover {
-    background: transparent;
-    color: #5b2da8;
   }
 }

@@ -4,102 +4,128 @@
 }
 
 .summary-card {
-  position: sticky;
-  top: 24px;
+  width: 100%;
 
-  padding: 28px;
+  padding: 22px;
+
+  box-sizing: border-box;
 
   background: #ffffff;
-  border: 1px solid #ebe6f1;
-  border-radius: 18px;
-  box-shadow:
-    0 10px 30px rgba(45, 36, 86, 0.08),
-    0 2px 8px rgba(45, 36, 86, 0.04);
+
+  border: 1px solid #ece7f5;
+  border-radius: 14px;
+
+  box-shadow: 0 3px 12px rgba(45, 36, 86, 0.04);
+
+  h2 {
+    margin: 0 0 22px;
+
+    color: #2d2456;
+
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
 }
 
-h2 {
-  margin: 0 0 28px;
-
-  color: #2d2456;
-  font-size: 24px;
-  font-weight: 700;
-}
+/* =========================
+   SUMMARY
+   ========================= */
 
 .summary-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
 
-  margin: 18px 0;
+  gap: 16px;
+
+  margin: 14px 0;
 
   span {
-    color: #746d80;
-    font-size: 15px;
+    color: #77717f;
+
+    font-size: 13px;
   }
 
   strong {
     color: #2d2456;
-    font-size: 17px;
-    font-weight: 700;
+
+    font-size: 14px;
+    font-weight: 500;
+
     white-space: nowrap;
   }
-}
 
-mat-divider {
-  margin: 22px 0;
-}
+  &.total {
+    margin: 0;
 
-.total {
-  margin: 0;
+    span {
+      color: #2d2456;
 
-  span,
-  strong {
-    color: #2d2456;
-    font-size: 22px;
-    font-weight: 700;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    strong {
+      color: var(--deep-purple);
+
+      font-size: 22px;
+      font-weight: 600;
+    }
   }
 }
+
+.summary-divider {
+  height: 1px;
+
+  margin: 22px 0;
+
+  background: #ece7f5;
+}
+
+/* =========================
+   PLACE ORDER
+   ========================= */
 
 .place-order-button {
   width: 100%;
-  height: 52px;
-  margin-top: 28px;
+  min-height: 44px;
+
+  margin-top: 24px;
 
   color: #ffffff !important;
-  background-color: var(--deep-purple) !important;
-  border-radius: 12px !important;
+  background: var(--deep-purple) !important;
 
-  font-size: 16px;
+  border-radius: 10px !important;
+
+  font-family: inherit;
+  font-size: 14px;
   font-weight: 500;
 
   transition:
     background-color 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
+    opacity 0.2s ease;
 
   mat-icon {
-    margin-right: 8px;
+    width: 19px;
+    height: 19px;
+
+    margin-right: 6px;
+
     color: #ffffff !important;
+
+    font-size: 19px;
   }
 
   &:hover:not(:disabled) {
-    color: #ffffff !important;
-    background-color: #5b2da8 !important;
-    box-shadow: 0 6px 18px rgba(45, 36, 86, 0.16);
-    transform: translateY(-1px);
-
-    mat-icon {
-      color: #ffffff !important;
-    }
+    background: #5b2da8 !important;
   }
 
   &:disabled {
     color: #aaa4b3 !important;
-    background-color: #eeebf2 !important;
-    box-shadow: none !important;
-    cursor: not-allowed;
-    transform: none;
+    background: #eeebf2 !important;
+
+    cursor: default;
 
     mat-icon {
       color: #aaa4b3 !important;
@@ -107,63 +133,59 @@ mat-divider {
   }
 }
 
-.delivery-message {
+/* =========================
+   DELIVERY INFO
+   ========================= */
+
+.delivery-info {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  gap: 10px;
+
+  gap: 7px;
 
   margin-top: 18px;
   padding-top: 18px;
 
-  border-top: 1px solid #f2edf8;
+  border-top: 1px solid #ece7f5;
+
+  color: #77717f;
 
   mat-icon {
     flex-shrink: 0;
 
-    width: 22px;
-    height: 22px;
+    width: 18px;
+    height: 18px;
+
+    margin-top: 1px;
 
     color: var(--deep-purple);
-    font-size: 22px;
+
+    font-size: 18px;
   }
 
   span {
-    color: #80798b;
-    font-size: 13px;
-    line-height: 1.4;
+    font-size: 12px;
+    line-height: 1.5;
     text-align: center;
 
     strong {
       color: var(--deep-purple);
-      font-weight: 700;
-    }
-  }
-
-  &.success {
-    mat-icon {
-      color: #2e7d32;
-    }
-
-    span {
-      color: #55705d;
-      font-weight: 500;
+      font-weight: 600;
     }
   }
 }
 
-@media (max-width: 1000px) {
-  .summary-card {
-    position: static;
-  }
-}
+/* =========================
+   RESPONSIVE
+   ========================= */
 
 @media (max-width: 420px) {
   .summary-card {
-    padding: 22px;
+    padding: 20px;
   }
 
-  .delivery-message {
+  .delivery-info {
     justify-content: flex-start;
 
     span {

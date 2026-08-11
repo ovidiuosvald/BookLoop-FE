@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
+// Enums
 import { DeliveryMethod } from 'src/app/enums/order.enums';
 
 @Component({
@@ -10,6 +11,7 @@ import { DeliveryMethod } from 'src/app/enums/order.enums';
 })
 export class CheckoutDeliveryComponent {
   @Input() form!: FormGroup;
+  @Input() courierPrice = 0;
 
   readonly deliveryMethod = DeliveryMethod;
 

@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
+// Enums
 import { PaymentMethod } from 'src/app/enums/order.enums';
 
 @Component({

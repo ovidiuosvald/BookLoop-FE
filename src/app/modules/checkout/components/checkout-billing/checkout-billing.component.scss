@@ -1,83 +1,100 @@
 :host {
   display: block;
+  width: 100%;
 }
 
 .billing-card {
-  padding: 28px;
+  padding: 22px;
 
   background: #ffffff;
-  border: 1px solid #ebe6f1;
-  border-radius: 18px;
-  box-shadow:
-    0 10px 30px rgba(45, 36, 86, 0.08),
-    0 2px 8px rgba(45, 36, 86, 0.04);
+
+  border: 1px solid #ece7f5;
+  border-radius: 14px;
+
+  box-shadow: 0 3px 12px rgba(45, 36, 86, 0.04);
 }
+
+/* =========================
+   BILLING OPTIONS
+   ========================= */
 
 .billing-options {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+
+  gap: 12px;
 }
 
 .billing-option {
   display: flex;
   align-items: flex-start;
-  gap: 14px;
 
-  padding: 18px 20px;
+  gap: 12px;
+
+  padding: 16px;
 
   background: #ffffff;
-  border: 2px solid #ebe6f1;
-  border-radius: 14px;
+
+  border: 1px solid #e7e1ee;
+  border-radius: 12px;
+
   cursor: pointer;
 
   transition:
     border-color 0.2s ease,
-    background-color 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
+    background-color 0.2s ease;
 
   &:hover {
-    border-color: #d3c2ef;
-    box-shadow: 0 8px 18px rgba(45, 36, 86, 0.07);
-    transform: translateY(-1px);
+    border-color: #d5c9e8;
   }
 
   &.selected {
-    background: rgba(103, 58, 183, 0.035);
+    background: #faf7fd;
     border-color: var(--deep-purple);
   }
 }
 
+/* =========================
+   OPTION CONTENT
+   ========================= */
+
 .option-content {
   min-width: 0;
+
+  p {
+    margin: 5px 0 0;
+
+    color: #77717f;
+
+    font-size: 13px;
+    line-height: 1.5;
+  }
 }
 
 .option-title {
   display: flex;
   align-items: center;
-  gap: 9px;
+
+  gap: 8px;
 
   color: #2d2456;
-  font-size: 16px;
-  font-weight: 700;
+
+  font-size: 14px;
+  font-weight: 500;
 
   mat-icon {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
 
     color: var(--deep-purple);
-    font-size: 22px;
+
+    font-size: 20px;
   }
 }
 
-.option-content p {
-  margin: 6px 0 0;
-
-  color: #746d80;
-  font-size: 14px;
-  line-height: 1.45;
-}
+/* =========================
+   INDIVIDUAL BILLING
+   ========================= */
 
 .individual-info {
   display: flex;
@@ -89,61 +106,78 @@
 
   border-top: 1px solid #f1ecf7;
 
-  color: #55705d;
+  color: #746d80;
   font-size: 14px;
 
   mat-icon {
+    flex-shrink: 0;
     width: 21px;
     height: 21px;
 
-    color: #287a3f;
+    color: var(--deep-purple);
     font-size: 21px;
   }
 }
 
-.company-form {
-  margin-top: 24px;
-  padding-top: 24px;
+/* =========================
+   COMPANY FORM
+   ========================= */
 
-  border-top: 1px solid #eee8f5;
+.company-form {
+  margin-top: 20px;
+  padding-top: 20px;
+
+  border-top: 1px solid #ece7f5;
 }
 
 .form-header {
-  margin-bottom: 22px;
+  margin-bottom: 18px;
 
   h3 {
-    margin: 0 0 5px;
+    margin: 0 0 4px;
 
     color: #2d2456;
-    font-size: 19px;
-    font-weight: 700;
+
+    font-size: 18px;
+    font-weight: 600;
   }
 
   p {
     margin: 0;
 
     color: #80798b;
-    font-size: 14px;
+
+    font-size: 13px;
+    line-height: 1.5;
   }
 }
+
+/* =========================
+   FORM GRID
+   ========================= */
 
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 4px 16px;
+
+  gap: 6px 16px;
 
   mat-form-field {
     width: 100%;
   }
-
-  .full-width {
-    grid-column: 1 / -1;
-  }
 }
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
 
 @media (max-width: 700px) {
   .billing-card {
-    padding: 20px;
+    padding: 18px;
   }
 
   .billing-options,
@@ -151,9 +185,7 @@
     grid-template-columns: 1fr;
   }
 
-  .form-grid {
-    .full-width {
-      grid-column: auto;
-    }
+  .full-width {
+    grid-column: auto;
   }
 }

@@ -1,6 +1,7 @@
 <header class="store-header">
   <div class="header-inner">
     <!-- LOGO -->
+
     <div
       class="logo"
       role="button"
@@ -13,6 +14,7 @@
     </div>
 
     <!-- NAVIGATION -->
+
     <nav class="main-nav">
       <button
         mat-button
@@ -53,9 +55,10 @@
     </nav>
 
     <!-- SEARCH -->
+
     <div class="search-wrapper">
       <div class="custom-search-bar">
-        <mat-icon class="search-prefix"> search </mat-icon>
+        <mat-icon class="search-prefix">search</mat-icon>
 
         <input
           type="text"
@@ -77,6 +80,7 @@
     </div>
 
     <!-- ACTIONS -->
+
     <div class="right-menu">
       <button
         mat-icon-button
@@ -86,7 +90,9 @@
         matTooltip="Contul meu"
         aria-label="Deschide meniul utilizatorului"
       >
-        <mat-icon>person_outline</mat-icon>
+        <mat-icon>
+          {{ (isUserLoggedIn$ | async) ? "person" : "person_outline" }}
+        </mat-icon>
       </button>
 
       <mat-menu #userMenu="matMenu">

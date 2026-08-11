@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+
+// Enums
 import { DeliveryMethod } from 'src/app/enums/order.enums';
 
+// Models
 import { Cart } from 'src/app/models/cart.model';
 
 @Component({
@@ -16,10 +19,14 @@ export class CheckoutSummaryComponent {
 
   @Output() placeOrder = new EventEmitter<void>();
 
+  readonly freeShippingLimit = 200;
+
+  get isPickup(): boolean {
+    return this.deliveryMethod === DeliveryMethod.Pickup;
+  }
+
   get shippingPrice(): number {
-    return this.deliveryMethod === DeliveryMethod.Pickup
-      ? 0
-      : this.cart.shippingPrice;
+    return this.isPickup ? 0 : this.cart.shippingPrice;
   }
 
   get totalPrice(): number {
@@ -27,6 +34,10 @@ export class CheckoutSummaryComponent {
   }
 
   onPlaceOrder(): void {
+    if (this.loading || !this.canPlaceOrder) {
+      return;
+    }
+
     this.placeOrder.emit();
   }
 }

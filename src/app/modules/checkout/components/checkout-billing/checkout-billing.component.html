@@ -1,26 +1,29 @@
-<mat-card class="billing-card">
+<div class="billing-card">
   <app-checkout-section-header
     [step]="3"
     title="Facturare"
     description="Alege tipul facturii și completează datele necesare."
-  ></app-checkout-section-header>
+  >
+  </app-checkout-section-header>
 
   <div [formGroup]="form">
     <mat-radio-group class="billing-options" formControlName="type">
       <div
         class="billing-option"
-        [class.selected]="form.get('type')?.value === 'INDIVIDUAL'"
-        (click)="selectBillingType('INDIVIDUAL')"
+        [class.selected]="form.get('type')?.value === billingType.Individual"
+        (click)="selectBillingType(billingType.Individual)"
       >
         <mat-radio-button
           color="primary"
-          value="INDIVIDUAL"
+          [value]="billingType.Individual"
           (click)="$event.stopPropagation()"
-        ></mat-radio-button>
+        >
+        </mat-radio-button>
 
         <div class="option-content">
           <div class="option-title">
             <mat-icon>person</mat-icon>
+
             <span>Persoană fizică</span>
           </div>
 
@@ -30,18 +33,20 @@
 
       <div
         class="billing-option"
-        [class.selected]="form.get('type')?.value === 'COMPANY'"
-        (click)="selectBillingType('COMPANY')"
+        [class.selected]="form.get('type')?.value === billingType.Company"
+        (click)="selectBillingType(billingType.Company)"
       >
         <mat-radio-button
           color="primary"
-          value="COMPANY"
+          [value]="billingType.Company"
           (click)="$event.stopPropagation()"
-        ></mat-radio-button>
+        >
+        </mat-radio-button>
 
         <div class="option-content">
           <div class="option-title">
             <mat-icon>business</mat-icon>
+
             <span>Persoană juridică</span>
           </div>
 
@@ -51,14 +56,17 @@
     </mat-radio-group>
 
     <div *ngIf="!isCompany" class="individual-info">
-      <mat-icon>check_circle</mat-icon>
+      <mat-icon>info_outline</mat-icon>
 
-      <span> Vor fi folosite aceleași date ca la adresa de livrare. </span>
+      <span>
+        Pentru facturare vor fi folosite aceleași date ca la adresa de livrare.
+      </span>
     </div>
 
     <div *ngIf="isCompany" class="company-form" formGroupName="companyDetails">
       <div class="form-header">
         <h3>Date companie</h3>
+
         <p>Completează informațiile pentru emiterea facturii.</p>
       </div>
 
@@ -126,24 +134,21 @@
         <mat-form-field appearance="outline">
           <mat-label>Țară</mat-label>
 
-          <mat-select formControlName="country">
-            <mat-option value="România">România</mat-option>
-          </mat-select>
-
-          <mat-error *ngIf="shouldShowError('country')">
-            {{ getError("country") }}
-          </mat-error>
+          <input matInput type="text" formControlName="country" />
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Județ</mat-label>
 
-          <input
-            matInput
-            type="text"
-            formControlName="county"
-            autocomplete="address-level1"
-          />
+          <mat-select formControlName="county">
+            <mat-option *ngIf="isLoadingCounties" disabled>
+              Se încarcă județele...
+            </mat-option>
+
+            <mat-option *ngFor="let county of counties" [value]="county.name">
+              {{ county.name }}
+            </mat-option>
+          </mat-select>
 
           <mat-error *ngIf="shouldShowError('county')">
             {{ getError("county") }}
@@ -151,14 +156,24 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Oraș</mat-label>
+          <mat-label>Localitate</mat-label>
 
-          <input
-            matInput
-            type="text"
-            formControlName="city"
-            autocomplete="address-level2"
-          />
+          <mat-select formControlName="city">
+            <mat-option *ngIf="isLoadingLocalities" disabled>
+              Se încarcă localitățile...
+            </mat-option>
+
+            <mat-option
+              *ngFor="let locality of localities"
+              [value]="locality.name"
+            >
+              {{ locality.name }}
+            </mat-option>
+          </mat-select>
+
+          <mat-hint *ngIf="!getControl('county').value">
+            Selectează mai întâi județul.
+          </mat-hint>
 
           <mat-error *ngIf="shouldShowError('city')">
             {{ getError("city") }}
@@ -182,4 +197,4 @@
       </div>
     </div>
   </div>
-</mat-card>
+</div>

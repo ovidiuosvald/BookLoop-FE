@@ -1,7 +1,8 @@
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { BookService } from 'src/app/services/book.service';
+
 import { Book } from 'src/app/models/book.model';
+import { BookService } from 'src/app/services/book.service';
 import { CommonService } from 'src/app/services/common.service';
 
 @Component({
@@ -11,13 +12,14 @@ import { CommonService } from 'src/app/services/common.service';
 })
 export class HomePageComponent implements OnInit, OnDestroy {
   private subscriptionList: Subscription[] = [];
+
   promoBooks: Book[] = [];
   newBooks: Book[] = [];
   bestsellerBooks: Book[] = [];
 
   constructor(
-    private commonService: CommonService,
-    private bookService: BookService,
+    private readonly commonService: CommonService,
+    private readonly bookService: BookService,
   ) {}
 
   ngOnInit(): void {
@@ -25,11 +27,14 @@ export class HomePageComponent implements OnInit, OnDestroy {
       next: (books: Book[]) => {
         this.promoBooks = books.filter((book) => !!book.promoImageUrl);
         this.newBooks = books.filter((book) => book.isNew);
+        this.bestsellerBooks = books.filter((book) => book.isBestseller);
       },
+
       error: () => {
         this.commonService.showSnackBarError('Nu s-au putut încărca cărțile!');
       },
     });
+
     this.subscriptionList.push(sub);
   }
 

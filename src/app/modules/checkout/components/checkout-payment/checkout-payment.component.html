@@ -1,9 +1,10 @@
-<mat-card class="payment-card">
+<div class="payment-card">
   <app-checkout-section-header
     [step]="4"
     title="Plată"
     description="Alege metoda prin care dorești să achiți comanda."
-  ></app-checkout-section-header>
+  >
+  </app-checkout-section-header>
 
   <div [formGroup]="form">
     <mat-radio-group class="payment-options" formControlName="method">
@@ -18,11 +19,13 @@
           color="primary"
           [value]="paymentMethod.CashOnDelivery"
           (click)="$event.stopPropagation()"
-        ></mat-radio-button>
+        >
+        </mat-radio-button>
 
         <div class="option-content">
           <div class="option-title">
             <mat-icon>payments</mat-icon>
+
             <span>Plată ramburs</span>
           </div>
 
@@ -31,15 +34,13 @@
       </div>
 
       <div class="payment-option disabled">
-        <mat-radio-button
-          color="primary"
-          [value]="paymentMethod.Card"
-          disabled
-        ></mat-radio-button>
+        <mat-radio-button color="primary" [value]="paymentMethod.Card" disabled>
+        </mat-radio-button>
 
         <div class="option-content">
           <div class="option-title">
             <mat-icon>credit_card</mat-icon>
+
             <span>Card bancar</span>
 
             <span class="coming-soon-badge"> În curând </span>
@@ -60,11 +61,13 @@
           color="primary"
           [value]="paymentMethod.BankTransfer"
           (click)="$event.stopPropagation()"
-        ></mat-radio-button>
+        >
+        </mat-radio-button>
 
         <div class="option-content">
           <div class="option-title">
             <mat-icon>account_balance</mat-icon>
+
             <span>Transfer bancar</span>
           </div>
 
@@ -73,4 +76,4 @@
       </div>
     </mat-radio-group>
   </div>
-</mat-card>
+</div>

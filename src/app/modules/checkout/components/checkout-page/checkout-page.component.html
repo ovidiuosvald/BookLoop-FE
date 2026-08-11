@@ -4,11 +4,16 @@
   </div>
 
   <ng-container *ngIf="!isLoading && cart as currentCart">
-    <button mat-button class="back-to-cart-button" routerLink="/cart">
+    <button
+      mat-button
+      type="button"
+      class="back-to-cart-button"
+      routerLink="/cart"
+    >
       <mat-icon>arrow_back</mat-icon>
-
       Înapoi la coș
     </button>
+
     <header class="page-header">
       <h1>Finalizează comanda</h1>
 
@@ -25,15 +30,20 @@
           [selectedAddressId]="selectedAddressId"
           [form]="deliveryAddressForm"
           (selectedAddressIdChange)="onSelectedAddressIdChange($event)"
-        ></app-checkout-address>
+        >
+        </app-checkout-address>
 
-        <app-checkout-delivery [form]="deliveryForm"></app-checkout-delivery>
+        <app-checkout-delivery
+          [form]="deliveryForm"
+          [courierPrice]="currentCart.shippingPrice"
+        >
+        </app-checkout-delivery>
 
-        <app-checkout-billing [form]="billingForm"></app-checkout-billing>
+        <app-checkout-billing [form]="billingForm"> </app-checkout-billing>
 
-        <app-checkout-payment [form]="paymentForm"></app-checkout-payment>
+        <app-checkout-payment [form]="paymentForm"> </app-checkout-payment>
 
-        <mat-card
+        <div
           class="terms-card"
           [formGroup]="checkoutForm"
           [class.invalid]="
@@ -42,18 +52,20 @@
           "
         >
           <div class="terms-content">
-            <mat-icon class="terms-icon">verified_user</mat-icon>
+            <mat-icon class="terms-icon"> verified_user </mat-icon>
 
             <div class="terms-text">
               <mat-checkbox color="primary" formControlName="termsAccepted">
                 Am citit și sunt de acord cu
+
                 <a
-                  routerLink="/terms-and-conditions"
+                  routerLink="/info/terms-and-conditions"
                   target="_blank"
                   (click)="$event.stopPropagation()"
                 >
                   Termenii și condițiile
                 </a>
+
                 BookLoop.
               </mat-checkbox>
 
@@ -72,7 +84,7 @@
           >
             Trebuie să accepți Termenii și condițiile pentru a plasa comanda.
           </mat-error>
-        </mat-card>
+        </div>
       </main>
 
       <aside class="checkout-sidebar">
@@ -82,7 +94,8 @@
           [loading]="isPlacingOrder"
           [canPlaceOrder]="checkoutForm.valid"
           (placeOrder)="placeOrder()"
-        ></app-checkout-summary>
+        >
+        </app-checkout-summary>
       </aside>
     </div>
   </ng-container>

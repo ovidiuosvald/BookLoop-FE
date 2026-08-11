@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AdminGuard } from './guards/admin.guard';
 import { AuthGuard } from './guards/auth.guard';
+import { CheckoutGuard } from './guards/checkout.guard';
 
 const routes: Routes = [
   {
@@ -28,7 +29,7 @@ const routes: Routes = [
   },
   {
     path: 'checkout',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, CheckoutGuard],
     loadChildren: () =>
       import('./modules/checkout/checkout.module').then(
         (module) => module.CheckoutModule,

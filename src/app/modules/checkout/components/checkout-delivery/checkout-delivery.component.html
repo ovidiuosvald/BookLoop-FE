@@ -1,9 +1,10 @@
-<mat-card class="delivery-card">
+<div class="delivery-card">
   <app-checkout-section-header
     [step]="2"
     title="Livrare"
     description="Alege modalitatea prin care dorești să primești comanda."
-  ></app-checkout-section-header>
+  >
+  </app-checkout-section-header>
 
   <div [formGroup]="form">
     <mat-radio-group class="delivery-options" formControlName="method">
@@ -16,18 +17,26 @@
           color="primary"
           [value]="deliveryMethod.Courier"
           (click)="$event.stopPropagation()"
-        ></mat-radio-button>
+        >
+        </mat-radio-button>
 
         <div class="option-content">
           <div class="option-title">
             <mat-icon>local_shipping</mat-icon>
+
             <span>Livrare prin curier</span>
           </div>
 
           <p>Comanda va fi livrată la adresa selectată.</p>
         </div>
 
-        <strong class="delivery-price">12,90 lei</strong>
+        <strong class="delivery-price" [class.free]="courierPrice === 0">
+          <ng-container *ngIf="courierPrice > 0; else freeCourier">
+            {{ courierPrice | currency: "RON" : "symbol" : "1.2-2" }}
+          </ng-container>
+
+          <ng-template #freeCourier> Gratuit </ng-template>
+        </strong>
       </div>
 
       <div
@@ -39,19 +48,21 @@
           color="primary"
           [value]="deliveryMethod.Pickup"
           (click)="$event.stopPropagation()"
-        ></mat-radio-button>
+        >
+        </mat-radio-button>
 
         <div class="option-content">
           <div class="option-title">
             <mat-icon>storefront</mat-icon>
+
             <span>Ridicare din librărie</span>
           </div>
 
           <p>BookLoop, Str. Matei Corvin nr. 46, Oradea.</p>
         </div>
 
-        <strong class="delivery-price free">Gratuit</strong>
+        <strong class="delivery-price free"> Gratuit </strong>
       </div>
     </mat-radio-group>
   </div>
-</mat-card>
+</div>

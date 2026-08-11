@@ -150,6 +150,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.isUserLoggedIn$.pipe(take(1)).subscribe((isUserLoggedIn: boolean) => {
       if (isUserLoggedIn) {
         action();
+
         return;
       }
 
@@ -208,6 +209,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       next: (categories: Category[]) => {
         this.categories = categories;
       },
+
       error: (error: HttpErrorResponse) => {
         this.commonService.showHttpError(
           error,
@@ -252,6 +254,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .subscribe((isUserLoggedIn: boolean) => {
         if (!isUserLoggedIn) {
           this.cartService.resetCartCount();
+
           return;
         }
 

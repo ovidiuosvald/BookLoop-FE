@@ -1,5 +1,5 @@
 <div class="success-page" *ngIf="order as currentOrder">
-  <mat-card class="success-card">
+  <div class="success-card">
     <div class="success-icon">
       <mat-icon>check</mat-icon>
     </div>
@@ -14,18 +14,21 @@
     <div class="order-info">
       <div class="info-row">
         <span>Număr comandă</span>
-        <strong>#{{ currentOrder.orderNumber }}</strong>
+
+        <strong> #{{ currentOrder.orderNumber }} </strong>
       </div>
 
       <div class="info-row">
         <span>Total</span>
-        <strong>
+
+        <strong class="total-price">
           {{ currentOrder.totalPrice | currency: "RON" : "symbol" : "1.2-2" }}
         </strong>
       </div>
 
       <div class="info-row">
         <span>Status</span>
+
         <strong>Plasată</strong>
       </div>
     </div>
@@ -38,6 +41,7 @@
         routerLink="/account/orders"
       >
         <mat-icon>receipt_long</mat-icon>
+
         Vezi comenzile mele
       </button>
 
@@ -45,11 +49,12 @@
         mat-stroked-button
         type="button"
         class="continue-button"
-        routerLink="/"
+        routerLink="/store"
       >
         <mat-icon>menu_book</mat-icon>
+
         Continuă cumpărăturile
       </button>
     </div>
-  </mat-card>
+  </div>
 </div>
